@@ -1,4 +1,4 @@
-package com.alvindev.traverseeid.ui.theme
+package com.alvindev.traverseeid.core.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
