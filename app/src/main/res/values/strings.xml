@@ -17,4 +17,5 @@
     <string name="menu_forum">Forum</string>
     <string name="menu_tourism">Tourism</string>
     <string name="menu_sentiment">Sentiment</string>
+    <string name="campaign_category">Campaign Category</string>
 </resources>

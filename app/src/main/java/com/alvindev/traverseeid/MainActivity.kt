@@ -21,6 +21,7 @@ import com.alvindev.appCurrentDestinationAsState
 import com.alvindev.startAppDestination
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.navigation.NavigationItem
+import com.alvindev.traverseeid.navigation.NavigationMapper
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,6 +55,23 @@ class MainActivity : ComponentActivity() {
                                 BottomBar(
                                     navController = navController,
                                 )
+                            }
+                        },
+                        topBar = {
+                            val navigationStringId: Int = NavigationMapper.mapToNavigationStringResource(currentRoute)
+                            if(navigationStringId != -1){
+                                val routeName =
+                                    stringResource(navigationStringId)
+                                if (currentRoute in bottomBarRoutes) {
+                                    TopBarMainScreen(title = routeName)
+                                } else {
+                                    TopBarCommonScreen(
+                                        title = routeName,
+                                        onBackClick = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
                             }
                         }
                     ) {contentPadding ->
@@ -151,4 +169,41 @@ private fun BottomBar(
             )
         }
     }
+}
+
+@Composable
+fun TopBarMainScreen(
+    title: String
+){
+    TopAppBar(
+      title = {
+          Text(
+              text = title,
+              color = Color.White
+          )
+      },
+    )
+}
+
+@Composable
+fun TopBarCommonScreen(
+    title: String,
+    onBackClick: () -> Unit
+){
+    TopAppBar(
+        title = {
+            Text(
+                text = title,
+                color = Color.White
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "back"
+                )
+            }
+        }
+    )
 }
