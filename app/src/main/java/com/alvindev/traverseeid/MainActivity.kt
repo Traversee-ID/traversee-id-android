@@ -1,6 +1,7 @@
 package com.alvindev.traverseeid
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -21,6 +22,7 @@ import com.alvindev.appCurrentDestinationAsState
 import com.alvindev.startAppDestination
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.navigation.NavigationItem
+import com.alvindev.traverseeid.navigation.NavigationMapper
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,13 +48,38 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val currentDestination = navController.appCurrentDestinationAsState().value
                         ?: NavGraphs.root.startAppDestination
-                    val currentRoute = currentDestination.route
+                    val currentRoute = currentDestination.baseRoute
+                    val navigationStringId: Int = NavigationMapper.mapToNavigationStringResource(currentRoute)
 
                     Scaffold(
                         bottomBar = {
                             if (currentRoute in bottomBarRoutes) {
                                 BottomBar(
                                     navController = navController,
+                                )
+                            }
+                        },
+                        topBar = {
+                            if(navigationStringId != -1){
+                                routeName = ""
+                                val title =
+                                    stringResource(navigationStringId)
+                                if (currentRoute in bottomBarRoutes) {
+                                    TopBarMainScreen(title = title)
+                                } else {
+                                    TopBarCommonScreen(
+                                        title = title,
+                                        onBackClick = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
+                            }else if(routeName.isNotEmpty()){
+                                TopBarCommonScreen(
+                                    title = routeName,
+                                    onBackClick = {
+                                        navController.popBackStack()
+                                    }
                                 )
                             }
                         }
@@ -77,6 +104,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+        var routeName = ""
     }
 }
 
@@ -151,4 +183,41 @@ private fun BottomBar(
             )
         }
     }
+}
+
+@Composable
+fun TopBarMainScreen(
+    title: String
+){
+    TopAppBar(
+      title = {
+          Text(
+              text = title,
+              color = Color.White
+          )
+      },
+    )
+}
+
+@Composable
+fun TopBarCommonScreen(
+    title: String,
+    onBackClick: () -> Unit
+){
+    TopAppBar(
+        title = {
+            Text(
+                text = title,
+                color = Color.White
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "back"
+                )
+            }
+        }
+    )
 }
