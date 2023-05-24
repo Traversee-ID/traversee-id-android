@@ -20,9 +20,9 @@ fun TraverseeOutlinedButton(
     enabled: Boolean = true,
     text: String = "OutlinedButton",
     elevation: ButtonElevation? = null,
-    border: BorderStroke? = BorderStroke(1.dp, Color.Red),
+    border: BorderStroke? = BorderStroke(1.dp, MaterialTheme.colors.primary),
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
-        contentColor = Color.Red,
+        contentColor = MaterialTheme.colors.primary,
     ),
     contentPadding: PaddingValues = PaddingValues(16.dp),
     content: @Composable RowScope.() -> Unit = {

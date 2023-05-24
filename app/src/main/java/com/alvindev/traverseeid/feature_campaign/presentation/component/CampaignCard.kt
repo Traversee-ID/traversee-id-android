@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -74,7 +75,7 @@ fun CampaignCard(
                         color = MaterialTheme.colors.primaryVariant,
                     )
                     TraverseeRowIcon(
-                        icon = Icons.Default.Place,
+                        icon = Icons.Outlined.Place,
                         text = place,
                     )
                 }

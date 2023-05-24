@@ -1,6 +1,7 @@
 package com.alvindev.traverseeid
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -47,7 +48,8 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val currentDestination = navController.appCurrentDestinationAsState().value
                         ?: NavGraphs.root.startAppDestination
-                    val currentRoute = currentDestination.route
+                    val currentRoute = currentDestination.baseRoute
+                    val navigationStringId: Int = NavigationMapper.mapToNavigationStringResource(currentRoute)
 
                     Scaffold(
                         bottomBar = {
@@ -58,8 +60,8 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         topBar = {
-                            val navigationStringId: Int = NavigationMapper.mapToNavigationStringResource(currentRoute)
                             if(navigationStringId != -1){
+                                routeName = ""
                                 val title =
                                     stringResource(navigationStringId)
                                 if (currentRoute in bottomBarRoutes) {

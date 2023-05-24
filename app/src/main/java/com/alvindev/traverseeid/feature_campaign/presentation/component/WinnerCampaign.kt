@@ -20,11 +20,11 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 
 @Composable
-fun WinnerCampaign(
+fun CampaignWinnerItem(
     modifier: Modifier = Modifier,
     winnerName: String,
     winnerPhoto: String,
-    winnerRank: Int,
+    winnerRank: Int = -1,
     winnerSubmission: String,
 ) {
     Row(
@@ -56,15 +56,17 @@ fun WinnerCampaign(
                     text = winnerName,
                     style = Typography.subtitle2
                 )
-                Text(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(RoundedCornerShape(50))
-                        .background(color = MaterialTheme.colors.secondary)
-                        .wrapContentSize(Alignment.Center),
-                    text = "#$winnerRank",
-                    style = Typography.subtitle2,
-                )
+                if(winnerRank != -1){
+                    Text(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clip(RoundedCornerShape(50))
+                            .background(color = MaterialTheme.colors.secondary)
+                            .wrapContentSize(Alignment.Center),
+                        text = "#$winnerRank",
+                        style = Typography.subtitle2,
+                    )
+                }
             }
 
             TraverseeOutlinedButton(
@@ -80,7 +82,7 @@ fun WinnerCampaign(
 @Composable
 fun WinnerCampaignPreview() {
     TraverseeTheme() {
-        WinnerCampaign(
+        CampaignWinnerItem(
             winnerName = "Alvin",
             winnerPhoto = "",
             winnerRank = 1,

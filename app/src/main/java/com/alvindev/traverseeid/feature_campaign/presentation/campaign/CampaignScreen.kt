@@ -38,10 +38,20 @@ fun CampaignScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        SectionMyCampaign()
+        SectionMyCampaign(
+            actionOnClick = {
+                navigator.navigate(ScreenRoute.CampaignUser)
+            },
+            campaignOnClick = {
+                navigator.navigate(ScreenRoute.CampaignDetails)
+            }
+        )
         SectionCampaignAround(
             actionOnClick = {
                 navigator.navigate(CampaignListScreenDestination(name = "Campaign Around You"))
+            },
+            campaignOnClick = {
+                navigator.navigate(ScreenRoute.CampaignDetails)
             }
         )
         SectionDiscoverCampaign(
@@ -57,10 +67,11 @@ fun CampaignScreen(
 
 @Composable
 fun SectionMyCampaign(
-    actionOnClick: () -> Unit = {}
+    actionOnClick: () -> Unit = {},
+    campaignOnClick: () -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp - 32.dp
+    val screenWidth = configuration.screenWidthDp.dp - 64.dp
 
     Column(
         modifier = Modifier
@@ -79,6 +90,7 @@ fun SectionMyCampaign(
             items(5) {
                 MyCampaignCard(
                     modifier = Modifier.width(screenWidth),
+                    onClick = campaignOnClick
                 )
             }
         }
@@ -87,10 +99,11 @@ fun SectionMyCampaign(
 
 @Composable
 fun SectionCampaignAround(
-    actionOnClick: () -> Unit = {}
+    actionOnClick: () -> Unit = {},
+    campaignOnClick: () -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp - 32.dp
+    val screenWidth = configuration.screenWidthDp.dp - 64.dp
 
     Column(
         modifier = Modifier
@@ -115,6 +128,7 @@ fun SectionCampaignAround(
                     endDate = "June 17",
                     place = "Magelang",
                     participants = 1000,
+                    onClick = campaignOnClick
                 )
             }
         }

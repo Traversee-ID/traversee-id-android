@@ -29,6 +29,8 @@ import com.alvindev.traverseeid.feature_campaign.presentation.component.FilterSo
 import com.alvindev.traverseeid.feature_campaign.presentation.component.SortBottomSheet
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -39,10 +41,12 @@ import kotlinx.coroutines.launch
 fun CampaignListScreen(
     id: Int = -1,
     name: String?,
-){
+    navigator: DestinationsNavigator
+) {
     name?.let {
         MainActivity.routeName = it
     }
+    val isHideButton = name == "Campaign Around You"
 
     val coroutineScope = rememberCoroutineScope()
     val modalSheetState = rememberModalBottomSheetState(
@@ -56,7 +60,7 @@ fun CampaignListScreen(
         sheetState = modalSheetState,
         sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
         sheetContent = {
-            if (sheetType == "sort"){
+            if (sheetType == "sort") {
                 SortBottomSheet(
                     modifier = Modifier.padding(16.dp),
                     onClose = {
@@ -77,13 +81,15 @@ fun CampaignListScreen(
             }
         }
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp,end = 16.dp, top = 8.dp, bottom = 16.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp)
+        ) {
             LazyColumn(
-                modifier = Modifier.padding(top = 8.dp, bottom = 56.dp)
-            ){
-                items(10){
+                modifier = Modifier.padding(top = 8.dp, bottom = if (isHideButton) 8.dp else 56.dp)
+            ) {
+                items(10) {
                     CampaignCard(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -94,51 +100,57 @@ fun CampaignListScreen(
                         endDate = "June 17",
                         place = "Magelang",
                         participants = 1000,
+                        onClick = {
+                            navigator.navigate(ScreenRoute.CampaignDetails)
+                        }
                     )
                 }
             }
 
-            FilterSortButton(
-                modifier = Modifier
-                    .shadow(2.dp, clip = true, shape = RoundedCornerShape(50))
-                    .background(color = Color.White)
-                    .height(IntrinsicSize.Min)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(50))
-                    .align(Alignment.BottomCenter)
-                    .paddingFromBaseline(8.dp)
-                    .padding(8.dp),
-                onClickFilter = {
-                    coroutineScope.launch {
-                        if (modalSheetState.isVisible) {
-                            modalSheetState.hide()
-                        }else{
-                            sheetType = "filter"
-                            modalSheetState.show()
+            if (isHideButton.not()) {
+                FilterSortButton(
+                    modifier = Modifier
+                        .shadow(2.dp, clip = true, shape = RoundedCornerShape(50))
+                        .background(color = Color.White)
+                        .height(IntrinsicSize.Min)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(50))
+                        .align(Alignment.BottomCenter)
+                        .paddingFromBaseline(8.dp)
+                        .padding(8.dp),
+                    onClickFilter = {
+                        coroutineScope.launch {
+                            if (modalSheetState.isVisible) {
+                                modalSheetState.hide()
+                            } else {
+                                sheetType = "filter"
+                                modalSheetState.show()
+                            }
+                        }
+                    },
+                    onClickSort = {
+                        coroutineScope.launch {
+                            if (modalSheetState.isVisible) {
+                                modalSheetState.hide()
+                            } else {
+                                sheetType = "sort"
+                                modalSheetState.show()
+                            }
                         }
                     }
-                },
-                onClickSort = {
-                    coroutineScope.launch {
-                        if (modalSheetState.isVisible) {
-                            modalSheetState.hide()
-                        }else{
-                            sheetType = "sort"
-                            modalSheetState.show()
-                        }
-                    }
-                }
-            )
+                )
+            }
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun CampaignListScreenPreview(){
+fun CampaignListScreenPreview() {
     TraverseeTheme {
         CampaignListScreen(
-            name = "All Campaigns"
+            name = "All Campaigns",
+            navigator = EmptyDestinationsNavigator
         )
     }
 }

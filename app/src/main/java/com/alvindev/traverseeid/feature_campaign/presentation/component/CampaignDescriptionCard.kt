@@ -42,15 +42,8 @@ fun CampaignDescriptionCard(
             modifier = Modifier.padding(vertical = 8.dp)
         )
         RowDescriptionItem(
-            title = "Start Date",
-            value = startDate
-        )
-        TraverseeDivider(
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-        RowDescriptionItem(
-            title = "End Date",
-            value = endDate
+            title = "Date",
+            value = "$startDate - $endDate"
         )
         TraverseeDivider(
             modifier = Modifier.padding(vertical = 8.dp)

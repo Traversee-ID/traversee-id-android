@@ -18,4 +18,6 @@
     <string name="menu_tourism">Tourism</string>
     <string name="menu_sentiment">Sentiment</string>
     <string name="campaign_category">Campaign Category</string>
+    <string name="campaign_details">Campaign Details</string>
+    <string name="my_campaigns">My Campaigns</string>
 </resources>

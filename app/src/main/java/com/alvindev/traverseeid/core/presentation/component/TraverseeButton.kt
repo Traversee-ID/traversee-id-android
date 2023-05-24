@@ -22,8 +22,8 @@ fun TraverseeButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = null,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = Color.Red,
-        contentColor = Color.White,
+        backgroundColor = MaterialTheme.colors.primary,
+        contentColor = MaterialTheme.colors.onPrimary,
     ),
     contentPadding: PaddingValues = PaddingValues(16.dp),
     content: @Composable RowScope.() -> Unit = {

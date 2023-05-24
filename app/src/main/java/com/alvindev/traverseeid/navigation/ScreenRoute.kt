@@ -5,6 +5,9 @@ object ScreenRoute {
     const val Campaign = "campaign"
     const val CampaignCategory = "campaign/category"
     const val CampaignList = "campaign/list"
+    const val CampaignDetails = "campaign/details"
+    const val CampaignParticipants = "campaign/participants"
+    const val CampaignUser = "campaign/user"
 
     //forum feature
     const val Forum = "forum"

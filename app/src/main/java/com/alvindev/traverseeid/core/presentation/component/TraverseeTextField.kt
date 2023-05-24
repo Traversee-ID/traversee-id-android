@@ -14,13 +14,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.alvindev.traverseeid.core.theme.Black200
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 
 @Composable
 fun TraverseeTextField(
     modifier: Modifier = Modifier.fillMaxWidth(),
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(
-        backgroundColor = Color.LightGray,
+        backgroundColor = Black200,
         cursorColor = Color.Black,
         disabledLabelColor = Color.Gray,
         focusedIndicatorColor = Color.Transparent,
