@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -49,7 +50,8 @@ class MainActivity : ComponentActivity() {
                     val currentDestination = navController.appCurrentDestinationAsState().value
                         ?: NavGraphs.root.startAppDestination
                     val currentRoute = currentDestination.baseRoute
-                    val navigationStringId: Int = NavigationMapper.mapToNavigationStringResource(currentRoute)
+                    val navigationStringId: Int =
+                        NavigationMapper.mapToNavigationStringResource(currentRoute)
 
                     Scaffold(
                         bottomBar = {
@@ -60,7 +62,7 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         topBar = {
-                            if(navigationStringId != -1){
+                            if (navigationStringId != -1) {
                                 routeName = ""
                                 val title =
                                     stringResource(navigationStringId)
@@ -74,7 +76,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                     )
                                 }
-                            }else if(routeName.isNotEmpty()){
+                            } else if (routeName.isNotEmpty()) {
                                 TopBarCommonScreen(
                                     title = routeName,
                                     onBackClick = {
@@ -83,11 +85,11 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-                    ) {contentPadding ->
+                    ) { contentPadding ->
                         BackHandler {
-                            if(currentRoute in bottomBarRoutes) {
+                            if (currentRoute in bottomBarRoutes) {
                                 finish()
-                            }else{
+                            } else {
                                 val canPop = navController.popBackStack()
                                 if (!canPop) {
                                     finish()
@@ -151,8 +153,9 @@ private fun BottomBar(
     )
     BottomNavigation(
         modifier = modifier,
-        backgroundColor = Color.Gray,
-        contentColor = Color.White,
+        backgroundColor = Color.White,
+        contentColor = MaterialTheme.colors.primary,
+        elevation = 4.dp
     ) {
         val currentDestination = navController.appCurrentDestinationAsState().value
             ?: NavGraphs.root.startAppDestination
@@ -166,10 +169,12 @@ private fun BottomBar(
                         contentDescription = item.title
                     )
                 },
-                label = { Text(
-                    item.title,
-                    fontSize = 11.sp
-                ) },
+                label = {
+                    Text(
+                        item.title,
+                        fontSize = 11.sp
+                    )
+                },
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
@@ -188,14 +193,14 @@ private fun BottomBar(
 @Composable
 fun TopBarMainScreen(
     title: String
-){
+) {
     TopAppBar(
-      title = {
-          Text(
-              text = title,
-              color = Color.White
-          )
-      },
+        title = {
+            Text(
+                text = title,
+                color = Color.White
+            )
+        },
     )
 }
 
@@ -203,7 +208,7 @@ fun TopBarMainScreen(
 fun TopBarCommonScreen(
     title: String,
     onBackClick: () -> Unit
-){
+) {
     TopAppBar(
         title = {
             Text(
