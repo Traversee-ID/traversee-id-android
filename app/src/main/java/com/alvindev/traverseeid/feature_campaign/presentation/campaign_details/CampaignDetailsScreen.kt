@@ -4,11 +4,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
@@ -33,7 +38,7 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeTextField
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignConstant
+import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignDescriptionCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignWinnerItem
 import com.alvindev.traverseeid.feature_campaign.presentation.component.SectionTitle
@@ -51,7 +56,7 @@ fun CampaignDetailsScreen(
     name: String?,
     navigator: DestinationsNavigator
 ) {
-    var campaignUserCondition by rememberSaveable { mutableStateOf(CampaignConstant.NOT_REGISTERED) }
+    var campaignUserCondition by rememberSaveable { mutableStateOf(CampaignParticipantConstant.NOT_REGISTERED) }
     var textButton by rememberSaveable { mutableStateOf("Register") }
 
     Box(
@@ -64,13 +69,29 @@ fun CampaignDetailsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 96.dp),
         ) {
-            Image(
-                modifier = Modifier.aspectRatio(1f),
-                painter = painterResource(id = R.drawable.dummy_borobudur),
-                contentDescription = "Borobudur",
-                alignment = Alignment.Center,
-                contentScale = ContentScale.Crop
-            )
+            Box(modifier = Modifier.aspectRatio(1f)){
+                Image(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = painterResource(id = R.drawable.dummy_borobudur),
+                    contentDescription = "Borobudur",
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.Crop
+                )
+
+                if(campaignUserCondition >= CampaignParticipantConstant.REGISTERED_AND_SUBMITTED) {
+                    Icon(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(8.dp)
+                            .size(24.dp)
+                            .background(color = Color.White, shape = RoundedCornerShape(50))
+                            .padding(2.dp),
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Campaign Ended",
+                        tint = Color.Green,
+                    )
+                }
+            }
             Text(
                 modifier = Modifier.padding(16.dp),
                 text = "Share your story about Kota Lama Semarang",
@@ -115,7 +136,7 @@ fun CampaignDetailsScreen(
                 thickness = 4.dp
             )
             CampaignMissions()
-            if(campaignUserCondition > CampaignConstant.NOT_REGISTERED) {
+            if(campaignUserCondition > CampaignParticipantConstant.NOT_REGISTERED) {
                 CampaignSubmission()
             }
         }
@@ -127,18 +148,22 @@ fun CampaignDetailsScreen(
                 .padding(bottom = 20.dp, start = 16.dp, end = 16.dp),
             text = textButton,
             onClick = {
-                if (campaignUserCondition == CampaignConstant.NOT_REGISTERED) {
-                    campaignUserCondition = CampaignConstant.REGISTERED
-                    textButton = "Submit"
-                } else if (campaignUserCondition == CampaignConstant.REGISTERED) {
-                    campaignUserCondition = CampaignConstant.REGISTERED_AND_SUBMITTED
-                    textButton = "Already Submitted"
-                } else if (campaignUserCondition == CampaignConstant.REGISTERED_AND_SUBMITTED) {
-                    campaignUserCondition = CampaignConstant.ENDED
-                    textButton = "Ended"
+                when (campaignUserCondition) {
+                    CampaignParticipantConstant.NOT_REGISTERED -> {
+                        campaignUserCondition = CampaignParticipantConstant.REGISTERED
+                        textButton = "Submit"
+                    }
+                    CampaignParticipantConstant.REGISTERED -> {
+                        campaignUserCondition = CampaignParticipantConstant.REGISTERED_AND_SUBMITTED
+                        textButton = "Already Submitted"
+                    }
+                    CampaignParticipantConstant.REGISTERED_AND_SUBMITTED -> {
+                        campaignUserCondition = CampaignParticipantConstant.ENDED
+                        textButton = "Ended"
+                    }
                 }
             },
-            enabled = campaignUserCondition < CampaignConstant.ENDED
+            enabled = campaignUserCondition < CampaignParticipantConstant.ENDED
         )
     }
 }

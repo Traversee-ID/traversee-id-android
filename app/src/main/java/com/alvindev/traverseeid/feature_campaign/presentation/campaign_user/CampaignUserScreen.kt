@@ -23,14 +23,15 @@ fun CampaignUserScreen(
     navigator: DestinationsNavigator
 ){
     LazyColumn{
-        items(10){
+        items(10){ index ->
             MyCampaignCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 onClick = {
                     navigator.navigate(ScreenRoute.CampaignDetails)
-                }
+                },
+                status = if(index % 2 == 1) "Ended" else "Ongoing",
             )
         }
     }

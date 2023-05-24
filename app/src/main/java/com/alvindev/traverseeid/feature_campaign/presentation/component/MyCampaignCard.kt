@@ -1,9 +1,12 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.*
+import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -35,15 +39,33 @@ fun MyCampaignCard(
         backgroundColor = Color.White,
     ) {
         Column {
-            Image(
-                painter = painterResource(id = R.drawable.dummy_borobudur),
-                contentDescription = null,
-                modifier = Modifier
+            Box(
+                modifier =
+                Modifier
                     .fillMaxWidth()
-                    .height(170.dp),
-                contentScale = ContentScale.Crop,
-                alignment = Alignment.Center
-            )
+                    .height(170.dp)
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.dummy_borobudur),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                )
+                if(status == "Ended") {
+                    Icon(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(8.dp)
+                            .size(24.dp)
+                            .background(color = Color.White, shape = RoundedCornerShape(50))
+                            .padding(2.dp),
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Campaign Ended",
+                        tint = Color.Green,
+                    )
+                }
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
