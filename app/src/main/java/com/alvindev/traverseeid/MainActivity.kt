@@ -60,18 +60,25 @@ class MainActivity : ComponentActivity() {
                         topBar = {
                             val navigationStringId: Int = NavigationMapper.mapToNavigationStringResource(currentRoute)
                             if(navigationStringId != -1){
-                                val routeName =
+                                val title =
                                     stringResource(navigationStringId)
                                 if (currentRoute in bottomBarRoutes) {
-                                    TopBarMainScreen(title = routeName)
+                                    TopBarMainScreen(title = title)
                                 } else {
                                     TopBarCommonScreen(
-                                        title = routeName,
+                                        title = title,
                                         onBackClick = {
                                             navController.popBackStack()
                                         }
                                     )
                                 }
+                            }else if(routeName.isNotEmpty()){
+                                TopBarCommonScreen(
+                                    title = routeName,
+                                    onBackClick = {
+                                        navController.popBackStack()
+                                    }
+                                )
                             }
                         }
                     ) {contentPadding ->
@@ -95,6 +102,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+        var routeName = ""
     }
 }
 

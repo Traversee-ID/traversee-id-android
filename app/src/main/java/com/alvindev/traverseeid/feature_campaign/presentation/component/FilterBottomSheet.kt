@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import com.alvindev.traverseeid.core.theme.Typography
 @Composable
 fun FilterBottomSheet(
     modifier: Modifier = Modifier,
+    onClose: () -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     val dropdownMenuItems = listOf("Indonesia", "Magelang", "Depok", "Semarang", "Purworkerto")
@@ -33,6 +35,7 @@ fun FilterBottomSheet(
         TraverseeRowIcon(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { onClose() }
                 .padding(bottom = 8.dp),
             icon = Icons.Default.Close,
             text = "Filter",

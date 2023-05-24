@@ -3,7 +3,8 @@ package com.alvindev.traverseeid.navigation
 object ScreenRoute {
     // campaign feature
     const val Campaign = "campaign"
-    const val CampaignCategory = "campaign_category"
+    const val CampaignCategory = "campaign/category"
+    const val CampaignList = "campaign/list"
 
     //forum feature
     const val Forum = "forum"

@@ -1,7 +1,9 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.campaign
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -9,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alvindev.destinations.CampaignListScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
+import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignCategory
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CategoryCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.MyCampaignCard
@@ -35,10 +39,17 @@ fun CampaignScreen(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         SectionMyCampaign()
-        SectionCampaignAround()
+        SectionCampaignAround(
+            actionOnClick = {
+                navigator.navigate(CampaignListScreenDestination(name = "Campaign Around You"))
+            }
+        )
         SectionDiscoverCampaign(
             actionOnClick = {
                 navigator.navigate(ScreenRoute.CampaignCategory)
+            },
+            categoryOnClick = {
+                navigator.navigate(CampaignListScreenDestination(name = it))
             }
         )
     }
@@ -112,10 +123,33 @@ fun SectionCampaignAround(
 
 @Composable
 fun SectionDiscoverCampaign(
-    actionOnClick: () -> Unit = {}
+    actionOnClick: () -> Unit = {},
+    categoryOnClick: (category: String) -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp - 32.dp
+    val campaignCategoryList = listOf(
+        CampaignCategory(
+            id = 1,
+            name = "All Campaign",
+            image = R.drawable.dummy_komodo_island
+        ),
+        CampaignCategory(
+            id = 2,
+            name = "Ecotourism",
+            image = R.drawable.dummy_kuta_beach
+        ),
+        CampaignCategory(
+            id = 3,
+            name = "Religous",
+            image = R.drawable.dummy_borobudur
+        ),
+        CampaignCategory(
+            id = 4,
+            name = "Ethnic",
+            image = R.drawable.dummy_bromo
+        ),
+    )
 
     Column(
         modifier = Modifier
@@ -129,12 +163,14 @@ fun SectionDiscoverCampaign(
             actionOnClick = actionOnClick
         )
         LazyRow {
-            items(5) {
+            items(campaignCategoryList, key = { it.id }) {category ->
                 CategoryCard(
-                    modifier = Modifier.width(screenWidth / 3),
-                    image = R.drawable.dummy_komodo_island,
-                    contentDescription = "Komodo island",
-                    text = "All Campaign"
+                    modifier = Modifier
+                        .width(screenWidth / 3)
+                        .clickable { categoryOnClick(category.name) },
+                    image = category.image,
+                    contentDescription = category.name,
+                    text = category.name,
                 )
             }
         }
