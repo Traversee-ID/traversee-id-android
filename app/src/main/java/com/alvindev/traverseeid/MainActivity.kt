@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -67,7 +68,25 @@ class MainActivity : ComponentActivity() {
                                 val title =
                                     stringResource(navigationStringId)
                                 if (currentRoute in bottomBarRoutes) {
-                                    TopBarMainScreen(title = title)
+                                    if(currentRoute == ScreenRoute.Forum){
+                                        TopBarMainScreen(
+                                            title = title,
+                                            actions = {
+                                                IconButton(
+                                                    onClick = {
+                                                        navController.navigate(ScreenRoute.ForumPost)
+                                                    }
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.PostAdd,
+                                                        contentDescription = "Add Post"
+                                                    )
+                                                }
+                                            }
+                                        )
+                                    }else{
+                                        TopBarMainScreen(title = title)
+                                    }
                                 } else {
                                     TopBarCommonScreen(
                                         title = title,
@@ -192,7 +211,8 @@ private fun BottomBar(
 
 @Composable
 fun TopBarMainScreen(
-    title: String
+    title: String,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -201,6 +221,7 @@ fun TopBarMainScreen(
                 color = Color.White
             )
         },
+        actions = actions
     )
 }
 
