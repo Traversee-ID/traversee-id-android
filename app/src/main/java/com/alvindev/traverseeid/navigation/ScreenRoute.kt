@@ -25,6 +25,9 @@ object ScreenRoute {
 
     //profile feature
     const val Settings = "settings"
+    const val EditProfile = "settings/edit_profile"
+    const val FavoriteTourism = "settings/favorite_tourism"
+    const val Language = "settings/language"
 
     //auth feature
     const val Login = "login"

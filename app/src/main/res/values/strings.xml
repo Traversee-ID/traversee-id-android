@@ -24,4 +24,5 @@
     <string name="forum_post">Create Post</string>
     <string name="tourism_details">Tourism Details</string>
     <string name="tourism_place">Tourism Place</string>
+    <string name="favorite_tourism">Favorite Tourism</string>
 </resources>

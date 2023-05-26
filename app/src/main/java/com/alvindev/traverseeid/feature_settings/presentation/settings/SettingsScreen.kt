@@ -3,11 +3,18 @@ package com.alvindev.traverseeid.feature_settings.presentation.settings
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.RoomPreferences
+import androidx.compose.material.icons.outlined.Campaign
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.RoomPreferences
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,9 +26,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.alvindev.destinations.EditProfileScreenDestination
 import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.core.domain.entity.UserPreference
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
+import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.presentation.component.TraverseeOutlinedButton
+import com.alvindev.traverseeid.feature_settings.domain.entity.SettingsButtonInfo
+import com.alvindev.traverseeid.feature_settings.presentation.component.ProfileCard
+import com.alvindev.traverseeid.feature_settings.presentation.component.SettingsButton
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -35,48 +48,92 @@ fun SettingsScreen(
     navigator: DestinationsNavigator
 ) {
     val state = viewModel.state
+    val listItem = listOf(
+        SettingsButtonInfo(
+            title = "My Campaigns",
+            icon = Icons.Outlined.Campaign,
+            onClick = {
+                navigator.navigate(ScreenRoute.CampaignUser)
+            }
+        ),
+        SettingsButtonInfo(
+            title = "Favorite Tourism",
+            icon = Icons.Filled.FavoriteBorder,
+            onClick = {
+                navigator.navigate(ScreenRoute.FavoriteTourism)
+            }
+        ),
+        SettingsButtonInfo(
+            title = "My Preferences",
+            icon = Icons.Outlined.RoomPreferences,
+            onClick = {
+
+            }
+        ),
+        SettingsButtonInfo(
+            title = "Language",
+            icon = Icons.Outlined.Language,
+            onClick = {
+                navigator.navigate(ScreenRoute.Language)
+            }
+        ),
+    )
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        UserImage(
-            image = state.firebaseUser?.photoUrl,
-            onClick = {
-                viewModel.setShowDialog(true)
+        ProfileCard(
+            user = UserPreference(
+                name = state.firebaseUser?.displayName,
+                email = state.firebaseUser?.email,
+                avatarUrl = state.firebaseUser?.photoUrl,
+            ),
+            actionOnClick = {
+                navigator.navigate(
+                    EditProfileScreenDestination(
+                        name = state.firebaseUser?.displayName,
+                        email = state.firebaseUser?.email,
+                        avatarUrl = state.firebaseUser?.photoUrl,
+                    )
+                )
             }
         )
 
-        Text(
-            text = state.firebaseUser?.displayName ?: "",
-            style = MaterialTheme.typography.body1,
-            color = Color.Black,
-            fontWeight = FontWeight.SemiBold
+        Spacer(modifier = Modifier.height(16.dp))
+
+        listItem.forEach { item ->
+            SettingsButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                text = item.title,
+                icon = item.icon,
+                onClick = item.onClick,
+            )
+        }
+
+        TraverseeDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            thickness = 4.dp
         )
 
-        Text(
-            modifier = Modifier.padding(
-                top = state.firebaseUser?.displayName?.let { 4.dp }
-                    ?: 0.dp
-            ),
-            text = state.firebaseUser?.email ?: "",
-            style = MaterialTheme.typography.body2,
-            color = Color.Black,
+        SettingsButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+            text = "Privacy and Policy",
+            onClick = {},
         )
 
-        TraverseeButton(
-            modifier = Modifier.padding(top = 16.dp),
-            onClick = {
-            },
-            text = stringResource(R.string.edit_profile),
-            contentPadding = PaddingValues(12.dp),
-        )
-
-        Spacer(modifier = Modifier.weight(1.0f)) // fill height with spacer
         TraverseeOutlinedButton(
-            modifier = Modifier.padding(bottom = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
             onClick = {
                 viewModel.logout()
                 navigator.navigate(ScreenRoute.Login) {

@@ -8,6 +8,4 @@ import com.google.firebase.ktx.Firebase
 data class SettingsState(
     val firebaseUser: FirebaseUser? = Firebase.auth.currentUser,
     val isLogout: Boolean = false,
-    val selectedImagePicker: Uri? = null,
-    val isShowDialog: Boolean = false,
 )
