@@ -176,7 +176,9 @@ fun SectionDiscoverCampaign(
             actionText = "See All",
             actionOnClick = actionOnClick
         )
-        LazyRow {
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             items(campaignCategoryList, key = { it.id }) {category ->
                 TraverseeCategoryCard(
                     modifier = Modifier
