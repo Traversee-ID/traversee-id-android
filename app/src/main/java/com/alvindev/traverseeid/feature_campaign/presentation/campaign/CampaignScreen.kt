@@ -16,9 +16,9 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignCategory
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignCard
-import com.alvindev.traverseeid.feature_campaign.presentation.component.CategoryCard
+import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.MyCampaignCard
-import com.alvindev.traverseeid.feature_campaign.presentation.component.SectionTitle
+import com.alvindev.traverseeid.feature_campaign.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -78,7 +78,7 @@ fun SectionMyCampaign(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        SectionTitle(
+        TraverseeSectionTitle(
             title = "My Campaign",
             subtitle = "Submit your campaign now!",
             actionText = "See All",
@@ -110,7 +110,7 @@ fun SectionCampaignAround(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        SectionTitle(
+        TraverseeSectionTitle(
             title = "Campaigns Around You",
             subtitle = "Find a campaign in your area",
             actionText = "See All",
@@ -170,7 +170,7 @@ fun SectionDiscoverCampaign(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        SectionTitle(
+        TraverseeSectionTitle(
             title = "Discover Campaigns",
             subtitle = "Browse campaigns by category",
             actionText = "See All",
@@ -178,7 +178,7 @@ fun SectionDiscoverCampaign(
         )
         LazyRow {
             items(campaignCategoryList, key = { it.id }) {category ->
-                CategoryCard(
+                TraverseeCategoryCard(
                     modifier = Modifier
                         .width(screenWidth / 3)
                         .clickable { categoryOnClick(category.name) },

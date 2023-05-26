@@ -1,4 +1,4 @@
-package com.alvindev.traverseeid.feature_campaign.presentation.campaign_category
+package com.alvindev.traverseeid.feature_tourism.presentation.tourism_place
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,49 +11,50 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alvindev.destinations.CampaignListScreenDestination
+import com.alvindev.destinations.TourismListScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignCategory
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
+import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismPlace
 import com.ramcosta.composedestinations.annotation.Destination
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Destination(
-    route = ScreenRoute.CampaignCategory
+    route = ScreenRoute.TourismPlace
 )
 @Composable
-fun CampaignCategoryScreen(
+fun TourismPlaceScreen(
     navigator: DestinationsNavigator
 ) {
-    val campaignCategoryList = listOf(
-        CampaignCategory(
+    val tourismPlaces = listOf(
+        TourismPlace(
             id = 1,
-            name = "All Campaign",
+            name = "All Places",
             image = R.drawable.dummy_komodo_island
         ),
-        CampaignCategory(
+        TourismPlace(
             id = 2,
-            name = "Ecotourism",
+            name = "Marine",
             image = R.drawable.dummy_kuta_beach
         ),
-        CampaignCategory(
+        TourismPlace(
             id = 3,
             name = "Religous",
             image = R.drawable.dummy_borobudur
         ),
-        CampaignCategory(
+        TourismPlace(
             id = 4,
-            name = "Ethnic",
+            name = "Mountain",
             image = R.drawable.dummy_bromo
         ),
-        CampaignCategory(
+        TourismPlace(
             id = 5,
             name = "Culinary",
             image = R.drawable.dummy_kuta_beach
         ),
-        CampaignCategory(
+        TourismPlace(
             id = 6,
             name = "Historical",
             image = R.drawable.dummy_komodo_island
@@ -70,17 +71,17 @@ fun CampaignCategoryScreen(
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
         ) {
-            items(campaignCategoryList, key = { category -> category.id }) { category ->
+            items(tourismPlaces, key = { place -> place.id }) { place ->
                 TraverseeCategoryCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
                         .clickable {
-                            navigator.navigate(CampaignListScreenDestination(name = category.name))
+                            navigator.navigate(TourismListScreenDestination(name = place.name))
                         },
-                    image = category.image,
-                    contentDescription = category.name,
-                    text = category.name,
+                    image = place.image,
+                    contentDescription = place.name,
+                    text = place.name,
                     isFullSize = true,
                 )
             }
@@ -90,9 +91,9 @@ fun CampaignCategoryScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun CampaignCategoryScreenPreview() {
+fun TourismPlaceScreenPreview() {
     TraverseeTheme() {
-        CampaignCategoryScreen(
+        TourismPlaceScreen(
             navigator = EmptyDestinationsNavigator
         )
     }

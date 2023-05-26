@@ -1,10 +1,7 @@
-package com.alvindev.traverseeid.feature_campaign.presentation.component
+package com.alvindev.traverseeid.core.presentation.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,13 +18,12 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 
 @Composable
-fun CategoryCard(
+fun TraverseeCategoryCard(
     modifier: Modifier = Modifier,
     image: Int,
     contentDescription: String,
     text: String,
     isFullSize: Boolean = false,
-    size: Dp = 100.dp
 ){
     Column(
         modifier = modifier,
@@ -35,7 +31,7 @@ fun CategoryCard(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            modifier = Modifier.size(size).clip(Shapes.large),
+            modifier = Modifier.fillMaxWidth().aspectRatio(1f).clip(Shapes.large),
             painter = painterResource(id = image),
             contentDescription = contentDescription,
             contentScale = ContentScale.Crop,
@@ -53,7 +49,7 @@ fun CategoryCard(
 @Composable
 fun CategoryCardPreview(){
     TraverseeTheme() {
-        CategoryCard(
+        TraverseeCategoryCard(
             image = R.drawable.dummy_komodo_island,
             contentDescription = "Komodo island",
             text = "All Campaign"
