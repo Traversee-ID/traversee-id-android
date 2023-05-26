@@ -19,7 +19,10 @@ object NavigationMapper {
             ScreenRoute.TourismPlace -> R.string.tourism_place
 
             ScreenRoute.Sentiment -> R.string.menu_sentiment
+
             ScreenRoute.Settings -> R.string.menu_settings
+            ScreenRoute.EditProfile -> R.string.edit_profile
+            ScreenRoute.FavoriteTourism -> R.string.favorite_tourism
             else -> -1
         }
     }

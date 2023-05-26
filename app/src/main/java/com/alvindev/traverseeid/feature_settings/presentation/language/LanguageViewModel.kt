@@ -1,26 +1,18 @@
-package com.alvindev.traverseeid.feature_settings.presentation.settings
+package com.alvindev.traverseeid.feature_settings.presentation.language
 
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.alvindev.traverseeid.feature_settings.domain.use_case.UseCasesSettings
+import com.alvindev.traverseeid.feature_settings.presentation.edit_profile.EditProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+class LanguageViewModel @Inject constructor(
     private val useCases: UseCasesSettings,
-) : ViewModel() {
-    var state by mutableStateOf(SettingsState())
+): ViewModel(){
+    var state by mutableStateOf(LanguageState())
         private set
-
-    fun logout() {
-        useCases.logout()
-        state.copy(
-            firebaseUser = null,
-            isLogout = true,
-        )
-    }
 }
