@@ -65,23 +65,20 @@ class LoginViewModel @Inject constructor(
     fun login() = viewModelScope.launch {
         //reset field error
         state = state.copy(error = null)
+        val email = state.email.trim()
+        val password = state.password.trim()
 
-        if(state.email.isEmpty() || state.password.isEmpty()) {
+        if(email.isEmpty() || password.isEmpty()) {
             state = state.copy(error = "Email and password must not be empty")
             return@launch
         }
 
-        if(android.util.Patterns.EMAIL_ADDRESS.matcher(state.email).matches().not()) {
+        if(android.util.Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches().not()) {
             state = state.copy(error = "Email must be valid")
             return@launch
         }
 
-        if(state.password.length < 6) {
-            state = state.copy(error = "Password must be at least 6 characters")
-            return@launch
-        }
-
-        useCases.loginWithEmailPassword(state.email, state.password).asFlow().collect { result ->
+        useCases.loginWithEmailPassword(email, password).asFlow().collect { result ->
             state = when (result) {
                 is ResultState.Loading -> {
                     state.copy(
