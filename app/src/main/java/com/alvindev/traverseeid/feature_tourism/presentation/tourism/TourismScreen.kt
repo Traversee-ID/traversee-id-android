@@ -1,17 +1,25 @@
 package com.alvindev.traverseeid.feature_tourism.presentation.tourism
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alvindev.destinations.TourismListScreenDestination
+import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignCategory
+import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
+import com.alvindev.traverseeid.feature_campaign.presentation.component.TraverseeSectionTitle
+import com.alvindev.traverseeid.feature_tourism.presentation.component.TourismCard
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Destination(
     route = ScreenRoute.Tourism,
@@ -20,13 +28,114 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun TourismScreen(
     navigator: DestinationsNavigator
 ) {
+    LazyColumn {
+        item {
+            SectionDiscoverTourism(
+                actionOnClick = {
+                    navigator.navigate(ScreenRoute.TourismPlace)
+                },
+                placeOnClick = {
+                    navigator.navigate(TourismListScreenDestination(name = it))
+                }
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        item{
+            TraverseeSectionTitle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                title = "For You",
+                subtitle = "Tour recommendation based on your preferences",
+            )
+        }
+        items(listOf(0,1,2,3).chunked(2)){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ){
+                for (i in 0..1) {
+                    TourismCard(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(bottom = 16.dp)
+                            .clickable {
+                                navigator.navigate(ScreenRoute.TourismDetails)
+                            },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SectionDiscoverTourism(
+    actionOnClick: () -> Unit = {},
+    placeOnClick: (category: String) -> Unit = {}
+) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp - 32.dp
+    val campaignCategoryList = listOf(
+        CampaignCategory(
+            id = 1,
+            name = "All Place",
+            image = R.drawable.dummy_komodo_island
+        ),
+        CampaignCategory(
+            id = 2,
+            name = "Mountain",
+            image = R.drawable.dummy_kuta_beach
+        ),
+        CampaignCategory(
+            id = 3,
+            name = "Marine",
+            image = R.drawable.dummy_borobudur
+        ),
+        CampaignCategory(
+            id = 4,
+            name = "Culinary",
+            image = R.drawable.dummy_bromo
+        ),
+    )
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(text = "Tourism Screen")
+        TraverseeSectionTitle(
+            title = "Discover Tourism Place",
+            subtitle = "Browse tourism place by category",
+            actionText = "See All",
+            actionOnClick = actionOnClick
+        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(campaignCategoryList, key = { it.id }) { category ->
+                TraverseeCategoryCard(
+                    modifier = Modifier
+                        .width(screenWidth / 3)
+                        .clickable { placeOnClick(category.name) },
+                    image = category.image,
+                    contentDescription = category.name,
+                    text = category.name,
+                )
+            }
+        }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SectionDiscoverCampaignPreview() {
+    TourismScreen(
+        navigator = EmptyDestinationsNavigator
+    )
 }

@@ -100,6 +100,7 @@ class MainActivity : ComponentActivity() {
                                     title = routeName,
                                     onBackClick = {
                                         navController.popBackStack()
+                                        routeName = ""
                                     }
                                 )
                             }
@@ -113,6 +114,7 @@ class MainActivity : ComponentActivity() {
                                 if (!canPop) {
                                     finish()
                                 }
+                                routeName = ""
                             }
                         }
 

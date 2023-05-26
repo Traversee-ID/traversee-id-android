@@ -16,6 +16,9 @@ object ScreenRoute {
 
     //tourism feature
     const val Tourism = "tourism"
+    const val TourismDetails = "tourism/details"
+    const val TourismPlace = "tourism/category"
+    const val TourismList = "tourism/list"
 
     //sentiment feature
     const val Sentiment = "sentiment"

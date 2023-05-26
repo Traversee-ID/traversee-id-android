@@ -16,7 +16,7 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignWinnerItem
-import com.alvindev.traverseeid.feature_campaign.presentation.component.SectionTitle
+import com.alvindev.traverseeid.feature_campaign.presentation.component.TraverseeSectionTitle
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination(
@@ -50,7 +50,7 @@ fun CampaignWinners(){
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        SectionTitle(
+        TraverseeSectionTitle(
             title = "Campaign Winners"
         )
         Column(
@@ -89,7 +89,7 @@ fun CampaignParticipants(){
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        SectionTitle(
+        TraverseeSectionTitle(
             title = "Campaign Winners"
         )
         Column(

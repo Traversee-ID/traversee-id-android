@@ -22,4 +22,6 @@
     <string name="my_campaigns">My Campaigns</string>
     <string name="forum_details">Post</string>
     <string name="forum_post">Create Post</string>
+    <string name="tourism_details">Tourism Details</string>
+    <string name="tourism_place">Tourism Place</string>
 </resources>

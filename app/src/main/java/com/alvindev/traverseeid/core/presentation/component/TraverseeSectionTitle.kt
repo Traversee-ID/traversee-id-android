@@ -3,9 +3,7 @@ package com.alvindev.traverseeid.feature_campaign.presentation.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -14,7 +12,7 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 
 @Composable
-fun SectionTitle(
+fun TraverseeSectionTitle(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String? = null,
@@ -61,7 +59,7 @@ fun SectionTitle(
 @Composable
 fun SectionTitlePreview() {
     TraverseeTheme {
-        SectionTitle(
+        TraverseeSectionTitle(
             title = "Discover Campaigns",
             actionText = "See All",
             actionOnClick = {}

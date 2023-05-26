@@ -13,7 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
@@ -41,7 +40,7 @@ import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignDescriptionCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignWinnerItem
-import com.alvindev.traverseeid.feature_campaign.presentation.component.SectionTitle
+import com.alvindev.traverseeid.feature_campaign.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -174,7 +173,7 @@ fun AboutCampaign() {
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        SectionTitle(title = "About Campaign")
+        TraverseeSectionTitle(title = "About Campaign")
         Text(
             text = "Kota Lama Semarang (Jawa: ꦑꦶꦛ\u200Bꦭꦩ\u200Bꦯꦼꦩꦫꦁ, translit. Kitha Lama Semarang, bahasa Belanda: Semarang Oude Stad) adalah suatu kawasan di Semarang yang menjadi pusat perdagangan pada abad 19–20 . Pada masa itu, untuk mengamankan warga dan wilayahnya, kawasan itu dibangun benteng, yang dinamai benteng Vijfhoek. Untuk mempercepat jalur perhubungan antar ketiga pintu gerbang di benteng itu maka dibuat jalan-jalan perhubungan, dengan jalan utamanya dinamai Heerenstraat. Saat ini bernama Jl. Letjen Soeprapto. Salah satu lokasi pintu benteng yang ada sampai saat ini adalah Jembatan Berok, yang disebut De Zuider Por. Kata 'Berok' sendiri merupakan hasil pelafalan masyarakat Pribumi yang kesulitan melafalkan kata 'Burg' dalam bahasa Belanda.",
             style = Typography.body2,
@@ -194,7 +193,7 @@ fun CampaignTermsAndConditions() {
     Column(
         modifier = Modifier.padding(horizontal = 16.dp),
     ) {
-        SectionTitle(
+        TraverseeSectionTitle(
             modifier = Modifier.padding(bottom = 8.dp),
             title = "Terms and Conditions"
         )
@@ -215,7 +214,7 @@ fun CampaignMissions() {
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        SectionTitle(
+        TraverseeSectionTitle(
             title = "Missions"
         )
         Text(
@@ -235,7 +234,7 @@ fun CampaignSubmission(){
                 .padding(vertical = 16.dp),
             thickness = 4.dp
         )
-        SectionTitle(
+        TraverseeSectionTitle(
             modifier= Modifier.padding(start=16.dp, end=16.dp, bottom = 8.dp),
             title = "Submission"
         )
@@ -268,7 +267,7 @@ fun CampaignWinners(
                 .padding(vertical = 16.dp),
             thickness = 4.dp
         )
-        SectionTitle(
+        TraverseeSectionTitle(
             modifier = Modifier.padding(horizontal = 16.dp),
             title = "Winners Announcement"
         )

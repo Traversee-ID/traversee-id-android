@@ -15,6 +15,9 @@ object NavigationMapper {
             ScreenRoute.ForumPost -> R.string.forum_post
 
             ScreenRoute.Tourism -> R.string.menu_tourism
+            ScreenRoute.TourismDetails -> R.string.tourism_details
+            ScreenRoute.TourismPlace -> R.string.tourism_place
+
             ScreenRoute.Sentiment -> R.string.menu_sentiment
             ScreenRoute.Settings -> R.string.menu_settings
             else -> -1
