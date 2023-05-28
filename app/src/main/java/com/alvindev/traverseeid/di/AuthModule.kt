@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.di
 
+import com.alvindev.traverseeid.core.data.local.UserDataStoreRepositoryImpl
 import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
 import com.alvindev.traverseeid.feature_auth.data.repository.AuthRepositoryImpl
 import com.alvindev.traverseeid.feature_auth.domain.repository.AuthRepository
@@ -15,8 +16,8 @@ import javax.inject.Singleton
 class AuthModule {
     @Singleton
     @Provides
-    fun provideAuthRepository(authenticator: BaseAuthRepository): AuthRepository {
-        return AuthRepositoryImpl(authenticator)
+    fun provideAuthRepository(authenticator: BaseAuthRepository, dataStore: UserDataStoreRepositoryImpl): AuthRepository {
+        return AuthRepositoryImpl(authenticator, dataStore)
     }
 
     @Singleton

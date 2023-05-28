@@ -40,6 +40,14 @@ class FirebaseAuthRepository : BaseAuthRepository {
         return Firebase.auth.currentUser
     }
 
+    override suspend fun getUserToken(): String? {
+        try {
+            return Firebase.auth.currentUser?.getIdToken(true)?.await()?.token
+        } catch (e: Exception) {
+            throw Exception(e.message.toString())
+        }
+    }
+
     override suspend fun sendPasswordReset(email: String) : Boolean {
         try {
             Firebase.auth.sendPasswordResetEmail(email).await()

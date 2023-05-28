@@ -8,13 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvindev.traverseeid.TraverseeApplication
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
+import com.alvindev.traverseeid.core.util.LocaleUtil
 import com.alvindev.traverseeid.feature_auth.presentation.component.EmailForm
 import com.alvindev.traverseeid.feature_auth.presentation.component.ErrorMessage
 import com.alvindev.traverseeid.feature_auth.presentation.component.GoogleSignInButton
@@ -56,6 +59,7 @@ fun LoginScreen(
     }
 
     if (state.firebaseUser != null) {
+        LocaleUtil.setLocale(LocalContext.current, TraverseeApplication.LANGUAGE)
         navigator.navigate(ScreenRoute.Campaign)
     } else if (state.isLoading.not()) {
         Column(

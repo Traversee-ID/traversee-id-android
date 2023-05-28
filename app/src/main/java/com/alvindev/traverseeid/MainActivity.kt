@@ -1,5 +1,7 @@
 package com.alvindev.traverseeid
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -23,6 +25,7 @@ import com.alvindev.NavGraphs
 import com.alvindev.appCurrentDestinationAsState
 import com.alvindev.startAppDestination
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
+import com.alvindev.traverseeid.core.util.LocaleUtil
 import com.alvindev.traverseeid.navigation.NavigationItem
 import com.alvindev.traverseeid.navigation.NavigationMapper
 import com.alvindev.traverseeid.navigation.ScreenRoute

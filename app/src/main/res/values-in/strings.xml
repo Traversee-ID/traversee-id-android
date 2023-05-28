@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Traversee ID</string>
+    <string name="menu_campaign">Kampanye</string>
+    <string name="menu_settings">Profil</string>
+    <string name="sign_in_with_google">Masuk dengan Google</string>
+    <string name="web_client_id">123123</string>
+    <string name="register_with_google">Registrasi dengan Google</string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="logout">Keluar</string>
+    <string name="user_avatar">User avatar</string>
+    <string name="edit_avatar">Edit avatar</string>
+    <string name="change_picture">Ubah Picture</string>
+    <string name="look_picture">Lihat Foto</string>
+    <string name="back">Kembali</string>
+    <string name="detail_image">Detail Gambar</string>
+    <string name="profile_picture">Foto Profil</string>
+    <string name="menu_forum">Forum</string>
+    <string name="menu_tourism">Pariwisata</string>
+    <string name="menu_sentiment">Sentimen</string>
+    <string name="campaign_category">Kategori Kampanye</string>
+    <string name="campaign_details">Detail Kampanye</string>
+    <string name="my_campaigns">Kampanyeku</string>
+    <string name="forum_details">Post</string>
+    <string name="forum_post">Buat Post</string>
+    <string name="tourism_details">Detail Pariwisata</string>
+    <string name="tourism_place">Tempat Pariwisata</string>
+    <string name="favorite_tourism">Pariwisata Favorit</string>
+</resources>
