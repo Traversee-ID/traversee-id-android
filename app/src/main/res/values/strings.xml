@@ -25,4 +25,7 @@
     <string name="tourism_details">Tourism Details</string>
     <string name="tourism_place">Tourism Place</string>
     <string name="favorite_tourism">Favorite Tourism</string>
+    <string name="add_photo">add photo</string>
+    <string name="take_picture">Take a Picture</string>
+    <string name="pick_from_gallery">Pick from Gallery</string>
 </resources>

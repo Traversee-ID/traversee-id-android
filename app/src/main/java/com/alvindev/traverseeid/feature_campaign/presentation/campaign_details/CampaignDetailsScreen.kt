@@ -13,6 +13,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
@@ -33,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
+import com.alvindev.traverseeid.core.presentation.component.TraverseeOutlinedButton
 import com.alvindev.traverseeid.core.presentation.component.TraverseeTextField
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
@@ -68,7 +72,7 @@ fun CampaignDetailsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 96.dp),
         ) {
-            Box(modifier = Modifier.aspectRatio(1f)){
+            Box(modifier = Modifier.aspectRatio(1f)) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
                     painter = painterResource(id = R.drawable.dummy_borobudur),
@@ -77,7 +81,7 @@ fun CampaignDetailsScreen(
                     contentScale = ContentScale.Crop
                 )
 
-                if(campaignUserCondition >= CampaignParticipantConstant.REGISTERED_AND_SUBMITTED) {
+                if (campaignUserCondition >= CampaignParticipantConstant.REGISTERED_AND_SUBMITTED) {
                     Icon(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
@@ -110,7 +114,7 @@ fun CampaignDetailsScreen(
                 participants = 10
             )
             CampaignWinners(
-                onClickAllParticipants ={
+                onClickAllParticipants = {
                     navigator.navigate(ScreenRoute.CampaignParticipants)
                 }
             )
@@ -135,18 +139,21 @@ fun CampaignDetailsScreen(
                 thickness = 4.dp
             )
             CampaignMissions()
-            if(campaignUserCondition > CampaignParticipantConstant.NOT_REGISTERED) {
+            if (campaignUserCondition > CampaignParticipantConstant.NOT_REGISTERED) {
                 CampaignSubmission()
             }
         }
 
-        TraverseeButton(
+        Footer(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+                .background(color = Color.White)
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp, start = 16.dp, end = 16.dp),
-            text = textButton,
-            onClick = {
+                .padding(16.dp),
+            campaignUserCondition = campaignUserCondition,
+            textButton = textButton,
+            onClickButton = {
                 when (campaignUserCondition) {
                     CampaignParticipantConstant.NOT_REGISTERED -> {
                         campaignUserCondition = CampaignParticipantConstant.REGISTERED
@@ -162,7 +169,11 @@ fun CampaignDetailsScreen(
                     }
                 }
             },
-            enabled = campaignUserCondition < CampaignParticipantConstant.ENDED
+            onClickShare = {
+                navigator.navigate(ScreenRoute.ForumPost)
+            },
+            onClickFavorite = {
+            }
         )
     }
 }
@@ -226,8 +237,8 @@ fun CampaignMissions() {
 }
 
 @Composable
-fun CampaignSubmission(){
-    Column{
+fun CampaignSubmission() {
+    Column {
         TraverseeDivider(
             modifier = Modifier
                 .fillMaxWidth()
@@ -235,7 +246,7 @@ fun CampaignSubmission(){
             thickness = 4.dp
         )
         TraverseeSectionTitle(
-            modifier= Modifier.padding(start=16.dp, end=16.dp, bottom = 8.dp),
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             title = "Submission"
         )
         TraverseeTextField(
@@ -249,7 +260,10 @@ fun CampaignSubmission(){
                 Text("https://instagram.com/...")
             },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
         )
     }
 }
@@ -257,7 +271,7 @@ fun CampaignSubmission(){
 @Composable
 fun CampaignWinners(
     onClickAllParticipants: () -> Unit,
-){
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -272,7 +286,7 @@ fun CampaignWinners(
             title = "Winners Announcement"
         )
         Text(
-            modifier = Modifier.padding(start=16.dp, end=16.dp, bottom = 8.dp),
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             text = "Congratulations for the winner of this campaign, we’ve emailed you and please confirm your reward before 20 June 2023!",
             style = Typography.body2,
             textAlign = TextAlign.Justify,
@@ -316,6 +330,49 @@ fun CampaignWinners(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun Footer(
+    modifier: Modifier = Modifier,
+    campaignUserCondition: Int,
+    textButton: String,
+    onClickButton: () -> Unit,
+    onClickShare: () -> Unit,
+    onClickFavorite: () -> Unit,
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ){
+        TraverseeOutlinedButton(
+            modifier = Modifier.width(IntrinsicSize.Min).height(IntrinsicSize.Max),
+            contentPadding = PaddingValues(4.dp),
+            onClick = onClickShare,
+        ){
+            Icon(
+                imageVector = Icons.Outlined.Share,
+                contentDescription = "Share",
+            )
+        }
+        TraverseeOutlinedButton(
+            modifier = Modifier.width(IntrinsicSize.Min).height(IntrinsicSize.Max),
+            contentPadding = PaddingValues(4.dp),
+            onClick = onClickFavorite,
+        ){
+            Icon(
+                imageVector = Icons.Outlined.FavoriteBorder,
+                contentDescription = "Favorite",
+            )
+        }
+        TraverseeButton(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical= 16.dp),
+            text = textButton,
+            onClick = onClickButton,
+            enabled = campaignUserCondition < CampaignParticipantConstant.ENDED
+        )
     }
 }
 

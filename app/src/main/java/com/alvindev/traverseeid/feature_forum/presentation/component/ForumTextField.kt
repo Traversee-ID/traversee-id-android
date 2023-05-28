@@ -21,55 +21,33 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 
 @Composable
 fun ForumTextField(
-    modifier: Modifier = Modifier,
-    disabled: Boolean = true,
-    onSubmit: () -> Unit = {},
-    actionText: String = "",
     label: String = "",
     placeholder: String = "",
-){
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        TraverseeTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 120.dp),
-            label = {
-                Text(
-                    modifier = Modifier.align(Alignment.Start),
-                    text = label,
-                )
-            },
-            placeholder = {
-                Text(placeholder)
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
-            singleLine = false,
-        )
-
-        TraverseeButton(
-            modifier = Modifier
-                .fillMaxWidth(),
-            text = actionText,
-            onClick = onSubmit,
-            enabled = disabled
-        )
-    }
+) {
+    TraverseeTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 120.dp),
+        label = {
+            Text(
+                text = label,
+            )
+        },
+        placeholder = {
+            Text(placeholder)
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done
+        ),
+        singleLine = false,
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ForumCommentPreview(){
+fun ForumCommentPreview() {
     TraverseeTheme {
-        ForumTextField(
-            modifier = Modifier
-                .shadow(4.dp)
-                .clip(Shapes.large)
-                .fillMaxWidth()
-                .background(color = Color.White, shape = Shapes.large)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        )
+        ForumTextField()
     }
 }

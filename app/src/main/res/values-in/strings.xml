@@ -26,4 +26,7 @@
     <string name="tourism_details">Detail Pariwisata</string>
     <string name="tourism_place">Tempat Pariwisata</string>
     <string name="favorite_tourism">Pariwisata Favorit</string>
+    <string name="add_photo">tambah foto</string>
+    <string name="take_picture">Ambil Gambar</string>
+    <string name="pick_from_gallery">Pilih dari Galeri</string>
 </resources>

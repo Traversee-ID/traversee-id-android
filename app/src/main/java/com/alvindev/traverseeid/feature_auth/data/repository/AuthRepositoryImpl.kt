@@ -87,10 +87,10 @@ class AuthRepositoryImpl @Inject constructor(
             token?.let { ApiConfig.TOKEN = it }
 
             //get user language preference
-//            val userDataStore = dataStore.getUser()
-//            userDataStore.let {
-//                TraverseeApplication.LANGUAGE = it.language ?: Locale.getDefault().language
-//            }
+            val userDataStore = dataStore.getUser()
+            userDataStore.let {
+                TraverseeApplication.LANGUAGE = it.language ?: Locale.getDefault().language
+            }
 
             emit(ResultState.Success(user))
         } catch (e: Exception) {
