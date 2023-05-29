@@ -2,6 +2,10 @@
 <resources>
 
     <style name="Theme.TraverseeID" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">@color/traversee_primary_variant</item>
+    </style>
+
+    <style name="SplashScreenTheme" parent="Theme.TraverseeID">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
 </resources>

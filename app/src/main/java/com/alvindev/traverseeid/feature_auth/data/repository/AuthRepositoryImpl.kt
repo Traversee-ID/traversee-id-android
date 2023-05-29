@@ -56,6 +56,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
 
     override suspend fun registerWithEmailPassword(
+        name: String,
         email: String,
         password: String
     ): LiveData<ResultState<User?>> =
@@ -63,6 +64,9 @@ class AuthRepositoryImpl @Inject constructor(
             try {
                 emit(ResultState.Loading)
                 val firebaseUser = authenticator.registerWithEmailPassword(email, password)
+                firebaseUser?.let {
+                    authenticator.updateProfile(name, null)
+                }
                 val user = firebaseUser?.let { firebaseUserToUser(it) }
                 emit(ResultState.Success(user))
             } catch (e: Exception) {

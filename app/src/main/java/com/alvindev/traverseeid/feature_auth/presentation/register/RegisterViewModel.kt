@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.core.util.ResourcesProvider
 import com.alvindev.traverseeid.feature_auth.domain.use_case.UseCasesAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,10 +16,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val useCases: UseCasesAuth
+    private val useCases: UseCasesAuth,
+    private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
     var state by mutableStateOf(RegisterState())
         private set
+
     init {
         checkUser()
     }
@@ -50,6 +54,10 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun onNameChange(name: String) {
+        state = state.copy(name = name)
+    }
+
     fun onEmailChange(email: String) {
         state = state.copy(email = email)
     }
@@ -74,22 +82,22 @@ class RegisterViewModel @Inject constructor(
         //reset field error
         state = state.copy(error = null)
 
-        if(state.email.isEmpty() || state.password.isEmpty()) {
-            state = state.copy(error = "Email and password must not be empty")
+        if (state.email.isEmpty() || state.password.isEmpty() || state.name.isEmpty()) {
+            state = state.copy(error = resourcesProvider.getString(R.string.error_empty_field))
             return@launch
         }
 
-        if(android.util.Patterns.EMAIL_ADDRESS.matcher(state.email).matches().not()) {
-            state = state.copy(error = "Email must be valid")
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(state.email).matches().not()) {
+            state = state.copy(error = resourcesProvider.getString(R.string.error_invalid_email))
             return@launch
         }
 
-        if(state.password.length < 6) {
-            state = state.copy(error = "Password must be at least 6 characters")
+        if (state.password.length < 6) {
+            state = state.copy(error = resourcesProvider.getString(R.string.error_invalid_password))
             return@launch
         }
 
-        useCases.registerWithEmailPassword(state.email, state.password).asFlow().collect { result ->
+        useCases.registerWithEmailPassword(state.name, state.email, state.password).asFlow().collect { result ->
             state = when (result) {
                 is ResultState.Loading -> {
                     state.copy(
@@ -144,7 +152,7 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun setErrorMessage(message: String) {
-        state = state.copy(error = message)
+    fun setErrorMessage(message: Int) {
+        state = state.copy(error = resourcesProvider.getString(message))
     }
 }

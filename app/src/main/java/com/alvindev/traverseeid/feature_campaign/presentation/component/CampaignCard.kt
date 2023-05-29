@@ -72,7 +72,7 @@ fun CampaignCard(
                     Text(
                         text = title,
                         style = Typography.subtitle2,
-                        color = MaterialTheme.colors.primaryVariant,
+                        color = MaterialTheme.colors.secondaryVariant,
                     )
                     TraverseeRowIcon(
                         icon = Icons.Outlined.Place,

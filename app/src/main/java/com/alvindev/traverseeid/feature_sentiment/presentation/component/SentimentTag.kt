@@ -29,7 +29,7 @@ fun SentimentTag(
         Text(
             text =text ,
             style = Typography.caption,
-            color = Black,
+            color = TraverseeBlack,
             fontWeight = FontWeight.W500
         )
     }

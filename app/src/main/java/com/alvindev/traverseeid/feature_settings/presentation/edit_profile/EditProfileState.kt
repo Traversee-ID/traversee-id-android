@@ -8,4 +8,6 @@ data class EditProfileState(
     val selectedImagePicker: Uri? = null,
     val isShowDialog: Boolean = false,
     val isSubmitting: Boolean = false,
+    val isSuccess: Boolean = false,
+    val error : String = "",
 )

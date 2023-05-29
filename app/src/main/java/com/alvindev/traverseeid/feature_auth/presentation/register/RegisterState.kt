@@ -6,6 +6,7 @@ data class RegisterState(
     val firebaseUser: User? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
+    val name: String = "",
     val email: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false,

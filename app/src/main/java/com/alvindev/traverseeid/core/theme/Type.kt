@@ -61,7 +61,7 @@ val Typography = Typography(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        color = Black600,
+        color = TraverseeBlack600,
         letterSpacing = 0.4.sp,
         lineHeight = 16.sp
     )

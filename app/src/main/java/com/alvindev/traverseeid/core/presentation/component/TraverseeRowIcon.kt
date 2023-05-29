@@ -13,9 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alvindev.traverseeid.core.theme.Black
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.core.theme.TraverseeBlack
 
 @Composable
 fun TraverseeRowIcon(
@@ -24,9 +23,9 @@ fun TraverseeRowIcon(
     drawable: Int? = null,
     iconSize: Dp = 24.dp,
     iconPaddingEnd: Dp = 4.dp,
-    iconTintColor: Color = MaterialTheme.colors.primary,
+    iconTintColor: Color = MaterialTheme.colors.secondary,
     text: String,
-    textColor: Color = Black,
+    textColor: Color = TraverseeBlack,
     textStyle: TextStyle = Typography.caption,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
 ) {

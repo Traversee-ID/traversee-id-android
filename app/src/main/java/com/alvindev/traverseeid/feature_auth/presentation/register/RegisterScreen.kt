@@ -2,15 +2,18 @@ package com.alvindev.moneysaver.feature_auth.screen.register
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,7 +23,7 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
-import com.alvindev.traverseeid.feature_auth.presentation.component.EmailForm
+import com.alvindev.traverseeid.feature_auth.presentation.component.AuthFormField
 import com.alvindev.traverseeid.feature_auth.presentation.component.GoogleSignInButton
 import com.alvindev.traverseeid.feature_auth.presentation.component.PasswordForm
 import com.alvindev.traverseeid.feature_auth.presentation.register.RegisterViewModel
@@ -49,11 +52,11 @@ fun RegisterScreen(
             if (account != null){
                 viewModel.loginWithGoogle(account.idToken!!)
             }else{
-                viewModel.setErrorMessage("Register failed! please try again")
+                viewModel.setErrorMessage(R.string.register_failed)
             }
         } catch (e: ApiException){
             Log.e("RegisterScreen", "signInResult:failed code=${e.statusCode}")
-            viewModel.setErrorMessage("Register failed! please try again")
+            viewModel.setErrorMessage(R.string.register_failed)
         }
     }
 
@@ -67,15 +70,31 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo),
+                contentDescription = "Traversee Logo",
+                modifier = Modifier.size(100.dp)
+            )
             Text(
-                text = "Register",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold
+                modifier = Modifier.padding(top = 8.dp),
+                text = stringResource(id = R.string.create_account),
+                style = MaterialTheme.typography.h1,
             )
             state.error?.let {
                 ErrorMessage(text = it)
             }
-            EmailForm(
+            AuthFormField(
+                value = state.name,
+                onValueChange = viewModel::onNameChange,
+                label= stringResource(id = R.string.name),
+                placeholder= stringResource(id = R.string.name),
+                imageVector = Icons.Outlined.Person,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+            )
+            AuthFormField(
                 value = state.email,
                 onValueChange = viewModel::onEmailChange,
             )
@@ -84,7 +103,7 @@ fun RegisterScreen(
                 onValueChange = viewModel::onPasswordChange,
                 isPasswordVisible = state.isPasswordVisible,
                 onPasswordVisibilityChange = viewModel::onPasswordVisibilityChange,
-                labelText = "Password",
+                labelText = stringResource(id = R.string.password),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next
@@ -95,14 +114,18 @@ fun RegisterScreen(
                 onValueChange = viewModel::onPasswordConfirmationChange,
                 isPasswordVisible = state.isPasswordConfirmationVisible,
                 onPasswordVisibilityChange = viewModel::onPasswordConfirmationVisibilityChange,
-                labelText = "Password Confirmation",
+                labelText = stringResource(id = R.string.password_confirmation),
             )
             Spacer(modifier = Modifier.height(16.dp))
             TraverseeButton(
                 onClick = viewModel::register,
                 enabled = state.isSubmitting.not(),
                 text = state.isSubmitting.not().let {
-                    if (it) "Register" else "Loading..."
+                    if (it) {
+                        stringResource(id = R.string.register)
+                    } else {
+                        stringResource(id = R.string.registering)
+                    }
                 }
             )
             TraverseeDivider(
@@ -122,9 +145,9 @@ fun RegisterScreen(
                 }
             ) {
                 Text(
-                    text = "Already have an account? Login",
+                    text = stringResource(id = R.string.already_have_an_account),
                     style = MaterialTheme.typography.body2,
-                    color = Color.Blue
+                    color = MaterialTheme.colors.primaryVariant
                 )
             }
         }

@@ -9,7 +9,7 @@ interface AuthRepository {
 
     suspend fun loginWithGoogle(idToken: String): LiveData<ResultState<User?>>
 
-    suspend fun registerWithEmailPassword(email: String, password: String): LiveData<ResultState<User?>>
+    suspend fun registerWithEmailPassword(name: String, email: String, password: String): LiveData<ResultState<User?>>
 
     fun getCurrentUser(): LiveData<ResultState<User?>>
 

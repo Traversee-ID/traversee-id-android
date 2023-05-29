@@ -59,31 +59,24 @@ fun CampaignCategoryScreen(
             image = R.drawable.dummy_komodo_island
         ),
     )
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp - 32.dp
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(16.dp),
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-        ) {
-            items(campaignCategoryList, key = { category -> category.id }) { category ->
-                TraverseeCategoryCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            navigator.navigate(CampaignListScreenDestination(name = category.name))
-                        },
-                    image = category.image,
-                    contentDescription = category.name,
-                    text = category.name,
-                    isFullSize = true,
-                )
-            }
+        items(campaignCategoryList, key = { category -> category.id }) { category ->
+            TraverseeCategoryCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .clickable {
+                        navigator.navigate(CampaignListScreenDestination(name = category.name))
+                    },
+                image = category.image,
+                contentDescription = category.name,
+                text = category.name,
+                isFullSize = true,
+            )
         }
     }
 }

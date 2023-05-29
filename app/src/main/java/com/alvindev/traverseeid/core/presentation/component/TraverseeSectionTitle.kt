@@ -1,13 +1,13 @@
-package com.alvindev.traverseeid.feature_campaign.presentation.component
+package com.alvindev.traverseeid.core.presentation.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alvindev.traverseeid.core.theme.Purple500
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 
@@ -49,7 +49,7 @@ fun TraverseeSectionTitle(
                     modifier = Modifier.clickable { actionOnClick() },
                     text = actionText.uppercase(),
                     style = Typography.button,
-                    color = Purple500,
+                    color = MaterialTheme.colors.primaryVariant,
                 )
         }
     }

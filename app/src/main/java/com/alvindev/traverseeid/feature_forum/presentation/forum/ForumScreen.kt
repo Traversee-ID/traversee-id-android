@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
@@ -16,6 +17,8 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumPostItem
 import com.alvindev.traverseeid.navigation.ScreenRoute
+import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.core.theme.TraverseeOrange
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
@@ -37,9 +40,9 @@ fun ForumScreen(
             TraverseeRowIcon(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 icon = Icons.Default.Campaign,
-                text = "Announcement",
+                text = stringResource(id = R.string.announcement),
                 textStyle = Typography.h2,
-                iconTintColor = Color.Magenta
+                iconTintColor = TraverseeOrange
             )
         }
         item{
@@ -47,9 +50,11 @@ fun ForumScreen(
         }
         item {
             ForumPostItem(
-                modifier = Modifier.padding(horizontal = 16.dp).clickable {
-                    navigator.navigate(ScreenRoute.ForumDetails)
-                },
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .clickable {
+                        navigator.navigate(ScreenRoute.ForumDetails)
+                    },
             )
         }
         item {

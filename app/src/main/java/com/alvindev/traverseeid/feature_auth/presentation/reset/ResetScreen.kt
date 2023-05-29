@@ -1,6 +1,7 @@
 package com.alvindev.traverseeid.feature_auth.presentation.reset
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -8,13 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
-import com.alvindev.traverseeid.feature_auth.presentation.component.EmailForm
+import com.alvindev.traverseeid.feature_auth.presentation.component.AuthFormField
 import com.alvindev.traverseeid.feature_auth.presentation.component.ErrorMessage
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
@@ -50,20 +54,26 @@ fun ResetScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "Reset Password",
-            style = MaterialTheme.typography.h4,
-            fontWeight = FontWeight.Bold
+        Image(
+            painter = painterResource(id = R.drawable.ic_logo),
+            contentDescription = "Traversee Logo",
+            modifier = Modifier.size(100.dp)
         )
         Text(
-            modifier = Modifier.padding(top = 4.dp),
-            text = "Enter your email address below and we'll send you a link to reset your password",
-            style = MaterialTheme.typography.body1
+            modifier = Modifier.padding(top = 8.dp),
+            text = stringResource(id = R.string.reset_password),
+            style = MaterialTheme.typography.h1,
+        )
+        Text(
+            modifier = Modifier.padding(top = 4.dp, start = 16.dp, end = 16.dp),
+            text = stringResource(id = R.string.reset_password_description),
+            style = MaterialTheme.typography.caption,
+            textAlign = TextAlign.Center
         )
         state.error?.let {
             ErrorMessage(text = it)
         }
-        EmailForm(
+        AuthFormField(
             value = state.email,
             onValueChange = viewModel::onEmailChange
         )
@@ -74,7 +84,7 @@ fun ResetScreen(
             onClick = viewModel::reset,
             enabled = state.isLoading.not(),
             text = state.isLoading.not().let {
-                if (it) "Reset" else "Loading..."
+                if (it) stringResource(id = R.string.send_email_verification) else stringResource(id = R.string.loading)
             }
         )
     }

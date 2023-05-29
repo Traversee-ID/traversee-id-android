@@ -53,7 +53,7 @@ fun ForumDetailsScreen() {
                 )
                 TraverseeButton(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth().padding(top = 16.dp),
                     text = "Comment",
                     onClick = {},
                     enabled = true,

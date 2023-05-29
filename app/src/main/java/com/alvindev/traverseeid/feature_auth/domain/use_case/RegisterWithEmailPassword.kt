@@ -8,7 +8,7 @@ import com.alvindev.traverseeid.feature_auth.domain.repository.AuthRepository
 class RegisterWithEmailPassword(
     private val authRepository: AuthRepository
 ){
-    suspend operator fun invoke(email: String, password: String): LiveData<ResultState<User?>> {
-        return authRepository.registerWithEmailPassword(email, password)
+    suspend operator fun invoke(name: String, email: String, password: String): LiveData<ResultState<User?>> {
+        return authRepository.registerWithEmailPassword(name, email, password)
     }
 }

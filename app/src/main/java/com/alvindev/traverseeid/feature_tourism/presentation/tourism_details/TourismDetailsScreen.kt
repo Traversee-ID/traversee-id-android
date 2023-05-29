@@ -21,10 +21,10 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.feature_campaign.presentation.component.TraverseeSectionTitle
+import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.feature_tourism.presentation.component.HomeStayCard
 import com.alvindev.traverseeid.feature_tourism.presentation.component.ImageSlider
-import com.alvindev.traverseeid.feature_tourism.presentation.component.TourismCard
+import com.alvindev.traverseeid.core.presentation.component.TourismCard
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -119,12 +119,15 @@ fun AboutTourism() {
 @Composable
 fun SectionHomeStay() {
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        TraverseeSectionTitle(title = "Home Stay")
+        TraverseeSectionTitle(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            title = "Home Stay"
+        )
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(5) {
                 HomeStayCard()
@@ -139,12 +142,15 @@ fun SectionRelevantTourism() {
     val screenWidth = configuration.screenWidthDp.dp - 32.dp
 
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        TraverseeSectionTitle(title = "Relevant Tourism")
+        TraverseeSectionTitle(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            title = "Relevant Tourism"
+        )
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(5) {
                 TourismCard(

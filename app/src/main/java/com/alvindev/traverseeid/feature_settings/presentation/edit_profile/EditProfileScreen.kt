@@ -1,6 +1,7 @@
 package com.alvindev.traverseeid.feature_settings.presentation.edit_profile
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,15 +11,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -48,12 +50,23 @@ fun EditProfileScreen(
     viewModel: EditProfileViewModel = hiltViewModel(),
     navigator: DestinationsNavigator
 ) {
-    viewModel.setUser(name, email, avatarUrl)
+    LaunchedEffect(key1 = Unit) {
+        viewModel.setUser(name, email, avatarUrl)
+    }
     val state = viewModel.state
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri -> viewModel.onSelectedImagePicker(uri) }
     )
+    val context = LocalContext.current
+
+    if(state.isSuccess){
+        navigator.popBackStack()
+    }
+
+    if(state.error.isNotEmpty()){
+        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+    }
 
     if(state.isShowDialog){
         ImageDialog(
@@ -126,13 +139,11 @@ fun EditProfileScreen(
             },
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         TraverseeButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            onClick = {},
+            onClick = viewModel::onSubmit,
             enabled = state.isSubmitting.not(),
             text = state.isSubmitting.not().let {
                 if (it) "Save" else "Saving..."

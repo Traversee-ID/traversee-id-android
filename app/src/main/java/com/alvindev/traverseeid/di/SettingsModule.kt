@@ -6,6 +6,7 @@ import com.alvindev.traverseeid.feature_settings.data.repository.SettingsReposit
 import com.alvindev.traverseeid.feature_settings.domain.repository.SettingsRepository
 import com.alvindev.traverseeid.feature_settings.domain.use_case.ChangeLanguage
 import com.alvindev.traverseeid.feature_settings.domain.use_case.Logout
+import com.alvindev.traverseeid.feature_settings.domain.use_case.UpdateProfile
 import com.alvindev.traverseeid.feature_settings.domain.use_case.UseCasesSettings
 import dagger.Module
 import dagger.Provides
@@ -26,7 +27,8 @@ class SettingsModule {
     fun provideSettingsUseCases(repository: SettingsRepository): UseCasesSettings {
         return UseCasesSettings(
             logout = Logout(repository),
-            changeLanguage = ChangeLanguage(repository)
+            changeLanguage = ChangeLanguage(repository),
+            updateProfile = UpdateProfile(repository),
         )
     }
 }

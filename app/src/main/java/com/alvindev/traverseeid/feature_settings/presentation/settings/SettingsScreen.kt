@@ -50,28 +50,28 @@ fun SettingsScreen(
     val state = viewModel.state
     val listItem = listOf(
         SettingsButtonInfo(
-            title = "My Campaigns",
+            title = stringResource(id = R.string.my_campaigns),
             icon = Icons.Outlined.Campaign,
             onClick = {
                 navigator.navigate(ScreenRoute.CampaignUser)
             }
         ),
         SettingsButtonInfo(
-            title = "Favorite Tourism",
+            title = stringResource(id = R.string.favorite_tourism),
             icon = Icons.Filled.FavoriteBorder,
             onClick = {
                 navigator.navigate(ScreenRoute.FavoriteTourism)
             }
         ),
         SettingsButtonInfo(
-            title = "My Preferences",
+            title = stringResource(id = R.string.my_preferences),
             icon = Icons.Outlined.RoomPreferences,
             onClick = {
 
             }
         ),
         SettingsButtonInfo(
-            title = "Language",
+            title = stringResource(id = R.string.language),
             icon = Icons.Outlined.Language,
             onClick = {
                 navigator.navigate(ScreenRoute.Language)
@@ -126,7 +126,7 @@ fun SettingsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp),
-            text = "Privacy and Policy",
+            text = stringResource(id = R.string.privacy_and_policy),
             onClick = {},
         )
 

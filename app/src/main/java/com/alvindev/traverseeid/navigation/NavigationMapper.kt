@@ -23,6 +23,7 @@ object NavigationMapper {
             ScreenRoute.Settings -> R.string.menu_settings
             ScreenRoute.EditProfile -> R.string.edit_profile
             ScreenRoute.FavoriteTourism -> R.string.favorite_tourism
+            ScreenRoute.Language -> R.string.language
             else -> -1
         }
     }

@@ -5,6 +5,7 @@ import com.alvindev.moneysaver.core.common.ResultState
 
 interface SettingsRepository {
     fun logout()
-
     suspend fun changeLanguage(idLanguage: String): LiveData<ResultState<String>>
+
+    suspend fun updateProfile(name: String, photoUrl: String?): LiveData<ResultState<String>>
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alvindev.destinations.CampaignListScreenDestination
@@ -18,7 +19,7 @@ import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignCategory
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignCard
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.MyCampaignCard
-import com.alvindev.traverseeid.feature_campaign.presentation.component.TraverseeSectionTitle
+import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -34,8 +35,7 @@ fun CampaignScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         SectionMyCampaign(
@@ -75,17 +75,20 @@ fun SectionMyCampaign(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TraverseeSectionTitle(
-            title = "My Campaign",
-            subtitle = "Submit your campaign now!",
-            actionText = "See All",
+            modifier = Modifier.padding(horizontal = 16.dp),
+            title = stringResource(id = R.string.my_campaigns),
+            subtitle = stringResource(id = R.string.submit_my_campaign),
+            actionText = stringResource(id = R.string.see_all),
             actionOnClick = actionOnClick
         )
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(5) {
                 MyCampaignCard(
@@ -111,13 +114,15 @@ fun SectionCampaignAround(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TraverseeSectionTitle(
-            title = "Campaigns Around You",
-            subtitle = "Find a campaign in your area",
-            actionText = "See All",
+            modifier = Modifier.padding(horizontal = 16.dp),
+            title = stringResource(id = R.string.campaign_around),
+            subtitle = stringResource(id = R.string.find_your_campaign),
+            actionText = stringResource(id = R.string.see_all),
             actionOnClick = actionOnClick
         )
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(5) {
                 CampaignCard(
@@ -145,7 +150,7 @@ fun SectionDiscoverCampaign(
     val campaignCategoryList = listOf(
         CampaignCategory(
             id = 1,
-            name = "All Campaign",
+            name = stringResource(id = R.string.all_campaigns),
             image = R.drawable.dummy_komodo_island
         ),
         CampaignCategory(
@@ -167,19 +172,22 @@ fun SectionDiscoverCampaign(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TraverseeSectionTitle(
-            title = "Discover Campaigns",
-            subtitle = "Browse campaigns by category",
-            actionText = "See All",
+            modifier = Modifier.padding(horizontal = 16.dp),
+            title = stringResource(id = R.string.discover_campaign),
+            subtitle = stringResource(id = R.string.browse_campaign_category),
+            actionText = stringResource(id = R.string.see_all),
             actionOnClick = actionOnClick
         )
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            items(campaignCategoryList, key = { it.id }) {category ->
+            items(campaignCategoryList, key = { it.id }) { category ->
                 TraverseeCategoryCard(
                     modifier = Modifier
                         .width(screenWidth / 3)

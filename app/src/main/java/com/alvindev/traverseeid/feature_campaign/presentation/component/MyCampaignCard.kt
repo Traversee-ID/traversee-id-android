@@ -62,7 +62,7 @@ fun MyCampaignCard(
                             .padding(2.dp),
                         imageVector = Icons.Default.Check,
                         contentDescription = "Campaign Ended",
-                        tint = Color.Green,
+                        tint = TraverseeGreen,
                     )
                 }
             }
@@ -89,7 +89,7 @@ fun MyCampaignCard(
                 Text(
                     text = title,
                     style = Typography.subtitle2,
-                    color = MaterialTheme.colors.primaryVariant,
+                    color = MaterialTheme.colors.secondaryVariant,
                 )
                 Row(
                     modifier = Modifier
@@ -103,12 +103,12 @@ fun MyCampaignCard(
                             .padding(end = 4.dp),
                         imageVector = Icons.Default.PersonOutline,
                         contentDescription = "Participants",
-                        tint = Purple500
+                        tint = MaterialTheme.colors.secondary
                     )
                     Text(
                         text = "$participants participants",
                         style = Typography.caption,
-                        color = Black
+                        color = TraverseeBlack
                     )
                 }
             }

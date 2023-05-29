@@ -13,7 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.Composable
@@ -44,7 +43,7 @@ import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignDescriptionCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignWinnerItem
-import com.alvindev.traverseeid.feature_campaign.presentation.component.TraverseeSectionTitle
+import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

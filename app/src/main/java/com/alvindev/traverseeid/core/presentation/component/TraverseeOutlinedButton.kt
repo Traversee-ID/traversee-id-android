@@ -24,7 +24,7 @@ fun TraverseeOutlinedButton(
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         contentColor = MaterialTheme.colors.primary,
     ),
-    contentPadding: PaddingValues = PaddingValues(16.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal=16.dp, vertical = 10.dp),
     content: @Composable RowScope.() -> Unit = {
         Text(
             text = text,

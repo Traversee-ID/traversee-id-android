@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.MainActivity
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDropdown
-import com.alvindev.traverseeid.feature_tourism.presentation.component.TourismCard
+import com.alvindev.traverseeid.core.presentation.component.TourismCard
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

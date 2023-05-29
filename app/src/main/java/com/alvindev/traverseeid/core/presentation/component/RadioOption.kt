@@ -1,4 +1,4 @@
-package com.alvindev.traverseeid.feature_campaign.presentation.component
+package com.alvindev.traverseeid.core.presentation.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

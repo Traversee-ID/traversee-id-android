@@ -2,6 +2,7 @@ package com.alvindev.traverseeid.feature_auth.presentation.login
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -9,16 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.TraverseeApplication
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.util.LocaleUtil
-import com.alvindev.traverseeid.feature_auth.presentation.component.EmailForm
+import com.alvindev.traverseeid.feature_auth.presentation.component.AuthFormField
 import com.alvindev.traverseeid.feature_auth.presentation.component.ErrorMessage
 import com.alvindev.traverseeid.feature_auth.presentation.component.GoogleSignInButton
 import com.alvindev.traverseeid.feature_auth.presentation.component.PasswordForm
@@ -69,15 +72,20 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo),
+                contentDescription = "Traversee Logo",
+                modifier = Modifier.size(100.dp)
+            )
             Text(
-                text = "Login",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold
+                modifier = Modifier.padding(top = 8.dp),
+                text = stringResource(id = R.string.welcome),
+                style = MaterialTheme.typography.h1,
             )
             state.error?.let {
                 ErrorMessage(text = it)
             }
-            EmailForm(
+            AuthFormField(
                 value = state.email,
                 onValueChange = viewModel::onEmailChange
             )
@@ -94,7 +102,7 @@ fun LoginScreen(
                 onClick = viewModel::login,
                 enabled = state.isSubmitting.not(),
                 text = state.isSubmitting.not().let {
-                    if (it) "Login" else "Logging in..."
+                    if (it) stringResource(id = R.string.login) else stringResource(id = R.string.logging_in)
                 }
             )
             TextButton(
@@ -104,14 +112,14 @@ fun LoginScreen(
                 }
             ) {
                 Text(
-                    text = "Forgot password?",
+                    text = stringResource(id = R.string.forgot_password),
                     style = MaterialTheme.typography.body2,
-                    color = Color.Blue
+                    color = MaterialTheme.colors.primaryVariant
                 )
             }
             TraverseeDivider(
                 modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
-                text = "OR"
+                text = stringResource(id = R.string.or)
             )
             GoogleSignInButton(
                 enabled = state.isSubmitting.not(),
@@ -125,9 +133,9 @@ fun LoginScreen(
                 }
             ) {
                 Text(
-                    text = "Don't have an account? Register",
+                    text = stringResource(id = R.string.dont_have_account),
                     style = MaterialTheme.typography.body2,
-                    color = Color.Blue
+                    color = MaterialTheme.colors.primaryVariant
                 )
             }
         }

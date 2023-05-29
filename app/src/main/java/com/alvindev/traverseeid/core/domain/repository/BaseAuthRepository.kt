@@ -15,5 +15,7 @@ interface BaseAuthRepository {
 
     suspend fun sendPasswordReset(email: String): Boolean
 
+    suspend fun updateProfile(name: String, photoUrl: String?): FirebaseUser?
+
     fun logout()
 }

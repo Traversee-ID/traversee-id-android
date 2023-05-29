@@ -9,16 +9,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.core.presentation.component.TraverseeTextField
 
 @Composable
-fun EmailForm(
+fun AuthFormField(
     modifier : Modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
     value : String,
     onValueChange : (String) -> Unit,
+    imageVector : ImageVector = Icons.Filled.Email,
+    label : String = "Email",
+    placeholder : String = "Email",
+    keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
 ){
     TraverseeTextField(
         modifier = modifier,
@@ -26,17 +31,17 @@ fun EmailForm(
         onValueChange = onValueChange,
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Email,
+                imageVector = imageVector,
                 contentDescription = null
             )
         },
         label = {
-            Text("Email")
+            Text(label)
         },
         placeholder = {
-            Text("Email")
+            Text(placeholder)
         },
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
+        keyboardOptions = keyboardOptions
     )
 }

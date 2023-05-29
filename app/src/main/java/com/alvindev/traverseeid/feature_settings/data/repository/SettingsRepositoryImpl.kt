@@ -25,4 +25,19 @@ class SettingsRepositoryImpl @Inject constructor(
             emit(ResultState.Error(e.message.toString()))
         }
     }
+
+    override suspend fun updateProfile(
+        name: String,
+        photoUrl: String?
+    ): LiveData<ResultState<String>> {
+        return liveData {
+            try {
+                emit(ResultState.Loading)
+                authenticator.updateProfile(name, photoUrl)
+                emit(ResultState.Success("Success"))
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.message.toString()))
+            }
+        }
+    }
 }

@@ -83,6 +83,7 @@ fun ForumPostScreen(
                 onClick = {},
                 shape = Shapes.large,
                 backgroundColor = Color.White,
+                enabled = false,
             ) {
                 Row(
                     modifier = Modifier

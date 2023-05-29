@@ -16,7 +16,7 @@ import com.alvindev.traverseeid.TraverseeApplication
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.util.LocaleUtil
-import com.alvindev.traverseeid.feature_campaign.presentation.component.RadioOption
+import com.alvindev.traverseeid.core.presentation.component.RadioOption
 import com.alvindev.traverseeid.feature_settings.domain.mapper.LanguageMapper
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
@@ -42,9 +42,9 @@ fun LanguageScreen(
     val state = viewModel.state
 
     if(state.isSuccess){
+        navigator.popBackStack()
         TraverseeApplication.LANGUAGE = LanguageMapper.mapLanguageToLocale(selectedOption)
         LocaleUtil.setLocale(LocalContext.current, TraverseeApplication.LANGUAGE)
-        navigator.popBackStack()
     }
 
     Column(

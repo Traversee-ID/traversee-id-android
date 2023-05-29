@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
-import com.alvindev.traverseeid.core.theme.Black
+import com.alvindev.traverseeid.core.theme.TraverseeBlack
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
@@ -77,7 +77,7 @@ fun RowDescriptionItem(
             text = title,
             style = Typography.caption,
             fontWeight = FontWeight.Medium,
-            color = Black
+            color = TraverseeBlack
         )
         Text(
             text = value,
@@ -86,7 +86,7 @@ fun RowDescriptionItem(
                 .weight(1f)
                 .padding(start = 8.dp),
             textAlign = TextAlign.End,
-            color = Black
+            color = TraverseeBlack
         )
     }
 }

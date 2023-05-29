@@ -6,11 +6,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -20,14 +19,14 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.presentation.component.TraverseeTextField
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.feature_campaign.presentation.component.TraverseeSectionTitle
+import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.feature_sentiment.domain.constant.SentimentConstant
 import com.alvindev.traverseeid.feature_sentiment.domain.mapper.SentimentMapper
 import com.alvindev.traverseeid.feature_sentiment.presentation.component.SentimentTag
 import com.alvindev.traverseeid.feature_sentiment.presentation.component.SentimentTweet
+import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination(
     route = ScreenRoute.Sentiment,
@@ -38,8 +37,8 @@ fun SentimentScreen() {
         item{
             TraverseeSectionTitle(
                 modifier = Modifier.padding(16.dp),
-                title = "Tourism Sentiment",
-                subtitle = "Discover your favorite tourism sentiment"
+                title = stringResource(id = R.string.sentiment_tourism),
+                subtitle = stringResource(id = R.string.discouver_favorite_tourism),
             )
         }
         item{
@@ -48,7 +47,7 @@ fun SentimentScreen() {
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
                 label = {
-                    Text("Search a tourism place")
+                    Text(stringResource(id = R.string.search_tourism))
                 },
                 placeholder = {
                     Text("Borobudur")
@@ -62,7 +61,7 @@ fun SentimentScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
-                text = "Result for \"Borobudur\"",
+                text = stringResource(id = R.string.sentiment_result, "Borobudur"),
                 style = Typography.h2,
                 textAlign = TextAlign.Center
             )
@@ -135,7 +134,7 @@ fun SentimentTweetCard(){
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
-            text = "Relevant Tweets",
+            text = stringResource(id = R.string.relevant_tweets),
             style = Typography.subtitle1,
         )
 

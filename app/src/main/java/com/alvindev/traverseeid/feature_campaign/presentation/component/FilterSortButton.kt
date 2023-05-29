@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Filter1
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.runtime.Composable
@@ -18,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
-import com.alvindev.traverseeid.core.theme.Black200
+import com.alvindev.traverseeid.core.theme.TraverseeBlack200
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 
 @Composable
@@ -51,7 +50,7 @@ fun FilterSortButton(
             modifier = Modifier
                 .fillMaxHeight()
                 .width(1.dp),
-            color = Black200,
+            color = TraverseeBlack200,
         )
         TraverseeRowIcon(
             modifier = Modifier

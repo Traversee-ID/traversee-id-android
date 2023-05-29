@@ -31,7 +31,6 @@ fun ImageSlider(
     images: List<Int> = listOf(),
 ) {
     val pagerState = rememberPagerState()
-    val scope = rememberCoroutineScope()
     Box(modifier = modifier) {
         HorizontalPager(
             pageCount = images.size,
@@ -49,9 +48,7 @@ fun ImageSlider(
         Box(
             modifier = Modifier
                 .offset(y = -(8).dp, x = (-8).dp)
-                .size(40.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(Color.Black.copy(alpha = 0.2f))
+                .background(Color.Black.copy(alpha = 0.2f), shape = RoundedCornerShape(4.dp))
                 .padding(8.dp)
                 .align(Alignment.BottomEnd)
         ) {

@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -21,6 +22,7 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.domain.entity.UserPreference
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.Typography
+import java.util.*
 
 @Composable
 fun ProfileCard(
@@ -66,7 +68,7 @@ fun ProfileCard(
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .clickable { actionOnClick() },
-                text = "EDIT PROFILE",
+                text = stringResource(id = R.string.edit_profile).uppercase(Locale.getDefault()),
                 style = Typography.button,
                 color = MaterialTheme.colors.secondaryVariant,
             )

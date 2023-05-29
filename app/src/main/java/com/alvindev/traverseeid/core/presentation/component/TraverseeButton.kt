@@ -27,7 +27,7 @@ fun TraverseeButton(
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = MaterialTheme.colors.onPrimary,
     ),
-    contentPadding: PaddingValues = PaddingValues(16.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal=16.dp, vertical = 10.dp),
     content: @Composable RowScope.() -> Unit = {
         Text(
             text = text,
