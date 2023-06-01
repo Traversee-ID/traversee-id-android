@@ -23,6 +23,8 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 fun ForumTextField(
     label: String = "",
     placeholder: String = "",
+    value: String = "",
+    onValueChange: (String) -> Unit = {},
 ) {
     TraverseeTextField(
         modifier = Modifier
@@ -41,6 +43,8 @@ fun ForumTextField(
             imeAction = ImeAction.Done
         ),
         singleLine = false,
+        value = value,
+        onValueChange = onValueChange,
     )
 }
 

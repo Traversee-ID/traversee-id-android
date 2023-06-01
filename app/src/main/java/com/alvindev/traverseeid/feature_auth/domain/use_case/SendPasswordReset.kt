@@ -1,7 +1,7 @@
 package com.alvindev.traverseeid.feature_auth.domain.use_case
 
 import androidx.lifecycle.LiveData
-import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_auth.domain.repository.AuthRepository
 
 class SendPasswordReset (

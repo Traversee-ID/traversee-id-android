@@ -2,7 +2,7 @@ package com.alvindev.traverseeid.feature_campaign.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
-import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_campaign.data.model.*
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
 import kotlinx.coroutines.flow.Flow

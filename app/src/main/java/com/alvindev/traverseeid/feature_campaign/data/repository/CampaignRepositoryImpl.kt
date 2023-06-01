@@ -5,7 +5,7 @@ import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
 import com.alvindev.traverseeid.feature_campaign.data.model.*
 import com.alvindev.traverseeid.feature_campaign.data.paging_source.CampaignsPagingSource

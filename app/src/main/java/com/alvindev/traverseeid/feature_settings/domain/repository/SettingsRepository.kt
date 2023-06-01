@@ -1,7 +1,7 @@
 package com.alvindev.traverseeid.feature_settings.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.core.common.ResultState
 
 interface SettingsRepository {
     fun logout()

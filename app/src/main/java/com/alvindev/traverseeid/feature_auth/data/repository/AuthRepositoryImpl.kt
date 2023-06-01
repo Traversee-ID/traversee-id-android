@@ -4,7 +4,7 @@ import ApiConfig
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.TraverseeApplication
 import com.alvindev.traverseeid.core.data.local.UserDataStoreRepositoryImpl
 import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
@@ -12,13 +12,6 @@ import com.alvindev.traverseeid.feature_auth.domain.entity.User
 import com.alvindev.traverseeid.feature_auth.domain.mapper.firebaseUserToUser
 import com.alvindev.traverseeid.feature_auth.domain.mapper.firebaseUserToUserPreference
 import com.alvindev.traverseeid.feature_auth.domain.repository.AuthRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 

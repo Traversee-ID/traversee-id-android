@@ -9,17 +9,10 @@ import com.alvindev.traverseeid.feature_campaign.domain.use_case.UseCasesCampaig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LoadState
-import androidx.paging.map
-import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.util.ResourcesProvider
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignEntity
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 @HiltViewModel

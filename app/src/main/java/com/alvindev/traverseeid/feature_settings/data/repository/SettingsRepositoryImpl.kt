@@ -2,7 +2,7 @@ package com.alvindev.traverseeid.feature_settings.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.core.data.local.UserDataStoreRepositoryImpl
 import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
 import com.alvindev.traverseeid.feature_settings.domain.repository.SettingsRepository
