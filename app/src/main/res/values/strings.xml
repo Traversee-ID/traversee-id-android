@@ -105,4 +105,8 @@
     <string name="comments">Comments</string>
     <string name="no_comments">No comments</string>
     <string name="comment">Comment</string>
+    <string name="delete_comment">Delete Comment</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="comment_added">Comment added</string>
+    <string name="comment_deleted">Comment Deleted</string>
 </resources>

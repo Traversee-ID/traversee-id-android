@@ -3,11 +3,13 @@ package com.alvindev.traverseeid.feature_forum.presentation.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.core.theme.TraverseeRed
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 
@@ -31,6 +34,8 @@ fun ForumCommentItem(
     commentAuthor: String,
     commentTime: String,
     comment: String,
+    isUser: Boolean = false,
+    onDelete: () -> Unit = {}
 ) {
     Row(
         modifier = modifier,
@@ -63,24 +68,45 @@ fun ForumCommentItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = commentAuthor,
-                    style = Typography.subtitle2
-                )
-                if(isOfficial){
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ){
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = commentAuthor,
+                        style = Typography.subtitle2
+                    )
+                    if(isOfficial){
+                        Icon(
+                            modifier = Modifier
+                                .size(16.dp)
+                                .background(
+                                    color = Color.Green.copy(alpha = 0.2f),
+                                    shape = RoundedCornerShape(50)
+                                ),
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Official",
+                            tint = Color.Green,
+                        )
+                    }
+                }
+
+                if(isUser){
                     Icon(
                         modifier = Modifier
                             .size(16.dp)
                             .background(
-                                color = Color.Green.copy(alpha = 0.2f),
+                                color = TraverseeRed.copy(alpha = 0.2f),
                                 shape = RoundedCornerShape(50)
+                            ).selectable(
+                                selected = true,
+                                onClick = onDelete
                             ),
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Official",
-                        tint = Color.Green,
+                        imageVector = Icons.Default.Remove,
+                        contentDescription = "Delete",
+                        tint = TraverseeRed,
                     )
                 }
             }

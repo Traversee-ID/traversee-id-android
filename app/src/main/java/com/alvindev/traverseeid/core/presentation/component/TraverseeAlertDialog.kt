@@ -19,6 +19,7 @@ fun TraverseeAlertDialog(
     text: String,
     onConfirm: () -> Unit = {},
     onCancel: () -> Unit = {},
+    enabled: Boolean = true,
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -39,6 +40,7 @@ fun TraverseeAlertDialog(
                 modifier = Modifier.clip(RoundedCornerShape(100.dp)),
                 onClick = onConfirm,
                 text = stringResource(id = R.string.confirm),
+                enabled = enabled,
             )
         },
         dismissButton = {
@@ -46,6 +48,7 @@ fun TraverseeAlertDialog(
                 modifier = Modifier.clip(RoundedCornerShape(100.dp)),
                 onClick = onCancel,
                 text = stringResource(id = R.string.cancel),
+                enabled = enabled,
             )
         },
     )

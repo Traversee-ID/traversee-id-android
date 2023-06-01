@@ -36,6 +36,7 @@ class ForumModule {
             unlikePost = UnlikePost(repository),
             getForumComments = GetForumComments(repository),
             createComment = CreateComment(repository),
+            deleteComment = DeleteComment(repository),
         )
     }
 }

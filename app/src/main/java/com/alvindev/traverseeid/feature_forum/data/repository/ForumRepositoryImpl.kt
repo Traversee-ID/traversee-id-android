@@ -1,6 +1,5 @@
 package com.alvindev.traverseeid.feature_forum.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
@@ -9,13 +8,13 @@ import androidx.paging.PagingData
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_forum.data.model.ForumCommentBody
 import com.alvindev.traverseeid.feature_forum.data.model.ForumPostBody
-import com.alvindev.traverseeid.feature_forum.data.paging_source.ForumCommentPagingSource
 import com.alvindev.traverseeid.feature_forum.data.paging_source.ForumPagingSource
 import com.alvindev.traverseeid.feature_forum.data.remote.ForumApi
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCommentEntity
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostEntity
 import com.alvindev.traverseeid.feature_forum.domain.repository.ForumRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import org.json.JSONException
 import org.json.JSONObject
 import javax.inject.Inject
@@ -99,15 +98,15 @@ class ForumRepositoryImpl @Inject constructor(
             }
         }
 
-    override  fun getForumComments(postId: Int): Flow<PagingData<ForumCommentEntity>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-            ),
-            pagingSourceFactory = {
-                ForumCommentPagingSource(forumApi, postId)
-            }
-        ).flow
+    override  fun getForumComments(postId: Int, page: Int): Flow<ResultState<List<ForumCommentEntity>>> = flow{
+        try {
+            val response = forumApi.getForumComments(postId, page)
+            response.data?.let {
+                emit(ResultState.Success(it))
+            } ?: emit(ResultState.Error("Unexpected Error!"))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.message.toString()))
+        }
     }
 
     override suspend fun createComment(
@@ -121,6 +120,18 @@ class ForumRepositoryImpl @Inject constructor(
                 response.data?.let {
                     emit(ResultState.Success(it))
                 } ?: emit(ResultState.Error(response.message.toString()))
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.message.toString()))
+            }
+        }
+
+    override suspend fun deleteComment(postId: Int, commentId: Int): LiveData<ResultState<String>> =
+        liveData {
+            try {
+                val response = forumApi.deleteComment(postId, commentId)
+                response.message?.let {
+                    emit(ResultState.Success(it))
+                } ?: emit(ResultState.Error("Unexpected Error!"))
             } catch (e: Exception) {
                 emit(ResultState.Error(e.message.toString()))
             }

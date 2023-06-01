@@ -39,4 +39,10 @@ interface ForumApi {
         @Path("id") postId: Int,
         @Body body: ForumCommentBody
     ): ForumCreateCommentResponse
+
+    @DELETE("forums/{id}/comments/{commentId}")
+    suspend fun deleteComment(
+        @Path("id") postId: Int,
+        @Path("commentId") commentId: Int
+    ): ForumDeleteCommentResponse
 }
