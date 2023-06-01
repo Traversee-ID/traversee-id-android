@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_auth.domain.use_case.UseCasesAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -38,21 +39,21 @@ class ResetViewModel @Inject constructor(
 
         useCases.sendPasswordReset(state.email).asFlow().collect { result ->
             state = when(result) {
-                is com.alvindev.moneysaver.core.common.ResultState.Loading -> {
+                is ResultState.Loading -> {
                     state.copy(
                         isLoading = true,
                         error = null,
                         isSuccess = false,
                     )
                 }
-                is com.alvindev.moneysaver.core.common.ResultState.Success -> {
+                is ResultState.Success -> {
                     state.copy(
                         isLoading = false,
                         error = null,
                         isSuccess = true,
                     )
                 }
-                is com.alvindev.moneysaver.core.common.ResultState.Error -> {
+                is ResultState.Error -> {
                     state.copy(
                         isLoading = false,
                         error = result.error,

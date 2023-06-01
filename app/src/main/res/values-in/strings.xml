@@ -99,4 +99,11 @@
     <string name="submit">Kirim</string>
     <string name="submit_message">Apakah Anda yakin ingin mengirimkan kampanye ini?</string>
     <string name="missions">Missions</string>
+    <string name="caption">Caption</string>
+    <string name="caption_message">Write your caption here...</string>
+    <string name="post">Post</string>
+    <string name="post_created">Post Created Successsfully</string>
+    <string name="comments">Comments</string>
+    <string name="no_comments">No comments</string>
+    <string name="comment">Comment</string>
 </resources>

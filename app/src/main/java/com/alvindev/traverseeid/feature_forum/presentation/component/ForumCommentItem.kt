@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
@@ -26,17 +27,31 @@ import com.alvindev.traverseeid.core.theme.Typography
 fun ForumCommentItem(
     modifier: Modifier = Modifier,
     isOfficial: Boolean = false,
+    imageUrl: String? = null,
+    commentAuthor: String,
+    commentTime: String,
+    comment: String,
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ){
-        Image(
+        imageUrl?.let {
+            AsyncImage(
+                model = it,
+                contentDescription = commentAuthor,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(50)),
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            )
+        } ?: Image(
+            painterResource(id = R.drawable.ic_profile),
+            contentDescription = commentAuthor,
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(50)),
-            painter = painterResource(id = R.drawable.dummy_komodo_island),
-            contentDescription = "Alvin Avatar",
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center
         )
@@ -52,7 +67,7 @@ fun ForumCommentItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Alvin",
+                    text = commentAuthor,
                     style = Typography.subtitle2
                 )
                 if(isOfficial){
@@ -64,7 +79,7 @@ fun ForumCommentItem(
                                 shape = RoundedCornerShape(50)
                             ),
                         imageVector = Icons.Default.Check,
-                        contentDescription = "Campaign Ended",
+                        contentDescription = "Official",
                         tint = Color.Green,
                     )
                 }
@@ -72,13 +87,13 @@ fun ForumCommentItem(
 
             Text(
                 modifier= Modifier.padding(bottom=8.dp),
-                text = "19 Juni 2023",
+                text = commentTime,
                 style = Typography.caption
             )
 
             Text(
                 modifier = Modifier,
-                text = "Ini pertanyaan sangat valid, mengingat tradisi Buddhisme Thai saat ini adalah Theravada, sedangkan tradisi Borobudur itu Mahayana tantrik. Memang secara sejarah, tradisi Mahayana Khmer yang mirip Borobudur (CMIIW) pernah berkembang pesat di Thailand, tapi ya sudah tidak relevan.",
+                text = comment,
                 style = Typography.body2,
                 textAlign = TextAlign.Justify,
             )
@@ -91,7 +106,10 @@ fun ForumCommentItem(
 fun ForumCommentItemPreview() {
     TraverseeTheme {
         ForumCommentItem(
-            isOfficial = true
+            isOfficial = true,
+            commentAuthor = "Alvin Dev",
+            commentTime = "2 hours ago",
+            comment = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam sit amet aliquet tincidunt, nisl nunc aliquam nunc, vitae aliquam nunc nisl vitae nisl. Sed euismod, diam sit amet aliquet tincidunt, nisl nunc aliquam nunc, vitae aliquam nunc nisl vitae nisl.",
         )
     }
 }

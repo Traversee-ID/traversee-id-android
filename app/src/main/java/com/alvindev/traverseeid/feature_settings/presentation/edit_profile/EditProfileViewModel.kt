@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.util.ResourcesProvider
 import com.alvindev.traverseeid.feature_settings.domain.use_case.UseCasesSettings

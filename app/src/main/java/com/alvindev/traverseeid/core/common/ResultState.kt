@@ -1,4 +1,4 @@
-package com.alvindev.moneysaver.core.common
+package com.alvindev.traverseeid.core.common
 
 sealed class ResultState<out R> private constructor() {
     data class Success<out T>(val data: T) : ResultState<T>()

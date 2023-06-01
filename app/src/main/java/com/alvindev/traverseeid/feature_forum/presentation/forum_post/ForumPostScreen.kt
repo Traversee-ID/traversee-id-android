@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.feature_forum.presentation.forum_post
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,13 +35,15 @@ import com.alvindev.traverseeid.core.util.ComposeFileProvider
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumTextField
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
-@OptIn(ExperimentalMaterialApi::class)
 @Destination(
     route = ScreenRoute.ForumPost
 )
 @Composable
 fun ForumPostScreen(
+    navigator: DestinationsNavigator,
     viewModel: ForumPostViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state
@@ -54,6 +57,15 @@ fun ForumPostScreen(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { hasImage -> hasImage}
     )
+
+    if(state.isSuccess){
+        Toast.makeText(context, stringResource(id = R.string.post_created) , Toast.LENGTH_SHORT).show()
+        navigator.popBackStack()
+    }
+
+    if(state.error != null){
+        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+    }
 
     if(state.isShowDialog){
         ImageDialog(
@@ -74,51 +86,51 @@ fun ForumPostScreen(
     }
 
     LazyColumn{
-        item{
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                elevation = 4.dp,
-                onClick = {},
-                shape = Shapes.large,
-                backgroundColor = Color.White,
-                enabled = false,
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.dummy_borobudur),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(Shapes.large),
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    )
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Text(
-                            text = "Cultural",
-                            style = Typography.caption,
-                        )
-                        Text(
-                            text = "Share your experience at Borobudur",
-                            style = Typography.subtitle2,
-                            color = MaterialTheme.colors.primaryVariant,
-                        )
-                    }
-                }
-            }
-        }
+//        item{
+//            Card(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+//                elevation = 4.dp,
+//                onClick = {},
+//                shape = Shapes.large,
+//                backgroundColor = Color.White,
+//                enabled = false,
+//            ) {
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(horizontal = 16.dp, vertical = 8.dp),
+//                ) {
+//                    Image(
+//                        painter = painterResource(id = R.drawable.dummy_borobudur),
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .size(100.dp)
+//                            .clip(Shapes.large),
+//                        contentScale = ContentScale.Crop,
+//                        alignment = Alignment.Center
+//                    )
+//
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(start = 8.dp),
+//                        verticalArrangement = Arrangement.spacedBy(4.dp)
+//                    ) {
+//                        Text(
+//                            text = "Cultural",
+//                            style = Typography.caption,
+//                        )
+//                        Text(
+//                            text = "Share your experience at Borobudur",
+//                            style = Typography.subtitle2,
+//                            color = MaterialTheme.colors.primaryVariant,
+//                        )
+//                    }
+//                }
+//            }
+//        }
         item{
             Column(
                 modifier = Modifier
@@ -129,58 +141,58 @@ fun ForumPostScreen(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ){
-
-
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ){
                     Text(
-                        text ="Caption *",
+                        text = stringResource(id = R.string.caption) + " *",
                         style = MaterialTheme.typography.subtitle2
                     )
                     ForumTextField(
-                        label = "Caption",
-                        placeholder = "Write your caption here..."
+                        label = stringResource(id = R.string.caption),
+                        placeholder = stringResource(id = R.string.caption_message),
+                        value = state.text,
+                        onValueChange = viewModel::onTextChange,
                     )
                 }
 
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ){
-                    Text(
-                        text ="Photo (Optional)",
-                        style = MaterialTheme.typography.subtitle2
-                    )
-                    state.selectedImagePicker?.let {
-                        AsyncImage(
-                            modifier = Modifier
-                                .size(70.dp)
-                                .clip(Shapes.large)
-                                .clickable { viewModel.setShowDialog(true) },
-                            model = it,
-                            contentDescription = null,
-                        )
-                    } ?: IconButton(
-                        modifier = Modifier
-                            .size(70.dp),
-                        onClick = {
-                            viewModel.setShowDialog(true)
-                        },
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            imageVector = Icons.Default.AddPhotoAlternate,
-                            contentDescription = stringResource(id = R.string.add_photo),
-                        )
-                    }
-                }
+//                Column(
+//                    verticalArrangement = Arrangement.spacedBy(8.dp)
+//                ){
+//                    Text(
+//                        text ="Photo (Optional)",
+//                        style = MaterialTheme.typography.subtitle2
+//                    )
+//                    state.selectedImagePicker?.let {
+//                        AsyncImage(
+//                            modifier = Modifier
+//                                .size(70.dp)
+//                                .clip(Shapes.large)
+//                                .clickable { viewModel.setShowDialog(true) },
+//                            model = it,
+//                            contentDescription = null,
+//                        )
+//                    } ?: IconButton(
+//                        modifier = Modifier
+//                            .size(70.dp),
+//                        onClick = {
+//                            viewModel.setShowDialog(true)
+//                        },
+//                    ) {
+//                        Icon(
+//                            modifier = Modifier
+//                                .fillMaxSize(),
+//                            imageVector = Icons.Default.AddPhotoAlternate,
+//                            contentDescription = stringResource(id = R.string.add_photo),
+//                        )
+//                    }
+//                }
                 TraverseeButton(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = "Post",
-                    onClick = {},
-                    enabled = true,
+                    text = stringResource(id = R.string.post),
+                    onClick = viewModel::onPostClick,
+                    enabled = state.isSubmitting.not() && state.text.isNotBlank(),
                 )
             }
         }
@@ -237,6 +249,8 @@ fun ImageDialog(
 @Composable
 fun ForumPostScreenPreview() {
     TraverseeTheme {
-        ForumPostScreen()
+        ForumPostScreen(
+            navigator = EmptyDestinationsNavigator
+        )
     }
 }
