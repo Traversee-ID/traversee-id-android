@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.component
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,15 +18,19 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignStatusConstant
+import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationEntity
 
 @Composable
 fun FilterBottomSheet(
     modifier: Modifier = Modifier,
     selectedStatus: String? = null,
     onClose: () -> Unit = {},
-    onApply: (isChecked: Boolean, status: String?) -> Unit = { _, _ -> }
+    onApply: (isChecked: Boolean, status: String?, locationId: Int?) -> Unit = { _, _, _ -> },
+    campaignLocations: List<CampaignLocationEntity>,
+    locationSelected: Int? = null,
 ) {
-    val radioOptions = listOf("All Campaigns", "Coming Soon Campaigns", "Ongoing Campaigns", "Completed Campaigns")
+    val radioOptions =
+        listOf("All Campaigns", "Coming Soon Campaigns", "Ongoing Campaigns", "Completed Campaigns")
     val (selectedOption, onOptionSelected) = when (selectedStatus) {
         CampaignStatusConstant.ALL_STATUS -> remember { mutableStateOf(radioOptions[0]) }
         CampaignStatusConstant.COMING_SOON -> remember { mutableStateOf(radioOptions[1]) }
@@ -35,8 +40,15 @@ fun FilterBottomSheet(
     }
     val isChecked = remember { mutableStateOf(false) }
 
-//    val dropdownMenuItems = listOf("Indonesia", "Magelang", "Depok", "Semarang", "Purworkerto")
-//    val selectedItem = remember { mutableStateOf(dropdownMenuItems[0]) }
+    val selectedItem = remember {
+        mutableStateOf(
+            if (locationSelected != null) {
+                campaignLocations.find { it.id == locationSelected }?.name ?: campaignLocations[0].name
+            } else {
+                campaignLocations[0].name
+            }
+        )
+    }
 
     Column(
         modifier = modifier
@@ -72,26 +84,26 @@ fun FilterBottomSheet(
             style = Typography.h2,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        radioOptions.forEach{ text ->
-                RadioOption(
-                    text = text,
-                    selectedOption = selectedOption,
-                    onOptionSelected = onOptionSelected,
-                )
+        radioOptions.forEach { text ->
+            RadioOption(
+                text = text,
+                selectedOption = selectedOption,
+                onOptionSelected = onOptionSelected,
+            )
         }
 
-//        Text(
-//            text = "Location",
-//            style = Typography.h2,
-//            modifier = Modifier.padding(vertical = 8.dp)
-//        )
-//        TraverseeDropdown(
-//            dropdownMenuItems = dropdownMenuItems,
-//            selectedItem = selectedItem.value,
-//            onSelectedItemChange = { selectedItem.value = it },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//        )
+        Text(
+            text = stringResource(id = R.string.location),
+            style = Typography.h2,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+        TraverseeDropdown(
+            dropdownMenuItems = campaignLocations.map { it.name },
+            selectedItem = selectedItem.value,
+            onSelectedItemChange = { selectedItem.value = it },
+            modifier = Modifier
+                .fillMaxWidth()
+        )
 
         TraverseeButton(
             modifier = Modifier
@@ -99,14 +111,16 @@ fun FilterBottomSheet(
                 .padding(top = 16.dp),
             text = stringResource(id = R.string.apply),
             onClick = {
-                val status = when(selectedOption) {
+                val status = when (selectedOption) {
                     radioOptions[0] -> CampaignStatusConstant.ALL_STATUS
                     radioOptions[1] -> CampaignStatusConstant.COMING_SOON
                     radioOptions[2] -> CampaignStatusConstant.ONGOING
                     radioOptions[3] -> CampaignStatusConstant.COMPLETED
                     else -> CampaignStatusConstant.ALL_STATUS
                 }
-                onApply(isChecked.value,status)
+                val location = campaignLocations.find { it.name == selectedItem.value }
+
+                onApply(isChecked.value, status, location?.id)
             }
         )
     }
@@ -117,7 +131,11 @@ fun FilterBottomSheet(
 fun FilterBottomSheetPreview() {
     TraverseeTheme() {
         FilterBottomSheet(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            onClose = {},
+            onApply = { _, _, _ -> },
+            campaignLocations = listOf(),
+            locationSelected = 0
         )
     }
 }

@@ -5,5 +5,6 @@ import com.alvindev.traverseeid.feature_campaign.domain.repository.CampaignRepos
 class GetCampaignsByCategory(
     private val repository: CampaignRepository
 ) {
-    operator fun invoke(categoryId: Int, status: String?=null) = repository.getCampaignsByCategory(categoryId, status)
+    operator fun invoke(categoryId: Int, status: String? = null, locationId: Int? = null) =
+        repository.getCampaignsByCategory(categoryId, status, locationId)
 }

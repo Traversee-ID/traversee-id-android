@@ -82,11 +82,13 @@ class ForumDetailsViewModel @Inject constructor(
                         text = "",
                         isSuccess = true,
                         comments = state.comments + it.data,
+                        isSubmitting = false,
                     )
                 }
                 is ResultState.Error -> {
                     state = state.copy(
                         error = it.error,
+                        isSubmitting = false,
                     )
                 }
                 is ResultState.Loading -> {
@@ -123,12 +125,15 @@ class ForumDetailsViewModel @Inject constructor(
                     state = state.copy(
                         isSuccess = true,
                         isShowDialog = false,
+                        comments = state.comments.filter { comment -> comment.id != commentId },
+                        isSubmitting = false,
                     )
                 }
                 is ResultState.Error -> {
                     state = state.copy(
                         error = it.error,
-                        comments = state.comments.filter { comment -> comment.id != commentId },
+                        isSubmitting = false,
+                        isShowDialog = false,
                     )
                 }
                 is ResultState.Loading -> {

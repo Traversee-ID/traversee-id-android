@@ -117,9 +117,21 @@ class ForumRepositoryImpl @Inject constructor(
             try {
                 val body = ForumCommentBody(text)
                 val response = forumApi.createComment(postId, body)
-                response.data?.let {
-                    emit(ResultState.Success(it))
-                } ?: emit(ResultState.Error(response.message.toString()))
+                if (response.isSuccessful) {
+                    val responseData = response.body()?.data
+                    responseData?.let {
+                        emit(ResultState.Success(it))
+                    } ?: emit(ResultState.Error("Unexpected Error!"))
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = try {
+                        val errorJson = JSONObject(errorBody)
+                        errorJson.getString("message")
+                    } catch (e: JSONException) {
+                        "Error: ${response.code()} ${response.message()}"
+                    }
+                    emit(ResultState.Error(errorMessage))
+                }
             } catch (e: Exception) {
                 emit(ResultState.Error(e.message.toString()))
             }
@@ -129,9 +141,21 @@ class ForumRepositoryImpl @Inject constructor(
         liveData {
             try {
                 val response = forumApi.deleteComment(postId, commentId)
-                response.message?.let {
-                    emit(ResultState.Success(it))
-                } ?: emit(ResultState.Error("Unexpected Error!"))
+                if (response.isSuccessful) {
+                    val responseData = response.body()?.message
+                    responseData?.let {
+                        emit(ResultState.Success(it))
+                    } ?: emit(ResultState.Error("Unexpected Error!"))
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = try {
+                        val errorJson = JSONObject(errorBody)
+                        errorJson.getString("message")
+                    } catch (e: JSONException) {
+                        "Error: ${response.code()} ${response.message()}"
+                    }
+                    emit(ResultState.Error(errorMessage))
+                }
             } catch (e: Exception) {
                 emit(ResultState.Error(e.message.toString()))
             }

@@ -12,4 +12,13 @@
             android:height="150dp"
             />
     </item>
+
+    <item>
+        <bitmap
+            android:gravity="bottom|center_horizontal"
+            android:src="@drawable/app_name"
+            android:width="200dp"
+            android:height="50dp"
+            />
+    </item>
 </layer-list>

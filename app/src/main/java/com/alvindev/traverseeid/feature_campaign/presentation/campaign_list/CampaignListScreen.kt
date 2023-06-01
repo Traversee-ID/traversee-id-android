@@ -48,7 +48,6 @@ fun CampaignListScreen(
     LaunchedEffect(Unit) {
         viewModel.setCategoryId(id)
     }
-
     name?.let {
         MainActivity.routeName = it
     }
@@ -56,9 +55,9 @@ fun CampaignListScreen(
     val state = viewModel.state
 
     val campaigns: LazyPagingItems<CampaignItem> = if (id != -1) {
-        viewModel.getCampaignsByCategory(id, state.status).collectAsLazyPagingItems()
+        viewModel.getCampaignsByCategory(id, state.status, state.locationId).collectAsLazyPagingItems()
     } else {
-        viewModel.getAllCampaigns(state.status).collectAsLazyPagingItems()
+        viewModel.getAllCampaigns(state.status, state.locationId).collectAsLazyPagingItems()
     }
 
     val coroutineScope = rememberCoroutineScope()
@@ -79,13 +78,16 @@ fun CampaignListScreen(
                         modalSheetState.hide()
                     }
                 },
-                onApply = { _, status ->
+                onApply = { _, status, location ->
                     coroutineScope.launch {
                         modalSheetState.hide()
                     }
                     viewModel.setStatus(status)
+                    viewModel.setLocationId(location)
                     campaigns.refresh()
-                }
+                },
+                campaignLocations = state.campaignLocations,
+                locationSelected = state.locationId,
             )
         }
     ) {
@@ -132,7 +134,7 @@ fun CampaignListScreen(
                         category = item?.campaign?.categoryName ?: "",
                         startDate = item?.campaign?.startDate ?: "",
                         endDate = item?.campaign?.endDate ?: "",
-                        place = item?.campaign?.place ?: "",
+                        place = item?.campaign?.location_name ?: "",
                         participants = item?.campaign?.totalParticipants ?: 0,
                         onClick = {
                             navigator.navigate(CampaignDetailsScreenDestination(campaignItem = item))

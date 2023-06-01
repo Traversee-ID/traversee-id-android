@@ -9,5 +9,6 @@ data class UseCasesCampaign(
     val getCampaignDetails: GetCampaignDetails,
     val getCampaignParticipants: GetCampaignParticipants,
     val registerCampaign: RegisterCampaign,
-    val submitCampaign: SubmitCampaign
+    val submitCampaign: SubmitCampaign,
+    val getCampaignLocations: GetCampaignLocations
 )

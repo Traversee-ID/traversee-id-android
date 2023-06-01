@@ -9,7 +9,8 @@ class CampaignsPagingSource(
     private val campaignApi: CampaignApi,
     val id: Int? = null,
     val status: String? = null,
-    val userId: String? = null
+    val userId: String? = null,
+    val locationId: Int? = null
 ) : PagingSource<Int, CampaignItem>() {
     override fun getRefreshKey(state: PagingState<Int, CampaignItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -24,9 +25,9 @@ class CampaignsPagingSource(
             val response = if(userId != null){
                 campaignApi.getRegisteredCampaigns(userId, page)
             } else if (id == null) {
-                campaignApi.getAllCampaigns(page, status)
+                campaignApi.getAllCampaigns(page, status, locationId)
             } else {
-                campaignApi.getCampaignsByCategory(id, page, status)
+                campaignApi.getCampaignsByCategory(id, page, status, locationId)
             }
 
             val data = response.data ?: emptyList()

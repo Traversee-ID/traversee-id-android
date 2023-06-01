@@ -38,11 +38,11 @@ interface ForumApi {
     suspend fun createComment(
         @Path("id") postId: Int,
         @Body body: ForumCommentBody
-    ): ForumCreateCommentResponse
+    ): Response<ForumCreateCommentResponse>
 
     @DELETE("forums/{id}/comments/{commentId}")
     suspend fun deleteComment(
         @Path("id") postId: Int,
         @Path("commentId") commentId: Int
-    ): ForumDeleteCommentResponse
+    ): Response<ForumDeleteCommentResponse>
 }

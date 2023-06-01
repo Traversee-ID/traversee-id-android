@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 class GetAllCampaigns(
     private val repository: CampaignRepository
 ) {
-    operator fun invoke(status:String? = null): Flow<PagingData<CampaignItem>> = repository.getAllCampaigns(status)
+    operator fun invoke(status:String? = null, locationId:Int? = null): Flow<PagingData<CampaignItem>> = repository.getAllCampaigns(status, locationId)
 }

@@ -44,7 +44,6 @@ fun ForumDetailsScreen(
     val state = viewModel.state
     val context = LocalContext.current
     val lazyColumnListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
 
     val shouldStartPaginate = remember {
         derivedStateOf {

@@ -27,8 +27,8 @@ data class CampaignEntity(
 	@field:SerializedName("id")
 	val id: Int,
 
-	@field:SerializedName("place")
-	val place: String? = null,
+	@field:SerializedName("location_name")
+	val location_name: String? = null,
 
 	@field:SerializedName("start_date")
 	val startDate: String? = null,

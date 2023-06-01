@@ -4,15 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_campaign.data.model.*
+import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationEntity
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 interface CampaignRepository {
     suspend fun getCategories(): LiveData<ResultState<List<CategoryEntity>>>
 
-    fun getAllCampaigns(status: String? = null): Flow<PagingData<CampaignItem>>
+    fun getAllCampaigns(status: String? = null, locationId: Int? = null): Flow<PagingData<CampaignItem>>
 
-    fun getCampaignsByCategory(categoryId: Int, status: String? = null): Flow<PagingData<CampaignItem>>
+    fun getCampaignsByCategory(categoryId: Int, status: String? = null, locationId: Int? = null): Flow<PagingData<CampaignItem>>
 
     fun getRegisteredCampaigns(): Flow<PagingData<CampaignItem>>
 
@@ -25,4 +26,6 @@ interface CampaignRepository {
     suspend fun registerCampaign(campaignId: Int): LiveData<ResultState<CampaignRegisterData>>
 
     suspend fun submitCampaign(campaignId: Int, submissionUrl: String): LiveData<ResultState<CampaignSubmissionData>>
+
+    suspend fun getCampaignLocations(): LiveData<ResultState<List<CampaignLocationEntity>>>
 }

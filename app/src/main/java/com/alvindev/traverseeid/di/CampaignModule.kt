@@ -41,7 +41,8 @@ class CampaignModule {
             getCampaignDetails = GetCampaignDetails(repository),
             getCampaignParticipants = GetCampaignParticipants(repository),
             registerCampaign = RegisterCampaign(repository),
-            submitCampaign = SubmitCampaign(repository)
+            submitCampaign = SubmitCampaign(repository),
+            getCampaignLocations = GetCampaignLocations(repository)
         )
     }
 }
