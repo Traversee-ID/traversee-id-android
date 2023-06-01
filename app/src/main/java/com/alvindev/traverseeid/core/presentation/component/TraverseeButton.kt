@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,7 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 
 @Composable
 fun TraverseeButton(
-    modifier: Modifier = Modifier.fillMaxWidth().clip(Shapes.large),
+    modifier: Modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(100.dp)),
     onClick: () -> Unit = {},
     enabled: Boolean = true,
     text: String = "Button",

@@ -4,30 +4,31 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import com.alvindev.destinations.CampaignDetailsScreenDestination
 import com.alvindev.traverseeid.MainActivity
+import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
+import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.FilterBottomSheet
-import com.alvindev.traverseeid.feature_campaign.presentation.component.FilterSortButton
-import com.alvindev.traverseeid.feature_campaign.presentation.component.SortBottomSheet
+import com.alvindev.traverseeid.feature_campaign.presentation.component.FilterButton
 import com.alvindev.traverseeid.navigation.ScreenRoute
+import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
@@ -41,104 +42,182 @@ import kotlinx.coroutines.launch
 fun CampaignListScreen(
     id: Int = -1,
     name: String?,
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    viewModel: CampaignListViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.setCategoryId(id)
+    }
+
     name?.let {
         MainActivity.routeName = it
     }
-    val isHideButton = name == "Campaign Around You"
+    val isHideButton = name == stringResource(id = R.string.campaign_around)
+    val state = viewModel.state
+
+    val campaigns: LazyPagingItems<CampaignItem> = if (id != -1) {
+        viewModel.getCampaignsByCategory(id, state.status).collectAsLazyPagingItems()
+    } else {
+        viewModel.getAllCampaigns(state.status).collectAsLazyPagingItems()
+    }
 
     val coroutineScope = rememberCoroutineScope()
     val modalSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
-        skipHalfExpanded = false
+        confirmValueChange = { it != ModalBottomSheetValue.Expanded },
+        skipHalfExpanded = true,
     )
-    var sheetType by rememberSaveable { mutableStateOf("sort") }
 
     ModalBottomSheetLayout(
         sheetState = modalSheetState,
         sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
         sheetContent = {
-            if (sheetType == "sort") {
-                SortBottomSheet(
-                    modifier = Modifier.padding(16.dp),
-                    onClose = {
-                        coroutineScope.launch {
-                            modalSheetState.hide()
-                        }
+            FilterBottomSheet(
+                modifier = Modifier.padding(16.dp),
+                onClose = {
+                    coroutineScope.launch {
+                        modalSheetState.hide()
                     }
-                )
-            } else {
-                FilterBottomSheet(
-                    modifier = Modifier.padding(16.dp),
-                    onClose = {
-                        coroutineScope.launch {
-                            modalSheetState.hide()
-                        }
+                },
+                onApply = { _, status ->
+                    coroutineScope.launch {
+                        modalSheetState.hide()
                     }
-                )
-            }
+                    viewModel.setStatus(status)
+                    campaigns.refresh()
+                }
+            )
         }
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp)
+                .padding(horizontal = 16.dp)
         ) {
-            LazyColumn(
-                modifier = Modifier.padding(top = 8.dp, bottom = if (isHideButton) 8.dp else 56.dp)
-            ) {
-                items(10) {
-                    CampaignCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        title = "Share your experience at Borobudur",
-                        category = "Cultural",
-                        startDate = "May 17",
-                        endDate = "June 17",
-                        place = "Magelang",
-                        participants = 1000,
-                        onClick = {
-                            navigator.navigate(ScreenRoute.CampaignDetails)
-                        }
-                    )
-                }
-            }
-
             if (isHideButton.not()) {
-                FilterSortButton(
+                FilterButton(
                     modifier = Modifier
+                        .padding(top = 16.dp, bottom = 8.dp)
                         .shadow(2.dp, clip = true, shape = RoundedCornerShape(50))
                         .background(color = Color.White)
                         .height(IntrinsicSize.Min)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(50))
-                        .align(Alignment.BottomCenter)
-                        .paddingFromBaseline(8.dp)
-                        .padding(8.dp),
+                        .paddingFromBaseline(4.dp)
+                        .padding(4.dp),
                     onClickFilter = {
                         coroutineScope.launch {
                             if (modalSheetState.isVisible) {
                                 modalSheetState.hide()
                             } else {
-                                sheetType = "filter"
                                 modalSheetState.show()
                             }
                         }
                     },
-                    onClickSort = {
-                        coroutineScope.launch {
-                            if (modalSheetState.isVisible) {
-                                modalSheetState.hide()
-                            } else {
-                                sheetType = "sort"
-                                modalSheetState.show()
+                )
+            }
+
+            LazyColumn(
+                contentPadding = PaddingValues(
+                    top = 8.dp,
+                    bottom = 16.dp,
+                )
+            ) {
+                items(campaigns, key = { item -> item.campaign.id }) { item ->
+                    CampaignCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        title = item?.campaign?.name ?: "",
+                        category = item?.campaign?.categoryName ?: "",
+                        startDate = item?.campaign?.startDate ?: "",
+                        endDate = item?.campaign?.endDate ?: "",
+                        place = item?.campaign?.place ?: "",
+                        participants = item?.campaign?.totalParticipants ?: 0,
+                        onClick = {
+                            navigator.navigate(CampaignDetailsScreenDestination(campaignItem = item))
+                        }
+                    )
+                }
+
+                when (campaigns.loadState.refresh) { //FIRST LOAD
+                    is LoadState.Error -> {
+                        item{
+                            Column(
+                                modifier = Modifier
+                                    .fillParentMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.error_occurred),
+                                    style = Typography.body2,
+                                    color = Color.Red,
+                                )
                             }
                         }
                     }
-                )
+                    is LoadState.Loading -> {
+                        item {
+                            Column(
+                                modifier = Modifier
+                                    .fillParentMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                    }
+                    else -> {
+                        if (campaigns.itemCount == 0) {
+                            item {
+                                Column(
+                                    modifier = Modifier
+                                        .fillParentMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                ) {
+                                    Text(
+                                        text = stringResource(id = R.string.no_data),
+                                        style = Typography.body2,
+                                        color = Color.Red,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                when (campaigns.loadState.append) {
+                    is LoadState.Error -> {
+                        item {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.error_occurred),
+                                    style = Typography.body2,
+                                    color = Color.Red,
+                                )
+                            }
+                        }
+                    }
+                    is LoadState.Loading -> {
+                        item {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                    }
+                    else -> {}
+                }
             }
         }
     }

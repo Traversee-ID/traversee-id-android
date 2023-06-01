@@ -13,10 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alvindev.destinations.TourismListScreenDestination
 import com.alvindev.traverseeid.R
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignCategory
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.core.presentation.component.TourismCard
+import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignEntity
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -84,25 +84,25 @@ fun SectionDiscoverTourism(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp - 32.dp
     val campaignCategoryList = listOf(
-        CampaignCategory(
+        CampaignEntity(
             id = 1,
             name = stringResource(id = R.string.all_places),
-            image = R.drawable.dummy_komodo_island
+            imageUrl = ""
         ),
-        CampaignCategory(
+        CampaignEntity(
             id = 2,
             name = "Mountain",
-            image = R.drawable.dummy_kuta_beach
+            imageUrl = ""
         ),
-        CampaignCategory(
+        CampaignEntity(
             id = 3,
             name = "Marine",
-            image = R.drawable.dummy_borobudur
+            imageUrl = ""
         ),
-        CampaignCategory(
+        CampaignEntity(
             id = 4,
             name = "Culinary",
-            image = R.drawable.dummy_bromo
+            imageUrl = ""
         ),
     )
 
@@ -126,10 +126,10 @@ fun SectionDiscoverTourism(
                 TraverseeCategoryCard(
                     modifier = Modifier
                         .width(screenWidth / 3)
-                        .clickable { placeOnClick(category.name) },
-                    image = category.image,
-                    contentDescription = category.name,
-                    text = category.name,
+                        .clickable { placeOnClick(category.name ?: "") },
+                    image = "https://picsum.photos/200/300",
+                    contentDescription = category.name ?: "",
+                    text = category.name ?: "",
                 )
             }
         }

@@ -1,4 +1,4 @@
-package com.alvindev.traverseeid.feature_auth.util
+package com.alvindev.traverseeid.core.util
 
 import android.content.Context
 import android.net.Uri

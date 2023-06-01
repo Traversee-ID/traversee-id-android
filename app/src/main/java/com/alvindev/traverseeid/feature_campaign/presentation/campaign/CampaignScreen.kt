@@ -5,21 +5,36 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvindev.destinations.CampaignCategoryScreenDestination
+import com.alvindev.destinations.CampaignDetailsScreenDestination
 import com.alvindev.destinations.CampaignListScreenDestination
 import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignCategory
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignCard
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.MyCampaignCard
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
+import com.alvindev.traverseeid.core.theme.Typography
+import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
+import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -30,45 +45,96 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 )
 @Composable
 fun CampaignScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    viewModel: CampaignViewModel = hiltViewModel()
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        SectionMyCampaign(
-            actionOnClick = {
-                navigator.navigate(ScreenRoute.CampaignUser)
-            },
-            campaignOnClick = {
-                navigator.navigate(ScreenRoute.CampaignDetails)
+    val state = viewModel.state
+    val stringAllCampaigns = stringResource(id = R.string.all_campaigns)
+
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    } else if (state.error != null) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = state.error,
+                style = Typography.body2,
+                color = Color.Red,
+            )
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            SectionMyCampaign(
+                campaigns = state.myCampaigns ?: listOf(),
+                actionOnClick = {
+                    navigator.navigate(ScreenRoute.CampaignUser)
+                },
+                campaignOnClick = {
+                    navigator.navigate(CampaignDetailsScreenDestination(campaignItem = it))
+                },
+                onClickJoin = {
+                    navigator.navigate(
+                        CampaignListScreenDestination(
+                            id = -1,
+                            name = stringAllCampaigns
+                        )
+                    )
+                }
+            )
+//            SectionCampaignAround(
+//                actionOnClick = {
+//                    navigator.navigate(CampaignListScreenDestination(name = "Campaign Around You"))
+//                },
+//                campaignOnClick = {
+//                    navigator.navigate(ScreenRoute.CampaignDetails)
+//                }
+//            )
+            state.categories?.let {
+                val categoryArrayList = arrayListOf<CategoryEntity>()
+                it.forEach { category ->
+                    categoryArrayList.add(category)
+                }
+
+                SectionDiscoverCampaign(
+                    campaignCategories = if (it.size > 5) categoryArrayList.subList(
+                        0,
+                        5
+                    ) else categoryArrayList,
+                    actionOnClick = {
+                        navigator.navigate(CampaignCategoryScreenDestination(campaignCategories = categoryArrayList))
+                    },
+                    categoryOnClick = { category ->
+                        navigator.navigate(
+                            CampaignListScreenDestination(
+                                id = category.id,
+                                name = category.name
+                            )
+                        )
+                    },
+                )
             }
-        )
-        SectionCampaignAround(
-            actionOnClick = {
-                navigator.navigate(CampaignListScreenDestination(name = "Campaign Around You"))
-            },
-            campaignOnClick = {
-                navigator.navigate(ScreenRoute.CampaignDetails)
-            }
-        )
-        SectionDiscoverCampaign(
-            actionOnClick = {
-                navigator.navigate(ScreenRoute.CampaignCategory)
-            },
-            categoryOnClick = {
-                navigator.navigate(CampaignListScreenDestination(name = it))
-            }
-        )
+        }
     }
 }
 
 @Composable
 fun SectionMyCampaign(
+    campaigns: List<CampaignItem>,
     actionOnClick: () -> Unit = {},
-    campaignOnClick: () -> Unit = {}
+    campaignOnClick: (campaign: CampaignItem) -> Unit = {},
+    onClickJoin: () -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp - 64.dp
@@ -82,20 +148,61 @@ fun SectionMyCampaign(
         TraverseeSectionTitle(
             modifier = Modifier.padding(horizontal = 16.dp),
             title = stringResource(id = R.string.my_campaigns),
-            subtitle = stringResource(id = R.string.submit_my_campaign),
-            actionText = stringResource(id = R.string.see_all),
+            subtitle = if(campaigns.isNotEmpty()) stringResource(id = R.string.my_campaign_description) else null,
+            actionText = if(campaigns.size >= 5) stringResource(id = R.string.see_all) else null,
             actionOnClick = actionOnClick
         )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            items(5) {
-                MyCampaignCard(
-                    modifier = Modifier.width(screenWidth),
-                    onClick = campaignOnClick
-                )
+        if (campaigns.isNotEmpty()) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp)
+            ) {
+                items(campaigns) { item ->
+                    MyCampaignCard(
+                        modifier = Modifier
+                            .width(screenWidth)
+                            .padding(vertical = 8.dp),
+                        title = item.campaign.name ?: "",
+                        startDate = item.campaign.startDate ?: "",
+                        endDate = item.campaign.endDate ?: "",
+                        participants = item.campaign.totalParticipants ?: 0,
+                        status = item.campaign.status ?: "",
+                        onClick = { campaignOnClick(item) }
+                    )
+                }
             }
+        } else {
+            EmptyMyCampaigns(onClickJoin = onClickJoin)
+        }
+    }
+}
+
+@Composable
+fun EmptyMyCampaigns(
+    onClickJoin : () -> Unit = {}
+){
+    Row(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.size(100.dp),
+            imageVector = Icons.Default.HourglassEmpty,
+            contentDescription = null,
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.no_joined_campaign),
+                style = Typography.body2,
+            )
+            TraverseeButton(
+                modifier = Modifier.clip(RoundedCornerShape(100.dp)),
+                text = stringResource(id = R.string.join_campaign),
+                onClick = onClickJoin
+            )
         }
     }
 }
@@ -143,32 +250,11 @@ fun SectionCampaignAround(
 @Composable
 fun SectionDiscoverCampaign(
     actionOnClick: () -> Unit = {},
-    categoryOnClick: (category: String) -> Unit = {}
+    categoryOnClick: (category: CategoryEntity) -> Unit = {},
+    campaignCategories: List<CategoryEntity> = emptyList()
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp - 32.dp
-    val campaignCategoryList = listOf(
-        CampaignCategory(
-            id = 1,
-            name = stringResource(id = R.string.all_campaigns),
-            image = R.drawable.dummy_komodo_island
-        ),
-        CampaignCategory(
-            id = 2,
-            name = "Ecotourism",
-            image = R.drawable.dummy_kuta_beach
-        ),
-        CampaignCategory(
-            id = 3,
-            name = "Religous",
-            image = R.drawable.dummy_borobudur
-        ),
-        CampaignCategory(
-            id = 4,
-            name = "Ethnic",
-            image = R.drawable.dummy_bromo
-        ),
-    )
 
     Column(
         modifier = Modifier
@@ -187,14 +273,14 @@ fun SectionDiscoverCampaign(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            items(campaignCategoryList, key = { it.id }) { category ->
+            items(campaignCategories, key = { it.id }) { category ->
                 TraverseeCategoryCard(
                     modifier = Modifier
                         .width(screenWidth / 3)
-                        .clickable { categoryOnClick(category.name) },
-                    image = category.image,
-                    contentDescription = category.name,
-                    text = category.name,
+                        .clickable { categoryOnClick(category) },
+                    image = category.imageUrl ?: "",
+                    contentDescription = category.name ?: "",
+                    text = category.name ?: "",
                 )
             }
         }

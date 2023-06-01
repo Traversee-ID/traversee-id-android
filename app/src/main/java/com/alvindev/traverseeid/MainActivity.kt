@@ -5,9 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -21,6 +19,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -230,14 +229,19 @@ private fun BottomBar(
             BottomNavigationItem(
                 icon = {
                     Icon(
+                        modifier = Modifier.size(20.dp),
                         imageVector = item.icon,
                         contentDescription = item.title
                     )
                 },
                 label = {
                     Text(
-                        item.title,
-                        fontSize = 10.sp
+                        modifier = Modifier.fillMaxWidth(),
+                        text = item.title,
+                        fontSize = 9.5.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        letterSpacing = 0.5.sp,
                     )
                 },
                 alwaysShowLabel = false,
@@ -297,7 +301,10 @@ fun TopBarCommonScreen(
     )
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+)
 @Composable
 fun DefaultPreview() {
     TraverseeTheme {

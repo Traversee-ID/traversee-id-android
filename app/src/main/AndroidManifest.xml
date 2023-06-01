@@ -33,7 +33,7 @@
         </activity>
 
         <provider
-            android:name=".feature_auth.util.ComposeFileProvider"
+            android:name=".core.util.ComposeFileProvider"
             android:authorities="com.alvindev.traverseeid.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

@@ -1,4 +1,5 @@
 import com.alvindev.traverseeid.BuildConfig
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -7,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConfig {
     companion object {
         var TOKEN = ""
-        var BASE_URL = ""
+        var BASE_URL = "https://traversee-id-wibm46rgia-et.a.run.app"
 
         inline fun <T> getApiService(apiService: Class<T>): T{
             val loggingInterceptor = if (BuildConfig.DEBUG) {
@@ -16,8 +17,17 @@ class ApiConfig {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
             }
 
+            val authInterceptor = Interceptor { chain ->
+                val req = chain.request()
+                val requestHeaders = req.newBuilder()
+                    .addHeader("Authorization", "Bearer $TOKEN")
+                    .build()
+                chain.proceed(requestHeaders)
+            }
+
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(authInterceptor)
                 .build()
 
             val retrofit = Retrofit.Builder()

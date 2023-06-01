@@ -1,0 +1,14 @@
+package com.alvindev.traverseeid.feature_campaign.domain.use_case
+
+import androidx.lifecycle.LiveData
+import com.alvindev.moneysaver.core.common.ResultState
+import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
+import com.alvindev.traverseeid.feature_campaign.domain.repository.CampaignRepository
+
+class GetCategories(
+    private val repository: CampaignRepository
+) {
+    suspend operator fun invoke(): LiveData<ResultState<List<CategoryEntity>>> {
+        return repository.getCategories()
+    }
+}

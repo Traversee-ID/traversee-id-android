@@ -21,41 +21,16 @@ import com.alvindev.traverseeid.core.theme.TraverseeBlack200
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 
 @Composable
-fun FilterSortButton(
+fun FilterButton(
     modifier: Modifier,
     onClickFilter: () -> Unit = {},
-    onClickSort: () -> Unit = {},
 ) {
-    Row(
+    Box(
         modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         TraverseeRowIcon(
             modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-                .clip(
-                    RoundedCornerShape(
-                        topStartPercent = 50,
-                        bottomStartPercent = 50
-                    )
-                )
-                .clickable { onClickSort() },
-            icon = Icons.Default.Sort,
-            text = "Sort",
-            textStyle = MaterialTheme.typography.body2,
-            horizontalArrangement = Arrangement.Center
-        )
-        Divider(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(1.dp),
-            color = TraverseeBlack200,
-        )
-        TraverseeRowIcon(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
+                .fillMaxSize()
                 .clip(
                     RoundedCornerShape(
                         topEndPercent = 50,
@@ -75,7 +50,7 @@ fun FilterSortButton(
 @Composable
 fun FilterSortButtonPreview() {
     TraverseeTheme() {
-        FilterSortButton(
+        FilterButton(
             modifier = Modifier
                 .height(IntrinsicSize.Min)
                 .fillMaxWidth()

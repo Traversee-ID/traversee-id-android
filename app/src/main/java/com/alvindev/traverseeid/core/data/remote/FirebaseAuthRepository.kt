@@ -61,11 +61,18 @@ class FirebaseAuthRepository : BaseAuthRepository {
     override suspend fun updateProfile(name: String, photoUrl: String?): FirebaseUser? {
         try {
             val user = Firebase.auth.currentUser
-            val profileUpdate = UserProfileChangeRequest.Builder()
-                .setDisplayName(name)
-                .setPhotoUri(photoUrl?.let { android.net.Uri.parse(it) })
-                .build()
-            user?.updateProfile(profileUpdate)?.await()
+            photoUrl?.let {
+                val profileUpdate = UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .setPhotoUri(android.net.Uri.parse(photoUrl))
+                    .build()
+                user?.updateProfile(profileUpdate)?.await()
+            } ?: run {
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .build()
+                user?.updateProfile(profileUpdates)?.await()
+            }
             return user
         } catch (e: Exception) {
             throw Exception(e.message.toString())

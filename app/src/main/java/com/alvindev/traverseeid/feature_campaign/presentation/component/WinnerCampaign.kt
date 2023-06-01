@@ -1,5 +1,7 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.component
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,9 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeOutlinedButton
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
@@ -23,17 +29,31 @@ import com.alvindev.traverseeid.core.theme.Typography
 fun CampaignWinnerItem(
     modifier: Modifier = Modifier,
     winnerName: String,
-    winnerPhoto: String,
+    winnerPhoto: String? = null,
     winnerRank: Int = -1,
     winnerSubmission: String,
 ) {
+    val context = LocalContext.current
+    val submissionUrl = if(winnerSubmission.startsWith("http")) winnerSubmission else "https://$winnerSubmission"
+    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(submissionUrl))
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.dummy_kuta_beach),
-            contentDescription = "Winner Photo",
+        winnerPhoto?.let {
+            AsyncImage(
+                model = it,
+                contentDescription = winnerName,
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(shape = RoundedCornerShape(50)),
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            )
+        } ?: Image(
+            painterResource(id = R.drawable.ic_profile),
+            contentDescription = winnerName,
             modifier = Modifier
                 .size(60.dp)
                 .clip(shape = RoundedCornerShape(50)),
@@ -70,8 +90,10 @@ fun CampaignWinnerItem(
             }
 
             TraverseeOutlinedButton(
-                text = "See Submission",
-                onClick = { /*TODO*/ },
+                text = stringResource(id = R.string.see_submission),
+                onClick = {
+                    context.startActivity(webIntent)
+                },
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
             )
         }

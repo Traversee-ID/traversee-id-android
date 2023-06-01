@@ -30,7 +30,7 @@ import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.theme.*
-import com.alvindev.traverseeid.feature_auth.util.ComposeFileProvider
+import com.alvindev.traverseeid.core.util.ComposeFileProvider
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumTextField
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination

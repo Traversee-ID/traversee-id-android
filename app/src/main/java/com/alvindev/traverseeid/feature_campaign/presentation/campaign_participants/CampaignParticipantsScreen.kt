@@ -1,10 +1,7 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.campaign_participants
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,18 +14,25 @@ import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignWinnerItem
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
+import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignParticipantEntity
+import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination(
-    route = "campaign/participants",
+    route = ScreenRoute.CampaignParticipants
 )
 @Composable
-fun CampaignParticipantsScreen() {
+fun CampaignParticipantsScreen(
+    campaignWinners: ArrayList<CampaignParticipantEntity> = arrayListOf(),
+    campaignOtherParticipants: ArrayList<CampaignParticipantEntity> = arrayListOf()
+) {
     LazyColumn(
-        modifier = Modifier.padding(vertical = 16.dp)
+        contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         item {
-            CampaignWinners()
+            CampaignWinners(
+                campaignWinners = campaignWinners
+            )
         }
         item{
             TraverseeDivider(
@@ -39,13 +43,19 @@ fun CampaignParticipantsScreen() {
             )
         }
         item{
-            CampaignParticipants()
+            if(campaignOtherParticipants.isNotEmpty()){
+                CampaignParticipants(
+                    campaignOtherParticipants = campaignOtherParticipants
+                )
+            }
         }
     }
 }
 
 @Composable
-fun CampaignWinners(){
+fun CampaignWinners(
+    campaignWinners: List<CampaignParticipantEntity>
+){
     Column(
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -61,30 +71,22 @@ fun CampaignWinners(){
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            CampaignWinnerItem(
-                winnerName = "Alvin",
-                winnerPhoto = "",
-                winnerRank = 1,
-                winnerSubmission = "https://www.google.com"
-            )
-            CampaignWinnerItem(
-                winnerName = "Triseptia",
-                winnerPhoto = "",
-                winnerRank = 2,
-                winnerSubmission = "https://www.google.com"
-            )
-            CampaignWinnerItem(
-                winnerName = "Alphine",
-                winnerPhoto = "",
-                winnerRank = 3,
-                winnerSubmission = "https://www.google.com"
-            )
+            campaignWinners.forEach { winner ->
+                CampaignWinnerItem(
+                    winnerName = winner.userDisplayName ?: "-",
+                    winnerPhoto = winner.userProfileImage,
+                    winnerSubmission = winner.submissionUrl ?: "",
+                    winnerRank = winner.position ?: -1,
+                )
+            }
         }
     }
 }
 
 @Composable
-fun CampaignParticipants(){
+fun CampaignParticipants(
+    campaignOtherParticipants: List<CampaignParticipantEntity>
+){
     Column(
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -100,31 +102,13 @@ fun CampaignParticipants(){
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            CampaignWinnerItem(
-                winnerName = "Alvin",
-                winnerPhoto = "",
-                winnerSubmission = "https://www.google.com"
-            )
-            CampaignWinnerItem(
-                winnerName = "Alvin",
-                winnerPhoto = "",
-                winnerSubmission = "https://www.google.com"
-            )
-            CampaignWinnerItem(
-                winnerName = "Alvin",
-                winnerPhoto = "",
-                winnerSubmission = "https://www.google.com"
-            )
-            CampaignWinnerItem(
-                winnerName = "Alvin",
-                winnerPhoto = "",
-                winnerSubmission = "https://www.google.com"
-            )
-            CampaignWinnerItem(
-                winnerName = "Alvin",
-                winnerPhoto = "",
-                winnerSubmission = "https://www.google.com"
-            )
+            campaignOtherParticipants.forEach { participant ->
+                CampaignWinnerItem(
+                    winnerName = participant.userId ?: "",
+                    winnerPhoto = "",
+                    winnerSubmission = participant.submissionUrl ?: ""
+                )
+            }
         }
     }
 }

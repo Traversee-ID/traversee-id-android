@@ -9,6 +9,7 @@ object NavigationMapper {
             ScreenRoute.CampaignCategory -> R.string.campaign_category
             ScreenRoute.CampaignDetails -> R.string.campaign_details
             ScreenRoute.CampaignUser -> R.string.my_campaigns
+            ScreenRoute.CampaignParticipants -> R.string.campaign_participants
 
             ScreenRoute.Forum -> R.string.menu_forum
             ScreenRoute.ForumDetails -> R.string.forum_details

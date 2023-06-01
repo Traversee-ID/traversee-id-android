@@ -49,7 +49,7 @@ fun LoginScreen(
     ){task ->
         try {
             val account = task?.getResult(ApiException::class.java)
-            Log.d("LoginScreen", "firebaseAuthWithGoogle: ${account?.idToken}")
+            Log.d("LoginScreen", "firebaseAuthWithGoogle: ${account?.id}")
             if (account != null){
                 viewModel.loginWithGoogle(account.idToken!!)
             }else{

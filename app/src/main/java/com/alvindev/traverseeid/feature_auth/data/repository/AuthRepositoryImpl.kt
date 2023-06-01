@@ -35,6 +35,7 @@ class AuthRepositoryImpl @Inject constructor(
             emit(ResultState.Loading)
             val firebaseUser = authenticator.loginWithEmailPassword(email, password)
             val user = firebaseUser?.let { firebaseUserToUser(it) }
+            ApiConfig.TOKEN = authenticator.getUserToken() ?: ""
             emit(ResultState.Success(user))
         } catch (e: Exception) {
             Log.e(TAG, "login: ${e.message.toString()}")
@@ -48,6 +49,7 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(ResultState.Loading)
                 val firebaseUser = authenticator.loginWithGoogle(idToken)
                 val user = firebaseUser?.let { firebaseUserToUser(it) }
+                ApiConfig.TOKEN = authenticator.getUserToken() ?: ""
                 emit(ResultState.Success(user))
             } catch (e: Exception) {
                 Log.e(TAG, "login: ${e.message.toString()}")
@@ -68,6 +70,7 @@ class AuthRepositoryImpl @Inject constructor(
                     authenticator.updateProfile(name, null)
                 }
                 val user = firebaseUser?.let { firebaseUserToUser(it) }
+                ApiConfig.TOKEN = authenticator.getUserToken() ?: ""
                 emit(ResultState.Success(user))
             } catch (e: Exception) {
                 Log.e(TAG, "register: ${e.message.toString()}")

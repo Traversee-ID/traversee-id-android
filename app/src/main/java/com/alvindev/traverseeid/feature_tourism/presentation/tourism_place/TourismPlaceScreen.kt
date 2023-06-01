@@ -79,7 +79,7 @@ fun TourismPlaceScreen(
                         .clickable {
                             navigator.navigate(TourismListScreenDestination(name = place.name))
                         },
-                    image = place.image,
+                    image = "https://picsum.photos/200/300",
                     contentDescription = place.name,
                     text = place.name,
                     isFullSize = true,

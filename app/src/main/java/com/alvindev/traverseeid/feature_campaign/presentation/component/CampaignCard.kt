@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
 import com.alvindev.traverseeid.core.theme.*
+import com.alvindev.traverseeid.core.util.digitSeparator
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -89,8 +90,9 @@ fun CampaignCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TraverseeRowIcon(
+                    modifier = Modifier.padding(end = 8.dp),
                     icon = Icons.Default.PersonOutline,
-                    text = "$participants participants"
+                    text = "${participants.digitSeparator()} participants"
                 )
                 TraverseeRowIcon(
                     icon = Icons.Default.Schedule,
