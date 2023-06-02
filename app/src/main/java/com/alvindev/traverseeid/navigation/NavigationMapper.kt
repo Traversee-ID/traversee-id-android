@@ -18,6 +18,8 @@ object NavigationMapper {
             ScreenRoute.Tourism -> R.string.menu_tourism
             ScreenRoute.TourismDetails -> R.string.tourism_details
             ScreenRoute.TourismPlace -> R.string.tourism_place
+            ScreenRoute.TripList -> R.string.open_trip
+            ScreenRoute.TripDetails -> R.string.trip_details
 
             ScreenRoute.Sentiment -> R.string.menu_sentiment
 

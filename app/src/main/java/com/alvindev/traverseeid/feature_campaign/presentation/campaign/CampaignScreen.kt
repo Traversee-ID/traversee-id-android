@@ -1,24 +1,20 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.campaign
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.HourglassEmpty
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,12 +23,11 @@ import com.alvindev.destinations.CampaignDetailsScreenDestination
 import com.alvindev.destinations.CampaignListScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
-import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignCard
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.MyCampaignCard
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
-import com.alvindev.traverseeid.core.theme.Typography
+import com.alvindev.traverseeid.core.theme.*
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.navigation.ScreenRoute
@@ -148,8 +143,8 @@ fun SectionMyCampaign(
         TraverseeSectionTitle(
             modifier = Modifier.padding(horizontal = 16.dp),
             title = stringResource(id = R.string.my_campaigns),
-            subtitle = if(campaigns.isNotEmpty()) stringResource(id = R.string.my_campaign_description) else null,
-            actionText = if(campaigns.size >= 5) stringResource(id = R.string.see_all) else null,
+            subtitle = if (campaigns.isNotEmpty()) stringResource(id = R.string.my_campaign_description) else null,
+            actionText = if (campaigns.size >= 5) stringResource(id = R.string.see_all) else null,
             actionOnClick = actionOnClick
         )
         if (campaigns.isNotEmpty()) {
@@ -180,27 +175,38 @@ fun SectionMyCampaign(
 
 @Composable
 fun EmptyMyCampaigns(
-    onClickJoin : () -> Unit = {}
-){
-    Row(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+    onClickJoin: () -> Unit = {}
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        elevation = 4.dp,
+        shape = Shapes.large,
+        backgroundColor = Color.White,
     ) {
-        Icon(
-            modifier = Modifier.size(100.dp),
-            imageVector = Icons.Default.HourglassEmpty,
-            contentDescription = null,
-        )
         Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Image(
+                painter = painterResource(id = R.drawable.empty_my_campaign),
+                contentDescription = stringResource(id = R.string.no_joined_campaign),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(125.dp),
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            )
             Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp, vertical = 8.dp),
                 text = stringResource(id = R.string.no_joined_campaign),
-                style = Typography.body2,
+                style = Typography.subtitle1,
+                textAlign = TextAlign.Center,
             )
             TraverseeButton(
-                modifier = Modifier.clip(RoundedCornerShape(100.dp)),
+                modifier = Modifier.padding(bottom = 8.dp),
                 text = stringResource(id = R.string.join_campaign),
                 onClick = onClickJoin
             )
@@ -234,7 +240,9 @@ fun SectionCampaignAround(
         ) {
             items(5) {
                 CampaignCard(
-                    modifier = Modifier.width(screenWidth),
+                    modifier = Modifier
+                        .width(screenWidth)
+                        .background(color = Color.White, shape = Shapes.medium),
                     title = "Share your experience at Borobudur",
                     category = "Cultural",
                     startDate = "May 17",
@@ -270,14 +278,20 @@ fun SectionDiscoverCampaign(
             actionText = stringResource(id = R.string.see_all),
             actionOnClick = actionOnClick
         )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
+        Row(
+            Modifier
+                .horizontalScroll(rememberScrollState())
+                .height(intrinsicSize = IntrinsicSize.Max)
+                .padding(horizontal = 8.dp),
         ) {
-            items(campaignCategories, key = { it.id }) { category ->
+            campaignCategories.forEach { category ->
                 TraverseeCategoryCard(
                     modifier = Modifier
-                        .width(screenWidth / 3)
+                        .padding(horizontal = 8.dp)
+                        .shadow(4.dp, shape = Shapes.large)
+                        .fillMaxHeight()
+                        .width(screenWidth / 2.8f)
+                        .background(Color.White, shape = Shapes.large)
                         .clickable { categoryOnClick(category) },
                     image = category.imageUrl ?: "",
                     contentDescription = category.name ?: "",

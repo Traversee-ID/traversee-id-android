@@ -32,7 +32,9 @@ fun TopSearchBar(
     placeholderText: String = "",
     onSearchTextChanged: (String) -> Unit = {},
     onClearClick: () -> Unit = {},
-    onNavigateBack: () -> Unit = {}
+    onNavigateBack: () -> Unit = {},
+    backgroundColor: Color = Color.White,
+    contentColor: Color = TraverseeBlack,
 ) {
     var showClearButton by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -40,14 +42,15 @@ fun TopSearchBar(
 
     TopAppBar(
         title = { Text(title) },
-        backgroundColor = Color.White,
-        contentColor = TraverseeBlack,
+        backgroundColor = backgroundColor,
+        contentColor = contentColor,
         navigationIcon = {
         IconButton(onClick = { onNavigateBack() }) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 modifier = Modifier,
-                contentDescription = "back"
+                contentDescription = "back",
+                tint = contentColor
             )
         }
     }, actions = {
@@ -61,7 +64,7 @@ fun TopSearchBar(
             value = searchText,
             onValueChange = onSearchTextChanged,
             placeholder = {
-                Text(text = placeholderText, style = MaterialTheme.typography.body2)
+                Text(text = placeholderText, style = MaterialTheme.typography.body2, color = contentColor)
             },
             textStyle = MaterialTheme.typography.body2,
             colors = TextFieldDefaults.textFieldColors(
@@ -80,6 +83,7 @@ fun TopSearchBar(
                         Icon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = "clear",
+                            tint = contentColor
                         )
                     }
 

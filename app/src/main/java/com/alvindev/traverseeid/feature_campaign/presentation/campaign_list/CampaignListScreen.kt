@@ -22,6 +22,7 @@ import androidx.paging.compose.items
 import com.alvindev.destinations.CampaignDetailsScreenDestination
 import com.alvindev.traverseeid.MainActivity
 import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignCard
@@ -45,14 +46,18 @@ fun CampaignListScreen(
     navigator: DestinationsNavigator,
     viewModel: CampaignListViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.setCategoryId(id)
-    }
     name?.let {
         MainActivity.routeName = it
     }
     val isHideButton = name == stringResource(id = R.string.campaign_around)
     val state = viewModel.state
+
+
+    LaunchedEffect(Unit) {
+        if(state.categoryId == -1) {
+            viewModel.setCategoryId(id)
+        }
+    }
 
     val campaigns: LazyPagingItems<CampaignItem> = if (id != -1) {
         viewModel.getCampaignsByCategory(id, state.status, state.locationId, state.isRegistered).collectAsLazyPagingItems()
@@ -130,12 +135,13 @@ fun CampaignListScreen(
                     CampaignCard(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .background(color = Color.White, shape = Shapes.medium)
                             .padding(vertical = 8.dp),
                         title = item?.campaign?.name ?: "",
                         category = item?.campaign?.categoryName ?: "",
                         startDate = item?.campaign?.startDate ?: "",
                         endDate = item?.campaign?.endDate ?: "",
-                        place = item?.campaign?.location_name ?: "",
+                        place = item?.campaign?.locationName ?: "",
                         participants = item?.campaign?.totalParticipants ?: 0,
                         imageUrl = item?.campaign?.imageUrl,
                         onClick = {

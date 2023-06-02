@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Traversee ID</string>
+    <string name="app_name">Traversee</string>
     <string name="menu_campaign">Campaign</string>
     <string name="menu_settings">Settings</string>
     <string name="sign_in_with_google">Login with Google</string>
@@ -111,7 +111,7 @@
     <string name="comment_deleted">Comment Deleted</string>
     <string name="location">Location</string>
     <string name="Indonesia">Indonesia</string>
-    <string name="my_campaigns_subtitle">Get an unforgettable trip experience</string>
+    <string name="my_trip_subtitle">Get an unforgettable trip experience</string>
     <string name="open_trip">Open Trip</string>
     <string name="coming_soon_campaigns">Coming Soon Campaigns</string>
     <string name="ongoing_campaigns">Ongoing Campaigns</string>
@@ -121,4 +121,11 @@
     <string name="trip_destination">Trip Destination</string>
     <string name="about_trip">About the Trip</string>
     <string name="campaign_winners">Campaign Winners</string>
+    <string name="hello_user">Hello, %s</string>
+    <string name="participants">Participants</string>
+    <string name="submission">Submission</string>
+    <string name="iniated_by">Iniated by</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="days_left">Days left</string>
+    <string name="ended">Ended</string>
 </resources>

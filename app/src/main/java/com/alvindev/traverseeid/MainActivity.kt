@@ -19,6 +19,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,10 +31,13 @@ import com.alvindev.appCurrentDestinationAsState
 import com.alvindev.startAppDestination
 import com.alvindev.traverseeid.core.presentation.component.TopSearchBar
 import com.alvindev.traverseeid.core.theme.TraverseeBlack
+import com.alvindev.traverseeid.core.theme.TraverseePrimaryVariant
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.navigation.NavigationItem
 import com.alvindev.traverseeid.navigation.NavigationMapper
 import com.alvindev.traverseeid.navigation.ScreenRoute
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -62,6 +66,8 @@ class MainActivity : ComponentActivity() {
                     val currentRoute = currentDestination.baseRoute
                     val navigationStringId: Int =
                         NavigationMapper.mapToNavigationStringResource(currentRoute)
+                    val user = Firebase.auth.currentUser
+                    val titleTopBarCampaign = stringResource(id = R.string.hello_user, user?.displayName ?: "-")
 
                     var searchText by remember{ mutableStateOf("")}
                     var expandable by remember{ mutableStateOf(false)}
@@ -101,12 +107,14 @@ class MainActivity : ComponentActivity() {
                                     else if(currentRoute == ScreenRoute.Campaign || currentRoute == ScreenRoute.Tourism){
                                         if(expandable){
                                             TopSearchBar(
-                                                title = title,
+                                                title = if(currentRoute == ScreenRoute.Campaign) titleTopBarCampaign else title,
                                                 searchText = searchText,
                                                 placeholderText = stringResource(id = R.string.search, title),
                                                 onSearchTextChanged = { searchText = it },
                                                 onClearClick = { searchText = "" },
                                                 onNavigateBack = { expandable = false },
+                                                backgroundColor = if(currentRoute == ScreenRoute.Campaign) TraverseePrimaryVariant else Color.White,
+                                                contentColor = if(currentRoute == ScreenRoute.Campaign) Color.White else TraverseeBlack,
                                             )
                                         }else{
                                             TopBarMainScreen(
@@ -123,7 +131,9 @@ class MainActivity : ComponentActivity() {
                                                             tint = MaterialTheme.colors.primary
                                                         )
                                                     }
-                                                }
+                                                },
+                                                backgroundColor = if(currentRoute == ScreenRoute.Campaign) TraverseePrimaryVariant else Color.White,
+                                                contentColor = if(currentRoute == ScreenRoute.Campaign) Color.White else TraverseeBlack,
                                             )
                                         }
                                     }
@@ -263,7 +273,9 @@ private fun BottomBar(
 @Composable
 fun TopBarMainScreen(
     title: String,
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable RowScope.() -> Unit = {},
+    backgroundColor: Color = Color.White,
+    contentColor: Color = TraverseeBlack
 ) {
     TopAppBar(
         title = {
@@ -272,8 +284,8 @@ fun TopBarMainScreen(
             )
         },
         actions = actions,
-        backgroundColor = Color.White,
-        contentColor = TraverseeBlack
+        backgroundColor = backgroundColor,
+        contentColor = contentColor
     )
 }
 
@@ -283,9 +295,12 @@ fun TopBarCommonScreen(
     onBackClick: () -> Unit
 ) {
     TopAppBar(
+        modifier= Modifier,
         title = {
             Text(
+                modifier = Modifier.fillMaxWidth(0.8f),
                 text = title,
+                textAlign = TextAlign.Center,
             )
         },
         navigationIcon = {

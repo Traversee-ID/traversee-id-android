@@ -10,16 +10,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -30,16 +32,15 @@ import coil.compose.AsyncImage
 import com.alvindev.destinations.CampaignParticipantsScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.*
-import com.alvindev.traverseeid.core.theme.Shapes
-import com.alvindev.traverseeid.core.theme.TraverseeTheme
-import com.alvindev.traverseeid.core.theme.Typography
+import com.alvindev.traverseeid.core.theme.*
+import com.alvindev.traverseeid.core.util.digitSeparator
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
-import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignDescriptionCard
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignParticipantItem
-import com.alvindev.traverseeid.core.theme.TraverseeGreen
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignStatusConstant
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignParticipantEntity
+import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignRowIcon
+import com.alvindev.traverseeid.feature_campaign.util.CampaignUtil
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -54,21 +55,26 @@ fun CampaignDetailsScreen(
     navigator: DestinationsNavigator,
     viewModel: CampaignDetailsViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        campaignItem?.let {
-            viewModel.setCampaignItem(campaignItem)
-        }
-    }
     val state = viewModel.state
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp - 32.dp
+
+    LaunchedEffect(Unit) {
+        if(state.campaign == null){
+            campaignItem?.let {
+                viewModel.setCampaignItem(it)
+            }
+        }
+    }
 
     if (state.isShowDialog) {
-        val title = if(state.isRegistered) {
+        val title = if (state.isRegistered) {
             stringResource(id = R.string.submit)
         } else {
             stringResource(id = R.string.register_campaign)
         }
-        val text = if(state.isRegistered) {
+        val text = if (state.isRegistered) {
             stringResource(id = R.string.submit_message)
         } else {
             stringResource(id = R.string.register_campaign_message)
@@ -76,7 +82,7 @@ fun CampaignDetailsScreen(
         TraverseeAlertDialog(
             title = title,
             text = text,
-            onConfirm = if(state.isRegistered) {
+            onConfirm = if (state.isRegistered) {
                 {
                     viewModel.submitCampaign()
                 }
@@ -118,11 +124,9 @@ fun CampaignDetailsScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom = 96.dp),
             ) {
                 Box(modifier = Modifier.aspectRatio(1f)) {
                     AsyncImage(
@@ -147,74 +151,143 @@ fun CampaignDetailsScreen(
                         )
                     }
                 }
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = state.campaign?.name ?: "",
-                    style = Typography.h1.copy(color = MaterialTheme.colors.primaryVariant)
-                )
-                CampaignDescriptionCard(
+
+                Column(
                     modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .shadow(2.dp, shape = Shapes.large)
-                        .clip(Shapes.large)
-                        .background(color = Color.White)
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    iniatedBy = state.campaignDetails?.initiatorName ?: "",
-                    startDate = state.campaign?.startDate ?: "",
-                    endDate = state.campaign?.endDate ?: "",
-                    category = state.campaign?.categoryName ?: "",
-                    participants = state.campaign?.totalParticipants ?: 0,
-                )
-                state.campaignWinners?.let { list ->
-                    if (list.isNotEmpty()) {
-                        val campaignWinners = arrayListOf<CampaignParticipantEntity>()
-                        val campaignOtherParticipants = arrayListOf<CampaignParticipantEntity>()
+                        .padding(top = screenWidth, bottom = 96.dp)
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                        )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = state.campaign?.categoryName ?: "",
+                            style = Typography.subtitle2.copy(color = MaterialTheme.colors.secondaryVariant)
+                        )
 
-                        list.forEach { campaignParticipant ->
-                            campaignWinners.add(campaignParticipant)
-                        }
-
-                        state.campaignOtherParticipants?.let { campaignParticipants ->
-                            campaignParticipants.forEach { campaignParticipant ->
-                                campaignOtherParticipants.add(campaignParticipant)
-                            }
-                        }
-
-                        CampaignWinners(
-                            campaignWinners = list,
-                            onClickAllParticipants = {
-                                navigator.navigate(
-                                    CampaignParticipantsScreenDestination(
-                                        campaignWinners = campaignWinners,
-                                        campaignOtherParticipants = campaignOtherParticipants
-                                    )
-                                )
-                            }
+                        Text(
+                            text = "${state.campaign?.startDate} - ${state.campaign?.endDate}",
+                            style = Typography.subtitle2.copy(color = MaterialTheme.colors.secondary)
                         )
                     }
-                }
-                state.campaignDetails?.description?.let {
-                    AboutCampaign(it)
-                }
-                state.campaignDetails?.terms?.let {
-                    CampaignTermsAndConditions(it)
-                }
-                state.campaignDetails?.mission?.let {
-                    CampaignMissions(it)
-                }
-                if (state.isRegistered && state.campaign?.status?.lowercase() != CampaignStatusConstant.COMING_SOON_VALUE) {
-                    CampaignSubmission(
-                        value = state.submissionUrl,
-                        onValueChange = viewModel::onSubmissionUrlChanged,
-                        enabled = state.campaignUserCondition < CampaignParticipantConstant.REGISTERED_AND_SUBMITTED,
+
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = state.campaign?.name ?: "",
+                        style = Typography.h1.copy(color = MaterialTheme.colors.secondaryVariant)
                     )
+                    TraverseeRowIcon(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        icon = Icons.Outlined.Place,
+                        text = state.campaign?.locationName ?: "",
+                    )
+                    Row(
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.iniated_by) + ":",
+                            style = Typography.subtitle2,
+                            color = TraverseeBlack
+                        )
+                        Text(
+                            text = state.campaignDetails?.initiatorName ?: "",
+                            style = Typography.subtitle2,
+                            fontWeight = FontWeight.W400,
+                            modifier = Modifier
+                                .padding(start = 4.dp),
+                            color = TraverseeBlack
+                        )
+                    }
+
+                    state.campaignWinners?.let { list ->
+                        if (list.isNotEmpty()) {
+                            val campaignWinners = arrayListOf<CampaignParticipantEntity>()
+                            val campaignOtherParticipants = arrayListOf<CampaignParticipantEntity>()
+
+                            list.forEach { campaignParticipant ->
+                                campaignWinners.add(campaignParticipant)
+                            }
+
+                            state.campaignOtherParticipants?.let { campaignParticipants ->
+                                campaignParticipants.forEach { campaignParticipant ->
+                                    campaignOtherParticipants.add(campaignParticipant)
+                                }
+                            }
+
+                            CampaignWinners(
+                                campaignWinners = list,
+                                onClickAllParticipants = {
+                                    navigator.navigate(
+                                        CampaignParticipantsScreenDestination(
+                                            campaignWinners = campaignWinners,
+                                            campaignOtherParticipants = campaignOtherParticipants
+                                        )
+                                    )
+                                }
+                            )
+                        }
+                    }
+                    state.campaignDetails?.description?.let {
+                        Spacer(modifier = Modifier.height(24.dp))
+                        AboutCampaign(it)
+                    }
+
+                    state.campaign?.endDate?.let { endDate ->
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            CampaignRowIcon(
+                                modifier = Modifier.padding(end = 16.dp),
+                                icon = R.drawable.ic_participants,
+                                title = state.campaign.totalParticipants.digitSeparator(),
+                                description = stringResource(id = R.string.participants),
+                            )
+                            CampaignRowIcon(
+                                icon = R.drawable.ic_timer,
+                                title = if (CampaignUtil.calculateDaysLeft(endDate) == 0) stringResource(
+                                    id = R.string.ended
+                                ) else CampaignUtil.calculateDaysLeft(endDate).digitSeparator(),
+                                description = stringResource(id = R.string.days_left),
+                            )
+                        }
+                    }
+
+                    state.campaignDetails?.terms?.let {
+                        Spacer(modifier = Modifier.height(24.dp))
+                        CampaignTermsAndConditions(it)
+                    }
+                    state.campaignDetails?.mission?.let {
+                        Spacer(modifier = Modifier.height(24.dp))
+                        CampaignMissions(it)
+                    }
+                    if (state.isRegistered && state.campaign?.status?.lowercase() != CampaignStatusConstant.COMING_SOON_VALUE) {
+                        Spacer(modifier = Modifier.height(24.dp))
+                        CampaignSubmission(
+                            value = state.submissionUrl,
+                            onValueChange = viewModel::onSubmissionUrlChanged,
+                            enabled = state.campaignUserCondition < CampaignParticipantConstant.REGISTERED_AND_SUBMITTED,
+                        )
+                    }
                 }
             }
 
             Footer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(IntrinsicSize.Min)
+                    .height(IntrinsicSize.Max)
                     .background(color = Color.White)
                     .align(Alignment.BottomCenter)
                     .padding(16.dp),
@@ -236,12 +309,6 @@ fun AboutCampaign(
     description: String
 ) {
     Column {
-        TraverseeDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            thickness = 4.dp
-        )
         TraverseeSectionTitle(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             title = stringResource(id = R.string.about_campaign)
@@ -259,19 +326,19 @@ fun AboutCampaign(
 fun CampaignTermsAndConditions(
     terms: String
 ) {
-    Column {
-        TraverseeDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            thickness = 4.dp
-        )
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .shadow(2.dp, shape = Shapes.large)
+            .fillMaxWidth()
+            .background(color = Color.White, shape = Shapes.large)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+    ) {
         TraverseeSectionTitle(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+            modifier = Modifier.padding(bottom = 8.dp),
             title = stringResource(id = R.string.terms_and_conditions)
         )
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp),
             text = terms,
             style = Typography.body2,
             textAlign = TextAlign.Justify,
@@ -283,19 +350,19 @@ fun CampaignTermsAndConditions(
 fun CampaignMissions(
     missions: String
 ) {
-    Column {
-        TraverseeDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            thickness = 4.dp
-        )
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .shadow(2.dp, shape = Shapes.large)
+            .fillMaxWidth()
+            .background(color = Color.White, shape = Shapes.large)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+    ) {
         TraverseeSectionTitle(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+            modifier = Modifier.padding(bottom = 8.dp),
             title = stringResource(id = R.string.missions)
         )
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp),
             text = missions,
             style = Typography.body2,
             textAlign = TextAlign.Justify,
@@ -310,18 +377,12 @@ fun CampaignSubmission(
     enabled: Boolean
 ) {
     Column {
-        TraverseeDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            thickness = 4.dp
-        )
         TraverseeSectionTitle(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-            title = "Submission"
+            title = stringResource(id = R.string.submission)
         )
         TraverseeTextField(
-            value= value,
+            value = value,
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
@@ -347,18 +408,14 @@ fun CampaignWinners(
     campaignWinners: List<CampaignParticipantEntity>,
     onClickAllParticipants: () -> Unit,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        TraverseeDivider(
+    Column {
+        Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            thickness = 4.dp
-        )
-        TraverseeSectionTitle(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            title = stringResource(id = R.string.winners_announcement),
+                .padding(top = 16.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.winners_announcement).uppercase(),
+            style = Typography.h1.copy(color = TraverseeOrange),
+            textAlign = TextAlign.Center,
         )
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
@@ -372,7 +429,7 @@ fun CampaignWinners(
                 .shadow(2.dp, shape = Shapes.large)
                 .fillMaxWidth()
                 .background(color = Color.White, shape = Shapes.large)
-                .padding(8.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -413,10 +470,10 @@ fun Footer(
         TraverseeOutlinedButton(
             modifier = Modifier
                 .width(IntrinsicSize.Min)
-                .height(IntrinsicSize.Max),
+                .fillMaxHeight(),
             contentPadding = PaddingValues(4.dp),
             onClick = onClickShare,
-            shape = Shapes.large,
+            shape = Shapes.medium,
         ) {
             Icon(
                 imageVector = Icons.Outlined.Share,

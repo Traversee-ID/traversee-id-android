@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeOutlinedButton
-import com.alvindev.traverseeid.core.theme.TraverseeTheme
-import com.alvindev.traverseeid.core.theme.Typography
+import com.alvindev.traverseeid.core.theme.*
 
 @Composable
 fun CampaignParticipantItem(
@@ -76,11 +75,17 @@ fun CampaignParticipantItem(
                     style = Typography.subtitle2
                 )
                 if(winnerRank != -1){
+                    val color = when(winnerRank){
+                        1 -> TraverseeGold
+                        2 -> TraverseeSilver
+                        3 -> TraverseeBronze
+                        else -> MaterialTheme.colors.onSurface
+                    }
                     Text(
                         modifier = Modifier
                             .size(24.dp)
                             .clip(RoundedCornerShape(50))
-                            .background(color = MaterialTheme.colors.secondary)
+                            .background(color = color)
                             .wrapContentSize(Alignment.Center),
                         text = "#$winnerRank",
                         style = Typography.subtitle2,
