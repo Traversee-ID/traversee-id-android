@@ -10,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,7 +35,7 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignDescriptionCard
-import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignWinnerItem
+import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignParticipantItem
 import com.alvindev.traverseeid.core.theme.TraverseeGreen
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignStatusConstant
@@ -226,8 +225,6 @@ fun CampaignDetailsScreen(
                 },
                 onClickShare = {
                     navigator.navigate(ScreenRoute.ForumPost)
-                },
-                onClickFavorite = {
                 }
             )
         }
@@ -380,7 +377,7 @@ fun CampaignWinners(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             campaignWinners.forEach { winner ->
-                CampaignWinnerItem(
+                CampaignParticipantItem(
                     winnerName = winner.userDisplayName ?: "-",
                     winnerPhoto = winner.userProfileImage,
                     winnerSubmission = winner.submissionUrl ?: "",
@@ -408,7 +405,6 @@ fun Footer(
     enabledButton: Boolean,
     onClickButton: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFavorite: () -> Unit,
 ) {
     Row(
         modifier = modifier,
@@ -420,22 +416,11 @@ fun Footer(
                 .height(IntrinsicSize.Max),
             contentPadding = PaddingValues(4.dp),
             onClick = onClickShare,
+            shape = Shapes.large,
         ) {
             Icon(
                 imageVector = Icons.Outlined.Share,
                 contentDescription = "Share",
-            )
-        }
-        TraverseeOutlinedButton(
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-                .height(IntrinsicSize.Max),
-            contentPadding = PaddingValues(4.dp),
-            onClick = onClickFavorite,
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.FavoriteBorder,
-                contentDescription = "Favorite",
             )
         }
         TraverseeButton(

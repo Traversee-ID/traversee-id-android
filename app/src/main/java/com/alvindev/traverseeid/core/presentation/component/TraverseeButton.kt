@@ -8,17 +8,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 
 @Composable
 fun TraverseeButton(
-    modifier: Modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(100.dp)),
+    modifier: Modifier = Modifier.fillMaxWidth(),
     onClick: () -> Unit = {},
     enabled: Boolean = true,
     text: String = "Button",
@@ -29,13 +27,14 @@ fun TraverseeButton(
         contentColor = MaterialTheme.colors.onPrimary,
     ),
     contentPadding: PaddingValues = PaddingValues(horizontal=16.dp, vertical = 10.dp),
+    shape: Shape = RoundedCornerShape(100.dp),
     content: @Composable RowScope.() -> Unit = {
         Text(
             text = text,
             style = MaterialTheme.typography.button,
             fontWeight = FontWeight.SemiBold,
         )
-    }
+    },
 ) {
     Button(
         modifier = modifier,
@@ -45,7 +44,8 @@ fun TraverseeButton(
         border = border,
         colors = colors,
         contentPadding = contentPadding,
-        content = content
+        shape = shape,
+        content = content,
     )
 }
 

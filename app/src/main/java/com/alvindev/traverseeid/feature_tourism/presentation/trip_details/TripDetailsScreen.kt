@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alvindev.traverseeid.R
@@ -37,9 +38,10 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun TripDetailsScreen(
     navigator: DestinationsNavigator,
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-    ){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -110,7 +112,7 @@ fun TripDetailsScreen(
                 .align(Alignment.BottomCenter)
                 .padding(16.dp),
             onClick = {}
-        ){
+        ) {
             TraverseeRowIcon(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Book via WhatsApp",
@@ -130,19 +132,27 @@ fun SectionTripDestination(
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp - (16.dp * 2)
-
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    Column(
+        modifier = Modifier.padding(vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(10) {
-            TourismCard(
-                modifier = Modifier
-                    .width(screenWidth / 2)
-                    .clickable{
-                        destinationOnClick()
-                    },
-            )
+        TraverseeSectionTitle(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            title = stringResource(id = R.string.trip_destination)
+        )
+        LazyRow(
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            items(10) {
+                TourismCard(
+                    modifier = Modifier
+                        .width(screenWidth / 2)
+                        .clickable {
+                            destinationOnClick()
+                        },
+                )
+            }
         }
     }
 }
@@ -173,7 +183,6 @@ fun ScheduleTrip(
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp - (16.dp * 2)
-
     FlowRow(
         modifier = modifier,
     ) {
@@ -199,7 +208,7 @@ fun AboutTrip() {
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        TraverseeSectionTitle(title = "About the Trip")
+        TraverseeSectionTitle(title = stringResource(id = R.string.about_trip))
         Text(
             text = "Wisata Tur Situ Gunung Sukabumi Jawa Barat merupakan salah satu destinasi wisata alam di Indonesia yang menarik untuk dikunjung. Wisata yang terletak di Kadudampit, Sukabumi, Jawa Barat ini merupakan kawasan yang menyajikan beragam objek wisata alam menarik. Seperti area berkemah yang luas dan sejuk hingga jembatan gantung yang ikonik. Meskipun termasuk wisata yang murah dan terjangkau, Anda tidak akan kecewa dengan suguhan pemandangan alam dan berbagai fasilitas yang bisa dinikmati. Dengan begitu, Anda bisa mengurangi rasa stres dan penat dari padatnya aktivitas harian.\n" +
                     "\n" +

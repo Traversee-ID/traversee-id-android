@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
 import com.alvindev.traverseeid.core.theme.*
@@ -35,7 +36,8 @@ fun CampaignCard(
     endDate: String,
     place: String,
     participants: Int,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    imageUrl: String? = null,
 ) {
     Card(
         modifier = modifier,
@@ -51,8 +53,20 @@ fun CampaignCard(
         ) {
             //body
             Row {
+                imageUrl?.let{
+                    AsyncImage(
+                        model = it,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(Shapes.large),
+                        contentScale = ContentScale.Crop,
+                        alignment = Alignment.Center,
+                        fallback =painterResource(id = R.drawable.dummy_komodo_island)
+                    )
+                } ?:
                 Image(
-                    painter = painterResource(id = R.drawable.dummy_borobudur),
+                    painter = painterResource(id = R.drawable.dummy_komodo_island),
                     contentDescription = null,
                     modifier = Modifier
                         .size(100.dp)

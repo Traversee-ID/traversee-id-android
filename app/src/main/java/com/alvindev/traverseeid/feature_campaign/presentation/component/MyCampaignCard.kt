@@ -16,6 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.*
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
@@ -24,11 +25,12 @@ import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignPartici
 @Composable
 fun MyCampaignCard(
     modifier: Modifier = Modifier,
-    title: String = "Title",
-    status: String = "Ongoing",
-    startDate: String = "May 17",
-    endDate: String = "June 17",
-    participants: Int = 1000,
+    title: String,
+    status: String,
+    startDate: String,
+    endDate: String,
+    participants: Int,
+    imageUrl: String? = null,
     onClick: () -> Unit = {}
 ) {
     Card(
@@ -45,7 +47,15 @@ fun MyCampaignCard(
                     .fillMaxWidth()
                     .height(170.dp)
             ){
-                Image(
+                imageUrl?.let {
+                    AsyncImage(
+                        modifier = Modifier.fillMaxSize(),
+                        model = it,
+                        contentDescription = "Campaign Image",
+                        contentScale = ContentScale.Crop,
+                        fallback =painterResource(id = R.drawable.dummy_komodo_island)
+                    )
+                } ?: Image(
                     painter = painterResource(id = R.drawable.dummy_borobudur),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
@@ -124,6 +134,12 @@ fun MyCampaignCardPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
+            title = "Borobudur Temple",
+            status = "Ended",
+            startDate = "12/12/2021",
+            endDate = "12/12/2021",
+            participants = 100,
+            imageUrl = "https://www.pegipegi.com/travel/wp-content/uploads/2019/10/borobudur-1.jpg"
         )
     }
 }

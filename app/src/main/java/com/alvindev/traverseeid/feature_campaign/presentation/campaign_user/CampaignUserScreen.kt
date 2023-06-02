@@ -50,6 +50,7 @@ fun CampaignUserScreen(
                 endDate = item?.campaign?.endDate ?: "",
                 participants = item?.campaign?.totalParticipants ?: 0,
                 status = item?.campaign?.status ?: "",
+                imageUrl = item?.campaign?.imageUrl,
                 onClick = {
                     navigator.navigate(CampaignDetailsScreenDestination(campaignItem = item))
                 }

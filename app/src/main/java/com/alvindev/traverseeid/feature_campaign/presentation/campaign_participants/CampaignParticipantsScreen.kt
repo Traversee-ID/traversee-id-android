@@ -7,12 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
-import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignWinnerItem
+import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignParticipantItem
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignParticipantEntity
 import com.alvindev.traverseeid.navigation.ScreenRoute
@@ -61,7 +63,7 @@ fun CampaignWinners(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         TraverseeSectionTitle(
-            title = "Campaign Winners"
+            title = stringResource(id = R.string.campaign_winners)
         )
         Column(
             modifier = Modifier
@@ -72,7 +74,7 @@ fun CampaignWinners(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             campaignWinners.forEach { winner ->
-                CampaignWinnerItem(
+                CampaignParticipantItem(
                     winnerName = winner.userDisplayName ?: "-",
                     winnerPhoto = winner.userProfileImage,
                     winnerSubmission = winner.submissionUrl ?: "",
@@ -103,10 +105,10 @@ fun CampaignParticipants(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             campaignOtherParticipants.forEach { participant ->
-                CampaignWinnerItem(
-                    winnerName = participant.userId ?: "",
-                    winnerPhoto = "",
-                    winnerSubmission = participant.submissionUrl ?: ""
+                CampaignParticipantItem(
+                    winnerName = participant.userDisplayName ?: "-",
+                    winnerPhoto = participant.userProfileImage,
+                    winnerSubmission = participant.submissionUrl ?: "",
                 )
             }
         }

@@ -6,7 +6,7 @@ import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignEntity
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignParticipantEntity
 
 data class CampaignDetailsState(
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val error: String? = null,
     val campaign: CampaignEntity? = null,
     val campaignDetails: CampaignDetailsEntity? = null,

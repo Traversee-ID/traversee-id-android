@@ -137,6 +137,7 @@ fun CampaignListScreen(
                         endDate = item?.campaign?.endDate ?: "",
                         place = item?.campaign?.location_name ?: "",
                         participants = item?.campaign?.totalParticipants ?: 0,
+                        imageUrl = item?.campaign?.imageUrl,
                         onClick = {
                             navigator.navigate(CampaignDetailsScreenDestination(campaignItem = item))
                         }

@@ -119,4 +119,7 @@
     <string name="completed_campaigns">Completed Campaigns</string>
     <string name="registered_only">Registered Only</string>
     <string name="unregistered_only">Unregistered Only</string>
+    <string name="trip_destination">Trip Destination</string>
+    <string name="about_trip">About the Trip</string>
+    <string name="campaign_winners">Campaign Winners</string>
 </resources>

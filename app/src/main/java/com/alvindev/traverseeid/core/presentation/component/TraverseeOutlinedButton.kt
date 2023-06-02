@@ -4,10 +4,11 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,13 +26,14 @@ fun TraverseeOutlinedButton(
         contentColor = MaterialTheme.colors.primary,
     ),
     contentPadding: PaddingValues = PaddingValues(horizontal=16.dp, vertical = 10.dp),
+    shape: Shape = RoundedCornerShape(100.dp),
     content: @Composable RowScope.() -> Unit = {
         Text(
             text = text,
             style = MaterialTheme.typography.button,
             fontWeight = FontWeight.SemiBold,
         )
-    }
+    },
 ) {
     OutlinedButton(
         modifier = modifier,
@@ -41,7 +43,8 @@ fun TraverseeOutlinedButton(
         border = border,
         colors = colors,
         contentPadding = contentPadding,
-        content = content
+        shape = shape,
+        content = content,
     )
 }
 

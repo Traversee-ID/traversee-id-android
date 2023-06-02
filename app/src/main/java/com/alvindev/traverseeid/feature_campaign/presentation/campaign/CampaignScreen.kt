@@ -167,6 +167,7 @@ fun SectionMyCampaign(
                         endDate = item.campaign.endDate ?: "",
                         participants = item.campaign.totalParticipants ?: 0,
                         status = item.campaign.status ?: "",
+                        imageUrl = item.campaign.imageUrl,
                         onClick = { campaignOnClick(item) }
                     )
                 }

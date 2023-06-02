@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +25,7 @@ import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 
 @Composable
-fun CampaignWinnerItem(
+fun CampaignParticipantItem(
     modifier: Modifier = Modifier,
     winnerName: String,
     winnerPhoto: String? = null,
@@ -104,7 +103,7 @@ fun CampaignWinnerItem(
 @Composable
 fun WinnerCampaignPreview() {
     TraverseeTheme() {
-        CampaignWinnerItem(
+        CampaignParticipantItem(
             winnerName = "Alvin",
             winnerPhoto = "",
             winnerRank = 1,
