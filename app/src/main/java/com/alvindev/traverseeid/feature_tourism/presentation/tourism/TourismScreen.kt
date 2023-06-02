@@ -17,6 +17,8 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCar
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.core.presentation.component.TourismCard
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignEntity
+import com.alvindev.traverseeid.feature_tourism.domain.entity.OpenTripEntity
+import com.alvindev.traverseeid.feature_tourism.presentation.component.TripCard
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -32,6 +34,21 @@ fun TourismScreen(
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
+        item{
+            SectionOpenTrip(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                actionOnClick = {
+                    navigator.navigate(ScreenRoute.TripList)
+                },
+                tripOnClick = {
+                    navigator.navigate(ScreenRoute.TripDetails)
+                }
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+        }
         item {
             SectionDiscoverTourism(
                 actionOnClick = {
@@ -73,6 +90,82 @@ fun TourismScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SectionOpenTrip(
+    modifier: Modifier = Modifier,
+    actionOnClick: () -> Unit = {},
+    tripOnClick: (campaign: OpenTripEntity) -> Unit = {},
+) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp - 64.dp
+    val openTrips = listOf(
+        OpenTripEntity(
+            id = 1,
+            title = "Open Trip Bromo",
+            price = 1000000,
+            startDate = "12-12-2021",
+            endDate = "12-12-2021",
+            duration = 3,
+            imageUrl = "https://picsum.photos/200/300",
+            location = "Bromo"
+        ),
+        OpenTripEntity(
+            id = 2,
+            title = "Open Trip Bengkulu",
+            price = 4000000,
+            startDate = "12-12-2021",
+            endDate = "12-12-2021",
+            duration = 7,
+            imageUrl = "https://picsum.photos/200/300",
+            location = "Bengkulu"
+        ),
+        OpenTripEntity(
+            id = 3,
+            title = "Open Trip Makassar",
+            price = 1000000,
+            startDate = "12-12-2021",
+            endDate = "12-12-2021",
+            duration = 3,
+            imageUrl = "https://picsum.photos/200/300",
+            location = "Makassar"
+        ),
+    )
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        TraverseeSectionTitle(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            title = stringResource(id = R.string.open_trip),
+            subtitle = stringResource(id = R.string.my_campaigns_subtitle),
+            actionText = stringResource(id = R.string.see_all),
+            actionOnClick = actionOnClick
+        )
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp)
+            ) {
+                items(openTrips) { item ->
+                    TripCard(
+                        modifier = Modifier
+                            .width(screenWidth),
+                        title = item.title,
+                        duration = item.duration,
+                        location = item.location,
+                        price = item.price,
+                        startDate = item.startDate,
+                        endDate = item.endDate,
+                        imageUrl = item.imageUrl,
+                        onClick = {
+                            tripOnClick(item)
+                        }
+                    )
+                }
+            }
     }
 }
 
