@@ -11,11 +11,9 @@ import kotlinx.coroutines.flow.Flow
 interface CampaignRepository {
     suspend fun getCategories(): LiveData<ResultState<List<CategoryEntity>>>
 
-    fun getAllCampaigns(status: String? = null, locationId: Int? = null): Flow<PagingData<CampaignItem>>
+    fun getAllCampaigns(status: String? = null, locationId: Int? = null, isRegistered:Boolean? = null): Flow<PagingData<CampaignItem>>
 
-    fun getCampaignsByCategory(categoryId: Int, status: String? = null, locationId: Int? = null): Flow<PagingData<CampaignItem>>
-
-    fun getRegisteredCampaigns(): Flow<PagingData<CampaignItem>>
+    fun getCampaignsByCategory(categoryId: Int, status: String? = null, locationId: Int? = null, isRegistered:Boolean? = null): Flow<PagingData<CampaignItem>>
 
     suspend fun getFirstPageRegisteredCampaigns(): LiveData<ResultState<List<CampaignItem>>>
 

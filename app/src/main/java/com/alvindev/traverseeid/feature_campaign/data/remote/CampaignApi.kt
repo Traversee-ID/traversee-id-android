@@ -16,7 +16,8 @@ interface CampaignApi {
     suspend fun getAllCampaigns(
         @Query("page") page: Int,
         @Query("status") status: String? = null,
-        @Query("location_id") locationId: Int? = null
+        @Query("location_id") locationId: Int? = null,
+        @Query("is_registered") isRegistered: Boolean? = null
     ): CampaignResponse
 
     @GET("campaign-categories/{id}/campaigns")
@@ -24,13 +25,8 @@ interface CampaignApi {
         @Path("id") id: Int,
         @Query("page") page: Int,
         @Query("status") status: String? = null,
-        @Query("location_id") locationId: Int? = null
-    ): CampaignResponse
-
-    @GET("/users/{id}/campaigns")
-    suspend fun getRegisteredCampaigns(
-        @Path("id") id: String,
-        @Query("page") page: Int,
+        @Query("location_id") locationId: Int? = null,
+        @Query("is_registered") isRegistered: Boolean? = null
     ): CampaignResponse
 
     @GET("campaigns/{id}/details")

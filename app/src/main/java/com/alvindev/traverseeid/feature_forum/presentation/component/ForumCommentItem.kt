@@ -30,7 +30,7 @@ import com.alvindev.traverseeid.core.theme.Typography
 fun ForumCommentItem(
     modifier: Modifier = Modifier,
     isOfficial: Boolean = false,
-    imageUrl: String? = null,
+    authorImage: String? = null,
     commentAuthor: String,
     commentTime: String,
     comment: String,
@@ -41,7 +41,7 @@ fun ForumCommentItem(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ){
-        imageUrl?.let {
+        authorImage?.let {
             AsyncImage(
                 model = it,
                 contentDescription = commentAuthor,

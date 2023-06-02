@@ -11,5 +11,6 @@ data class CampaignListState(
             name = "Indonesia",
         )
     ),
-    val locationId: Int? = null
+    val locationId: Int? = null,
+    val isRegistered: Boolean? = null,
 )

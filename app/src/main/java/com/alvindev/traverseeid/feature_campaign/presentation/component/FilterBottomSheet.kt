@@ -1,6 +1,5 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.component
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +16,7 @@ import com.alvindev.traverseeid.core.presentation.component.*
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignRegistrationConstant
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignStatusConstant
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationEntity
 
@@ -24,26 +24,45 @@ import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationE
 fun FilterBottomSheet(
     modifier: Modifier = Modifier,
     selectedStatus: String? = null,
+    selectedRegistartion: String? = null,
     onClose: () -> Unit = {},
-    onApply: (isChecked: Boolean, status: String?, locationId: Int?) -> Unit = { _, _, _ -> },
+    onApply: (isRegistered: Boolean?, status: String?, locationId: Int?) -> Unit = { _, _, _ -> },
     campaignLocations: List<CampaignLocationEntity>,
     locationSelected: Int? = null,
 ) {
-    val radioOptions =
-        listOf("All Campaigns", "Coming Soon Campaigns", "Ongoing Campaigns", "Completed Campaigns")
-    val (selectedOption, onOptionSelected) = when (selectedStatus) {
-        CampaignStatusConstant.ALL_STATUS -> remember { mutableStateOf(radioOptions[0]) }
-        CampaignStatusConstant.COMING_SOON -> remember { mutableStateOf(radioOptions[1]) }
-        CampaignStatusConstant.ONGOING -> remember { mutableStateOf(radioOptions[2]) }
-        CampaignStatusConstant.COMPLETED -> remember { mutableStateOf(radioOptions[3]) }
-        else -> remember { mutableStateOf(radioOptions[0]) }
+    val radioStatusOptions =
+        listOf(
+            stringResource(id = R.string.all_campaigns),
+            stringResource(id = R.string.coming_soon_campaigns),
+            stringResource(id = R.string.ongoing_campaigns),
+            stringResource(id = R.string.completed_campaigns)
+        )
+    val (selectedStatsOption, onOptionStatusSelected) = when (selectedStatus) {
+        CampaignStatusConstant.ALL_STATUS -> remember { mutableStateOf(radioStatusOptions[0]) }
+        CampaignStatusConstant.COMING_SOON -> remember { mutableStateOf(radioStatusOptions[1]) }
+        CampaignStatusConstant.ONGOING -> remember { mutableStateOf(radioStatusOptions[2]) }
+        CampaignStatusConstant.COMPLETED -> remember { mutableStateOf(radioStatusOptions[3]) }
+        else -> remember { mutableStateOf(radioStatusOptions[0]) }
     }
-    val isChecked = remember { mutableStateOf(false) }
+
+    val radioRegistrationOptions = listOf(
+        stringResource(id = R.string.all_campaigns),
+        stringResource(id = R.string.registered_only),
+        stringResource(id = R.string.unregistered_only)
+    )
+    val (selectedRegistrationOption, onOptionRegistrationSelected) = when (selectedRegistartion) {
+        CampaignRegistrationConstant.ALL -> remember { mutableStateOf(radioRegistrationOptions[0]) }
+        CampaignRegistrationConstant.REGISTERED -> remember { mutableStateOf(radioRegistrationOptions[1]) }
+        CampaignRegistrationConstant.UNREGISTERED -> remember { mutableStateOf(radioRegistrationOptions[2]) }
+        else -> remember { mutableStateOf(radioRegistrationOptions[0]) }
+    }
+
 
     val selectedItem = remember {
         mutableStateOf(
             if (locationSelected != null) {
-                campaignLocations.find { it.id == locationSelected }?.name ?: campaignLocations[0].name
+                campaignLocations.find { it.id == locationSelected }?.name
+                    ?: campaignLocations[0].name
             } else {
                 campaignLocations[0].name
             }
@@ -67,11 +86,13 @@ fun FilterBottomSheet(
             style = Typography.h2,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        SwitchOption(
-            text = stringResource(id = R.string.not_registered),
-            isChecked = isChecked.value,
-            onCheckedChange = { isChecked.value = it }
-        )
+        radioRegistrationOptions.forEach { text ->
+            RadioOption(
+                text = text,
+                selectedOption = selectedRegistrationOption,
+                onOptionSelected = onOptionRegistrationSelected,
+            )
+        }
 
         TraverseeDivider(
             modifier = Modifier
@@ -84,11 +105,11 @@ fun FilterBottomSheet(
             style = Typography.h2,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        radioOptions.forEach { text ->
+        radioStatusOptions.forEach { text ->
             RadioOption(
                 text = text,
-                selectedOption = selectedOption,
-                onOptionSelected = onOptionSelected,
+                selectedOption = selectedStatsOption,
+                onOptionSelected = onOptionStatusSelected,
             )
         }
 
@@ -111,16 +132,22 @@ fun FilterBottomSheet(
                 .padding(top = 16.dp),
             text = stringResource(id = R.string.apply),
             onClick = {
-                val status = when (selectedOption) {
-                    radioOptions[0] -> CampaignStatusConstant.ALL_STATUS
-                    radioOptions[1] -> CampaignStatusConstant.COMING_SOON
-                    radioOptions[2] -> CampaignStatusConstant.ONGOING
-                    radioOptions[3] -> CampaignStatusConstant.COMPLETED
+                val status = when (selectedStatsOption) {
+                    radioStatusOptions[0] -> CampaignStatusConstant.ALL_STATUS
+                    radioStatusOptions[1] -> CampaignStatusConstant.COMING_SOON
+                    radioStatusOptions[2] -> CampaignStatusConstant.ONGOING
+                    radioStatusOptions[3] -> CampaignStatusConstant.COMPLETED
                     else -> CampaignStatusConstant.ALL_STATUS
                 }
                 val location = campaignLocations.find { it.name == selectedItem.value }
+                val registration = when (selectedRegistrationOption) {
+                    radioRegistrationOptions[0] -> null
+                    radioRegistrationOptions[1] -> true
+                    radioRegistrationOptions[2] -> false
+                    else -> null
+                }
 
-                onApply(isChecked.value, status, location?.id)
+                onApply(registration, status, location?.id)
             }
         )
     }

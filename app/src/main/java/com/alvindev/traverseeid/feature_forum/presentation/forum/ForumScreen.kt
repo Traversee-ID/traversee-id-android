@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,20 +37,7 @@ fun ForumScreen(
     navigator: DestinationsNavigator,
     viewModel: ForumViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state
     val posts = viewModel.getAllForumPosts().collectAsLazyPagingItems()
-    val context = LocalContext.current
-
-    if (state.post != null) {
-        posts.itemSnapshotList.find { it?.id == state.post.id }?.copy(
-            totalLikes = state.post.totalLikes,
-        )
-        viewModel.setPost(null)
-    }
-
-    if(state.error != null){
-        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
-    }
 
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
@@ -77,26 +64,47 @@ fun ForumScreen(
 //                )
 //            }
 //        }
-        items(posts, key = { post -> post.id }) { post ->
+        items(posts, key = { post -> post.forum.id }) { post ->
+            var isLiked by remember { mutableStateOf(post?.isLiked ?: false) }
+            var totalLikes by remember { mutableStateOf(post?.forum?.totalLikes ?: 0) }
+
             ForumPostItem(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).clickable{
-                    navigator.navigate(ForumDetailsScreenDestination(post = post))
-                },
-                authorName = post?.authorId ?: "",
-                authorCaption = post?.text ?: "",
-                totalLike = post?.totalLikes ?: 0,
-                totalComment = 0,
-                postTime = "1 hour ago",
-                imageUrl = null,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .clickable {
+                        val postArgument = post?.copy(
+                            forum = post.forum.copy(
+                                totalLikes = totalLikes,
+                            ),
+                            isLiked = isLiked,
+                        )
+                        navigator.navigate(ForumDetailsScreenDestination(post = postArgument))
+                    },
+                authorName = post?.forum?.authorName ?: "",
+                authorCaption = post?.forum?.text ?: "",
+                totalLike = totalLikes,
+                totalComment = post?.forum?.totalComments ?: 0,
+                postTime = post?.forum?.createdAt ?: "",
+                authorImage = post?.forum?.authorProfileImage ?: "",
                 isOfficial = false,
+                isLiked = isLiked,
                 onLiked = {
-                    viewModel.likePost(post?.id ?: 0)
+                    if (isLiked) {
+                        viewModel.unlikePost(post?.forum?.id ?: 0)
+                        isLiked = false
+                        totalLikes -= 1
+                    } else {
+                        viewModel.likePost(post?.forum?.id ?: 0)
+                        isLiked = true
+                        totalLikes += 1
+                    }
                 },
             )
             TraverseeDivider(
                 modifier = Modifier.padding(16.dp),
             )
         }
+
 
         when (posts.loadState.refresh) { //FIRST LOAD
             is LoadState.Error -> {

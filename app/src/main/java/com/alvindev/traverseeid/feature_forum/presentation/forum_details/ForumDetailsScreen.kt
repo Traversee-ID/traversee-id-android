@@ -26,7 +26,7 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostEntity
+import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostItem
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumTextField
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumCommentItem
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumPostItem
@@ -38,7 +38,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 )
 @Composable
 fun ForumDetailsScreen(
-    post: ForumPostEntity? = null,
+    post: ForumPostItem? = null,
     viewModel: ForumDetailsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state
@@ -47,15 +47,20 @@ fun ForumDetailsScreen(
 
     val shouldStartPaginate = remember {
         derivedStateOf {
-            state.canPaginate && (lazyColumnListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -5) >= (lazyColumnListState.layoutInfo.totalItemsCount - 3)
+            state.canPaginate && (lazyColumnListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                ?: -5) >= (lazyColumnListState.layoutInfo.totalItemsCount - 3)
         }
     }
 
     val comments = state.comments
 
     LaunchedEffect(key1 = shouldStartPaginate.value) {
-        if (shouldStartPaginate.value && state.listState == ListState.IDLE){
-            viewModel.getForumComments(post?.id ?: 0)
+        viewModel.setIsLiked(post?.isLiked ?: false)
+        viewModel.setTotalLikes(post?.forum?.totalLikes ?: 0)
+        viewModel.setTotalComments(post?.forum?.totalComments ?: 0)
+
+        if (shouldStartPaginate.value && state.listState == ListState.IDLE) {
+            viewModel.getForumComments(post?.forum?.id ?: 0)
         }
     }
 
@@ -79,7 +84,7 @@ fun ForumDetailsScreen(
             title = stringResource(id = R.string.delete_comment),
             text = stringResource(id = R.string.are_you_sure),
             onConfirm = {
-                viewModel.deleteComment(post?.id ?: 0, state.commentId)
+                viewModel.deleteComment(post?.forum?.id ?: 0, state.commentId)
             },
             onCancel = {
                 viewModel.setShowDialog(false)
@@ -92,17 +97,24 @@ fun ForumDetailsScreen(
         state = lazyColumnListState,
     ) {
         item {
-            post?.let {
+            post?.forum?.let {
                 ForumPostItem(
                     modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                    authorName = post.authorId,
-                    postTime = "2 hours ago",
-                    totalLike = post.totalLikes ?: 0,
-                    totalComment = 10,
-                    authorCaption = post.text ?: "",
-                    onLiked = { },
+                    authorName = post.forum.authorName ?: "",
+                    postTime = post.forum.createdAt ?: "",
+                    totalLike = state.totalLikes,
+                    totalComment = state.totalComments,
+                    authorCaption = post.forum.text ?: "",
+                    onLiked = {
+                        if (state.isLiked) {
+                            viewModel.unlikePost(post.forum.id)
+                        } else {
+                            viewModel.likePost(post.forum.id)
+                        }
+                    },
                     isOfficial = false,
-                    imageUrl = null
+                    authorImage = post.forum.authorProfileImage ?: "",
+                    isLiked = state.isLiked,
                 )
             }
         }
@@ -133,7 +145,7 @@ fun ForumDetailsScreen(
                         .padding(top = 16.dp),
                     text = stringResource(id = R.string.submit),
                     onClick = {
-                        viewModel.createComment(post?.id ?: 0)
+                        viewModel.createComment(post?.forum?.id ?: 0)
                     },
                     enabled = state.isSubmitting.not() && state.text.isNotBlank(),
                 )
@@ -149,17 +161,17 @@ fun ForumDetailsScreen(
                 modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
             )
         }
-        items(comments, key = { post -> post.id }) { post ->
+        items(comments, key = { post -> post.id }) { comment ->
             ForumCommentItem(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                imageUrl = null,
+                authorImage = comment.authorProfileImage ?: "",
                 isOfficial = false,
-                commentTime = "2 hours ago",
-                isUser = state.userId == post.authorId,
-                commentAuthor = post.authorId ?: "",
-                comment = post.text ?: "",
+                commentTime = comment.createdAt ?: "",
+                isUser = state.userId == comment.authorId,
+                commentAuthor = comment.authorName ?: "",
+                comment = comment.text ?: "",
                 onDelete = {
-                    viewModel.setCommentId(post.id ?: 0)
+                    viewModel.setCommentId(comment.id ?: 0)
                     viewModel.setShowDialog(true)
                 },
             )
@@ -168,14 +180,13 @@ fun ForumDetailsScreen(
             )
         }
 
-        item (
+        item(
             key = state.listState,
         ) {
-            when(state.listState) {
+            when (state.listState) {
                 ListState.LOADING -> {
                     Column(
-                        modifier = Modifier
-                            .fillParentMaxSize(),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {

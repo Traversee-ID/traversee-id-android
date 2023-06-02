@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.Comment
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material.icons.outlined.ThumbUp
@@ -35,19 +36,20 @@ import com.alvindev.traverseeid.core.util.digitSeparator
 fun ForumPostItem(
     modifier: Modifier = Modifier,
     isOfficial: Boolean = false,
-    imageUrl: String? = null,
+    authorImage: String? = null,
     authorName: String,
     authorCaption: String,
     postTime: String,
     totalLike: Int = 0,
     totalComment: Int = 0,
     onLiked: () -> Unit = {},
+    isLiked: Boolean = false,
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        imageUrl?.let {
+        authorImage?.let {
             AsyncImage(
                 model = it,
                 contentDescription = authorName,
@@ -159,7 +161,7 @@ fun ForumPostItem(
                     modifier = Modifier.clickable {
                         onLiked()
                     },
-                    icon = Icons.Outlined.ThumbUp,
+                    icon = if (isLiked) Icons.Default.ThumbUp else Icons.Outlined.ThumbUp,
                     text = totalLike.digitSeparator(),
                 )
                 TraverseeRowIcon(

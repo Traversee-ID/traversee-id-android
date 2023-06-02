@@ -11,5 +11,5 @@ import javax.inject.Inject
 class CampaignUserViewModel @Inject constructor(
     private val useCases: UseCasesCampaign
 ): ViewModel() {
-    fun getRegisteredCampaigns() = useCases.getRegisteredCampaigns().cachedIn(viewModelScope)
+    fun getRegisteredCampaigns() = useCases.getAllCampaigns(isRegistered = true).cachedIn(viewModelScope)
 }

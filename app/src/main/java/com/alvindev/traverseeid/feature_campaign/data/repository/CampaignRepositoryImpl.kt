@@ -18,8 +18,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 class CampaignRepositoryImpl(
-    private val campaignApi: CampaignApi,
-    private val authenticator: BaseAuthRepository,
+    private val campaignApi: CampaignApi
 ) : CampaignRepository {
     override suspend fun getCategories(): LiveData<ResultState<List<CategoryEntity>>> = liveData {
         try {
@@ -32,14 +31,23 @@ class CampaignRepositoryImpl(
         }
     }
 
-    override fun getAllCampaigns(status: String?, locationId: Int?): Flow<PagingData<CampaignItem>> {
-        val id = if(locationId == 0) null else locationId
+    override fun getAllCampaigns(
+        status: String?,
+        locationId: Int?,
+        isRegistered: Boolean?
+    ): Flow<PagingData<CampaignItem>> {
+        val id = if (locationId == 0) null else locationId
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
             ),
             pagingSourceFactory = {
-                CampaignsPagingSource(campaignApi, status = status, locationId = id)
+                CampaignsPagingSource(
+                    campaignApi,
+                    status = status,
+                    locationId = id,
+                    isRegistered = isRegistered
+                )
             }
         ).flow
     }
@@ -47,28 +55,23 @@ class CampaignRepositoryImpl(
     override fun getCampaignsByCategory(
         categoryId: Int,
         status: String?,
-        locationId: Int?
+        locationId: Int?,
+        isRegistered: Boolean?
     ): Flow<PagingData<CampaignItem>> {
-        val id = if(locationId == 0) null else locationId
+        val id = if (locationId == 0) null else locationId
 
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
             ),
             pagingSourceFactory = {
-                CampaignsPagingSource(campaignApi, categoryId, status, locationId = id)
-            }
-        ).flow
-    }
-
-    override fun getRegisteredCampaigns(): Flow<PagingData<CampaignItem>> {
-        val userId = authenticator.getCurrentUser()?.uid
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-            ),
-            pagingSourceFactory = {
-                CampaignsPagingSource(campaignApi, userId = userId)
+                CampaignsPagingSource(
+                    campaignApi,
+                    categoryId,
+                    status,
+                    locationId = id,
+                    isRegistered = isRegistered
+                )
             }
         ).flow
     }
@@ -76,8 +79,10 @@ class CampaignRepositoryImpl(
     override suspend fun getFirstPageRegisteredCampaigns(): LiveData<ResultState<List<CampaignItem>>> =
         liveData {
             try {
-                val userId = authenticator.getCurrentUser()?.uid!!
-                val response = campaignApi.getRegisteredCampaigns(userId, 1)
+                val response = campaignApi.getAllCampaigns(
+                    page = 1,
+                    isRegistered = true,
+                )
                 response.data?.let {
                     emit(ResultState.Success(it))
                 } ?: emit(ResultState.Error(response.message.toString()))

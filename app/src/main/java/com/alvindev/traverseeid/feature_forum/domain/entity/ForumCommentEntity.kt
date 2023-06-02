@@ -16,5 +16,14 @@ data class ForumCommentEntity(
 	val authorId: String,
 
 	@field:SerializedName("forum_id")
-	val forumId: Int
+	val forumId: Int,
+
+	@field:SerializedName("user_display_name")
+	val authorName: String? = null,
+
+	@field:SerializedName("user_profile_image")
+	val authorProfileImage: String? = null,
+
+	@field:SerializedName("created_date")
+	val createdAt: String? = null,
 ) : Parcelable

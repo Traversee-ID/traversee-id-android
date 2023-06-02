@@ -83,6 +83,7 @@ class ForumDetailsViewModel @Inject constructor(
                         isSuccess = true,
                         comments = state.comments + it.data,
                         isSubmitting = false,
+                        totalComments = state.totalComments + 1,
                     )
                 }
                 is ResultState.Error -> {
@@ -127,6 +128,7 @@ class ForumDetailsViewModel @Inject constructor(
                         isShowDialog = false,
                         comments = state.comments.filter { comment -> comment.id != commentId },
                         isSubmitting = false,
+                        totalComments = state.totalComments - 1,
                     )
                 }
                 is ResultState.Error -> {
@@ -144,4 +146,67 @@ class ForumDetailsViewModel @Inject constructor(
             }
         }
     }
+
+    fun setIsLiked(isLiked: Boolean) {
+        state = state.copy(
+            isLiked = isLiked,
+        )
+    }
+
+    fun setTotalLikes(totalLikes: Int) {
+        state = state.copy(
+            totalLikes = totalLikes,
+        )
+    }
+
+    fun setTotalComments(totalComments: Int) {
+        state = state.copy(
+            totalComments = totalComments,
+        )
+    }
+
+    fun likePost(postId: Int) = viewModelScope.launch {
+        useCases.likePost(postId).asFlow().collect {
+            state = when (it) {
+                is ResultState.Error -> {
+                    state.copy(error = it.error)
+                }
+                is ResultState.Success -> {
+                    state.copy(
+                        error = null,
+                        isLiked = true,
+                        totalLikes = state.totalLikes + 1,
+                    )
+                }
+                else -> {
+                    state.copy(
+                        error = null,
+                    )
+                }
+            }
+        }
+    }
+
+    fun unlikePost(postId: Int) = viewModelScope.launch {
+        useCases.unlikePost(postId).asFlow().collect {
+            state = when (it) {
+                is ResultState.Error -> {
+                    state.copy(error = it.error)
+                }
+                is ResultState.Success -> {
+                    state.copy(
+                        error = null,
+                        isLiked = false,
+                        totalLikes = state.totalLikes - 1,
+                    )
+                }
+                else -> {
+                    state.copy(
+                        error = null,
+                    )
+                }
+            }
+        }
+    }
+
 }

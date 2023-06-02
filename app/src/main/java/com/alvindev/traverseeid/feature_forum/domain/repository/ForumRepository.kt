@@ -3,19 +3,18 @@ package com.alvindev.traverseeid.feature_forum.domain.repository
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import com.alvindev.traverseeid.core.common.ResultState
-import com.alvindev.traverseeid.feature_forum.data.model.ForumDeleteCommentResponse
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCommentEntity
-import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostEntity
+import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostItem
 import kotlinx.coroutines.flow.Flow
 
 interface ForumRepository {
-    suspend fun createPost(title: String, text: String): LiveData<ResultState<ForumPostEntity>>
+    suspend fun createPost(title: String, text: String): LiveData<ResultState<ForumPostItem>>
 
-    fun getAllForumPosts(): Flow<PagingData<ForumPostEntity>>
+    fun getAllForumPosts(): Flow<PagingData<ForumPostItem>>
 
-    suspend fun likePost(postId: Int): LiveData<ResultState<ForumPostEntity>>
+    suspend fun likePost(postId: Int): LiveData<ResultState<ForumPostItem>>
 
-    suspend fun unlikePost(postId: Int): LiveData<ResultState<ForumPostEntity>>
+    suspend fun unlikePost(postId: Int): LiveData<ResultState<ForumPostItem>>
 
     fun getForumComments(postId: Int, page:Int): Flow<ResultState<List<ForumCommentEntity>>>
 

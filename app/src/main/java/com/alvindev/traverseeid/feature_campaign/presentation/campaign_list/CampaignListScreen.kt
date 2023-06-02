@@ -55,9 +55,9 @@ fun CampaignListScreen(
     val state = viewModel.state
 
     val campaigns: LazyPagingItems<CampaignItem> = if (id != -1) {
-        viewModel.getCampaignsByCategory(id, state.status, state.locationId).collectAsLazyPagingItems()
+        viewModel.getCampaignsByCategory(id, state.status, state.locationId, state.isRegistered).collectAsLazyPagingItems()
     } else {
-        viewModel.getAllCampaigns(state.status, state.locationId).collectAsLazyPagingItems()
+        viewModel.getAllCampaigns(state.status, state.locationId, state.isRegistered).collectAsLazyPagingItems()
     }
 
     val coroutineScope = rememberCoroutineScope()
@@ -78,12 +78,13 @@ fun CampaignListScreen(
                         modalSheetState.hide()
                     }
                 },
-                onApply = { _, status, location ->
+                onApply = { isRegistered, status, location ->
                     coroutineScope.launch {
                         modalSheetState.hide()
                     }
                     viewModel.setStatus(status)
                     viewModel.setLocationId(location)
+                    viewModel.setIsRegistered(isRegistered)
                     campaigns.refresh()
                 },
                 campaignLocations = state.campaignLocations,

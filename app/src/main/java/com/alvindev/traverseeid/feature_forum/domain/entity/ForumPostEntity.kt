@@ -22,5 +22,17 @@ data class ForumPostEntity(
 	val title: String? = null,
 
 	@field:SerializedName("total_likes")
-    var totalLikes: Int? = null
+    var totalLikes: Int? = null,
+
+	@field:SerializedName("total_comments")
+	var totalComments: Int? = null,
+
+	@field:SerializedName("user_display_name")
+	val authorName: String? = null,
+
+	@field:SerializedName("user_profile_image")
+	val authorProfileImage: String? = null,
+
+	@field:SerializedName("created_date")
+	val createdAt: String? = null,
 ) : Parcelable

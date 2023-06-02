@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostEntity
+import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostItem
 import com.alvindev.traverseeid.feature_forum.domain.use_case.UseCasesForum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -26,29 +27,6 @@ class ForumViewModel @Inject constructor(
 
     fun likePost(postId: Int) = viewModelScope.launch {
         useCases.likePost(postId).asFlow().collect{
-            when(it) {
-                is ResultState.Error -> {
-                    if(it.error.contains("already liked")){
-                        unlikePost(postId)
-                    }else{
-                        state = state.copy(error =it.error)
-                    }
-                }
-                is ResultState.Success -> {
-                    state = state.copy(post = it.data)
-                }
-                else -> {
-                    state = state.copy(
-                        error = null,
-                        post = null
-                    )
-                }
-            }
-        }
-    }
-
-    private fun unlikePost(postId: Int) = viewModelScope.launch {
-        useCases.unlikePost(postId).asFlow().collect{
             state = when(it) {
                 is ResultState.Error -> {
                     state.copy(error =it.error)
@@ -66,7 +44,22 @@ class ForumViewModel @Inject constructor(
         }
     }
 
-    fun setPost(post: ForumPostEntity?){
-        state = state.copy(post = post)
+    fun unlikePost(postId: Int) = viewModelScope.launch {
+        useCases.unlikePost(postId).asFlow().collect{
+            state = when(it) {
+                is ResultState.Error -> {
+                    state.copy(error =it.error)
+                }
+                is ResultState.Success -> {
+                    state.copy(post = it.data)
+                }
+                else -> {
+                    state.copy(
+                        error = null,
+                        post = null
+                    )
+                }
+            }
+        }
     }
 }

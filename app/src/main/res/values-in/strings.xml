@@ -114,4 +114,9 @@
     <string name="Indonesia">Indonesia</string>
     <string name="my_campaigns_subtitle">Get an unforgettable trip experience</string>
     <string name="open_trip">Open Trip</string>
+    <string name="coming_soon_campaigns">Coming Soon Campaigns</string>
+    <string name="ongoing_campaigns">Ongoing Campaigns</string>
+    <string name="completed_campaigns">Completed Campaigns</string>
+    <string name="registered_only">Registered Only</string>
+    <string name="unregistered_only">Unregistered Only</string>
 </resources>

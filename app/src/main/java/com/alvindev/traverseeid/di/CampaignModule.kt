@@ -19,8 +19,8 @@ import javax.inject.Singleton
 class CampaignModule {
     @Provides
     @Singleton
-    fun provideCampaignRepository(campaignApi: CampaignApi, authenticator: BaseAuthRepository): CampaignRepository {
-        return CampaignRepositoryImpl(campaignApi, authenticator)
+    fun provideCampaignRepository(campaignApi: CampaignApi): CampaignRepository {
+        return CampaignRepositoryImpl(campaignApi)
     }
 
     @Provides
@@ -36,7 +36,6 @@ class CampaignModule {
             getCategories = GetCategories(repository),
             getAllCampaigns = GetAllCampaigns(repository),
             getCampaignsByCategory = GetCampaignsByCategory(repository),
-            getRegisteredCampaigns = GetRegisteredCampaigns(repository),
             getFirstPageRegisteredCampaigns = GetFirstPageRegisteredCampaigns(repository),
             getCampaignDetails = GetCampaignDetails(repository),
             getCampaignParticipants = GetCampaignParticipants(repository),

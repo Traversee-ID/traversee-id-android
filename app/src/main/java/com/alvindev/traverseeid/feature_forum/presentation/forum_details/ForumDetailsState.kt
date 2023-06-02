@@ -18,4 +18,7 @@ data class ForumDetailsState(
     val page : Int = 1,
     val canPaginate : Boolean = true,
     val listState: ListState = ListState.IDLE,
+    val isLiked: Boolean = false,
+    val totalLikes: Int = 0,
+    val totalComments: Int = 0,
 )

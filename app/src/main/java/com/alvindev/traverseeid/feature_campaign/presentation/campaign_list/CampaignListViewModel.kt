@@ -39,8 +39,13 @@ class CampaignListViewModel @Inject constructor(
     fun setCategoryId(categoryId: Int) {
         state = state.copy(categoryId = categoryId)
     }
-    fun getAllCampaigns(status: String?, locationId: Int?) = useCases.getAllCampaigns(status, locationId).cachedIn(viewModelScope)
-    fun getCampaignsByCategory(categoryId: Int, status: String?, locationId: Int?) = useCases.getCampaignsByCategory(categoryId, status, locationId).cachedIn(viewModelScope)
+
+    fun setIsRegistered(isRegistered: Boolean?) {
+        state = state.copy(isRegistered = isRegistered)
+    }
+
+    fun getAllCampaigns(status: String?, locationId: Int?, isRegistered: Boolean?) = useCases.getAllCampaigns(status, locationId, isRegistered).cachedIn(viewModelScope)
+    fun getCampaignsByCategory(categoryId: Int, status: String?, locationId: Int?, isRegistered: Boolean?) = useCases.getCampaignsByCategory(categoryId, status, locationId, isRegistered).cachedIn(viewModelScope)
     private fun getCampaignLocations() = viewModelScope.launch {
         useCases.getCampaignLocations().asFlow().collect{
             state = when(it){

@@ -11,7 +11,7 @@ import com.alvindev.traverseeid.feature_forum.data.model.ForumPostBody
 import com.alvindev.traverseeid.feature_forum.data.paging_source.ForumPagingSource
 import com.alvindev.traverseeid.feature_forum.data.remote.ForumApi
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCommentEntity
-import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostEntity
+import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostItem
 import com.alvindev.traverseeid.feature_forum.domain.repository.ForumRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,7 +26,7 @@ class ForumRepositoryImpl @Inject constructor(
     override suspend fun createPost(
         title: String,
         text: String
-    ): LiveData<ResultState<ForumPostEntity>> =
+    ): LiveData<ResultState<ForumPostItem>> =
         liveData {
             try {
                 val body = ForumPostBody(title, text)
@@ -39,7 +39,7 @@ class ForumRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getAllForumPosts(): Flow<PagingData<ForumPostEntity>> {
+    override fun getAllForumPosts(): Flow<PagingData<ForumPostItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -50,7 +50,7 @@ class ForumRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override suspend fun likePost(postId: Int): LiveData<ResultState<ForumPostEntity>> =
+    override suspend fun likePost(postId: Int): LiveData<ResultState<ForumPostItem>> =
         liveData {
             try {
                 val response = forumApi.likePost(postId)
@@ -74,7 +74,7 @@ class ForumRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun unlikePost(postId: Int): LiveData<ResultState<ForumPostEntity>> =
+    override suspend fun unlikePost(postId: Int): LiveData<ResultState<ForumPostItem>> =
         liveData {
             try {
                 val response = forumApi.unlikePost(postId)
