@@ -32,7 +32,7 @@ fun TraverseeSectionTitle(
                     style = Typography.h2
                 )
                 Text(
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = 2.dp),
                     text = subtitle,
                     style = Typography.caption
                 )

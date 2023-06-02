@@ -1,12 +1,17 @@
 package com.alvindev.traverseeid.feature_tourism.presentation.tourism
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,6 +21,7 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.core.presentation.component.TourismCard
+import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignEntity
 import com.alvindev.traverseeid.feature_tourism.domain.entity.OpenTripEntity
 import com.alvindev.traverseeid.feature_tourism.presentation.component.TripCard
@@ -141,7 +147,7 @@ fun SectionOpenTrip(
         TraverseeSectionTitle(
             modifier = Modifier.padding(horizontal = 16.dp),
             title = stringResource(id = R.string.open_trip),
-            subtitle = stringResource(id = R.string.my_campaigns_subtitle),
+            subtitle = stringResource(id = R.string.my_trip_subtitle),
             actionText = stringResource(id = R.string.see_all),
             actionOnClick = actionOnClick
         )
@@ -211,16 +217,22 @@ fun SectionDiscoverTourism(
             actionText = stringResource(id = R.string.see_all),
             actionOnClick = actionOnClick
         )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
+        Row(
+            Modifier
+                .horizontalScroll(rememberScrollState())
+                .height(intrinsicSize = IntrinsicSize.Max)
+                .padding(horizontal = 8.dp),
         ) {
-            items(campaignCategoryList, key = { it.id }) { category ->
+            campaignCategoryList.forEach { category ->
                 TraverseeCategoryCard(
                     modifier = Modifier
-                        .width(screenWidth / 3)
+                        .padding(horizontal = 8.dp)
+                        .shadow(4.dp, shape = Shapes.large)
+                        .fillMaxHeight()
+                        .width(screenWidth / 2.8f)
+                        .background(Color.White, shape = Shapes.large)
                         .clickable { placeOnClick(category.name ?: "") },
-                    image = "https://picsum.photos/200/300",
+                    image = category.imageUrl ?: "",
                     contentDescription = category.name ?: "",
                     text = category.name ?: "",
                 )

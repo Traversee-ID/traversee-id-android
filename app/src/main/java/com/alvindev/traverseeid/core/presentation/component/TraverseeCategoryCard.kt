@@ -10,6 +10,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -59,9 +60,10 @@ fun TraverseeCategoryCard(
             )
         }
         Text(
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(8.dp),
             text = text,
-            style = if (isFullSize) Typography.subtitle1 else Typography.subtitle2
+            style = if (isFullSize) Typography.subtitle1 else Typography.subtitle2,
+            textAlign = TextAlign.Center
         )
     }
 }
