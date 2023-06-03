@@ -47,28 +47,28 @@ val Typography = Typography(
         lineHeight = 24.sp
     ),
     body1 = TextStyle(
-        fontFamily = FontFamily.Serif,
+        fontFamily = fonts,
         fontWeight = FontWeight.W400,
         fontSize = 16.sp,
         letterSpacing = 0.5.sp,
         lineHeight = 24.sp
     ),
     body2 = TextStyle(
-        fontFamily = FontFamily.Serif,
+        fontFamily =fonts,
         fontWeight = FontWeight.W400,
         fontSize = 14.sp,
         letterSpacing = 0.25.sp,
         lineHeight = 20.sp
     ),
     button = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = fonts,
         fontWeight = FontWeight.W600,
         fontSize = 14.sp,
         letterSpacing = 1.25.sp,
         lineHeight = 16.sp
     ),
     caption = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = fonts,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         color = TraverseeBlack600,

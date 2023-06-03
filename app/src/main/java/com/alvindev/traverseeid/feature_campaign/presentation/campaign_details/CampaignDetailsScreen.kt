@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.alvindev.destinations.CampaignParticipantsScreenDestination
+import com.alvindev.destinations.ForumPostScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.*
 import com.alvindev.traverseeid.core.theme.*
@@ -41,6 +42,7 @@ import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignStatusC
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignParticipantEntity
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignRowIcon
 import com.alvindev.traverseeid.feature_campaign.util.CampaignUtil
+import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCampaignEntity
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -297,7 +299,15 @@ fun CampaignDetailsScreen(
                     viewModel.setShowDialog(true)
                 },
                 onClickShare = {
-                    navigator.navigate(ScreenRoute.ForumPost)
+                    state.campaign?.let {
+                        val forumPostArg = ForumCampaignEntity(
+                            id = it.id,
+                            name = it.name ?: "-",
+                            imageUrl = it.imageUrl,
+                            category = it.categoryName ?: "-",
+                        )
+                        navigator.navigate(ForumPostScreenDestination(campaign = forumPostArg))
+                    }
                 }
             )
         }

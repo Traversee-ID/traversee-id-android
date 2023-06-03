@@ -4,14 +4,10 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddPhotoAlternate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +28,7 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.theme.*
 import com.alvindev.traverseeid.core.util.ComposeFileProvider
+import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCampaignEntity
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumTextField
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
@@ -45,6 +42,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 fun ForumPostScreen(
     navigator: DestinationsNavigator,
     viewModel: ForumPostViewModel = hiltViewModel(),
+    campaign: ForumCampaignEntity? = null,
 ) {
     val state = viewModel.state
     val context= LocalContext.current
@@ -86,51 +84,52 @@ fun ForumPostScreen(
     }
 
     LazyColumn{
-//        item{
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-//                elevation = 4.dp,
-//                onClick = {},
-//                shape = Shapes.large,
-//                backgroundColor = Color.White,
-//                enabled = false,
-//            ) {
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 16.dp, vertical = 8.dp),
-//                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.dummy_borobudur),
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .size(100.dp)
-//                            .clip(Shapes.large),
-//                        contentScale = ContentScale.Crop,
-//                        alignment = Alignment.Center
-//                    )
-//
-//                    Column(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(start = 8.dp),
-//                        verticalArrangement = Arrangement.spacedBy(4.dp)
-//                    ) {
-//                        Text(
-//                            text = "Cultural",
-//                            style = Typography.caption,
-//                        )
-//                        Text(
-//                            text = "Share your experience at Borobudur",
-//                            style = Typography.subtitle2,
-//                            color = MaterialTheme.colors.primaryVariant,
-//                        )
-//                    }
-//                }
-//            }
-//        }
+        campaign?.let {
+            item{
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                    elevation = 4.dp,
+                    shape = Shapes.large,
+                    backgroundColor = Color.White,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                    ) {
+                        AsyncImage(
+                            model = it.imageUrl,
+                            fallback = painterResource(id = R.drawable.dummy_borobudur),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(Shapes.large),
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        )
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = it.category,
+                                style = Typography.caption,
+                            )
+                            Text(
+                                text = it.name,
+                                style = Typography.subtitle2,
+                                color = MaterialTheme.colors.primaryVariant,
+                            )
+                        }
+                    }
+                }
+            }
+        }
         item{
             Column(
                 modifier = Modifier
@@ -191,7 +190,9 @@ fun ForumPostScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     text = stringResource(id = R.string.post),
-                    onClick = viewModel::onPostClick,
+                    onClick = {
+                        viewModel.onPostClick(campaign?.id)
+                    },
                     enabled = state.isSubmitting.not() && state.text.isNotBlank(),
                 )
             }

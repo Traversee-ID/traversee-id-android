@@ -35,6 +35,7 @@ fun TopSearchBar(
     onNavigateBack: () -> Unit = {},
     backgroundColor: Color = Color.White,
     contentColor: Color = TraverseeBlack,
+    onSubmit: () -> Unit = {}
 ) {
     var showClearButton by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -91,10 +92,11 @@ fun TopSearchBar(
             },
             maxLines = 1,
             singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = {
+                onSubmit()
                 keyboardController?.hide()
-            }),
+            })
         )
     })
 

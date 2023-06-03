@@ -3,12 +3,13 @@ package com.alvindev.traverseeid.feature_forum.domain.repository
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import com.alvindev.traverseeid.core.common.ResultState
+import com.alvindev.traverseeid.feature_forum.data.model.ForumPostBody
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCommentEntity
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostItem
 import kotlinx.coroutines.flow.Flow
 
 interface ForumRepository {
-    suspend fun createPost(title: String, text: String): LiveData<ResultState<ForumPostItem>>
+    suspend fun createPost(body: ForumPostBody): LiveData<ResultState<ForumPostItem>>
 
     fun getAllForumPosts(): Flow<PagingData<ForumPostItem>>
 

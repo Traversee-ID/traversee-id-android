@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.util.ResourcesProvider
+import com.alvindev.traverseeid.feature_forum.data.model.ForumPostBody
 import com.alvindev.traverseeid.feature_forum.domain.use_case.UseCasesForum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ class ForumPostViewModel @Inject constructor(
         )
     }
 
-    fun onPostClick() = viewModelScope.launch {
+    fun onPostClick(campaignId: Int? = null) = viewModelScope.launch {
         state = state.copy(
             isSubmitting = true,
             error = null,
@@ -64,10 +65,13 @@ class ForumPostViewModel @Inject constructor(
             return@launch
         }
 
-        useCasesForum.createPost(
+        val body = ForumPostBody(
             title = title,
             text = text,
-        ).asFlow().collect {
+            campaignId = campaignId,
+        )
+
+        useCasesForum.createPost(body).asFlow().collect {
             state = when(it){
                 ResultState.Loading -> state.copy(
                     isSubmitting = true,

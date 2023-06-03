@@ -122,7 +122,8 @@
     <string name="about_trip">About the Trip</string>
     <string name="campaign_winners">Campaign Winners</string>
     <string name="hello_user">Hello, %s</string>
-    <string name="participants">Participants</string>
+    <string name="Participants">Participants</string>
+    <string name="participants">%s participants</string>
     <string name="submission">Submission</string>
     <string name="iniated_by">Iniated by</string>
     <string name="trip_details">Trip Details</string>

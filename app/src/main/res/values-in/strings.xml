@@ -123,10 +123,11 @@
     <string name="about_trip">Tentang Trip</string>
     <string name="campaign_winners">Pemenang Kampanye</string>
     <string name="hello_user">Halo, %s</string>
+    <string name="Participants">%s partisipan</string>
     <string name="participants">Partisipan</string>
     <string name="submission">Pengiriman</string>
     <string name="iniated_by">Diiinisiasi oleh</string>
-    <string name="trip_details">Trip Details</string>
-    <string name="days_left">Days left</string>
-    <string name="ended">Ended</string>
+    <string name="trip_details">Detail Trip</string>
+    <string name="days_left">Hari lagi</string>
+    <string name="ended">Berakhir</string>
 </resources>

@@ -6,7 +6,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alvindev.traverseeid.core.common.ResultState
-import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
 import com.alvindev.traverseeid.feature_campaign.data.model.*
 import com.alvindev.traverseeid.feature_campaign.data.paging_source.CampaignsPagingSource
 import com.alvindev.traverseeid.feature_campaign.data.remote.CampaignApi
@@ -32,11 +31,8 @@ class CampaignRepositoryImpl(
     }
 
     override fun getAllCampaigns(
-        status: String?,
-        locationId: Int?,
-        isRegistered: Boolean?
+        params: CampaignParams
     ): Flow<PagingData<CampaignItem>> {
-        val id = if (locationId == 0) null else locationId
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -44,9 +40,7 @@ class CampaignRepositoryImpl(
             pagingSourceFactory = {
                 CampaignsPagingSource(
                     campaignApi,
-                    status = status,
-                    locationId = id,
-                    isRegistered = isRegistered
+                    campaignParams = params,
                 )
             }
         ).flow
@@ -54,11 +48,8 @@ class CampaignRepositoryImpl(
 
     override fun getCampaignsByCategory(
         categoryId: Int,
-        status: String?,
-        locationId: Int?,
-        isRegistered: Boolean?
+        params: CampaignParams
     ): Flow<PagingData<CampaignItem>> {
-        val id = if (locationId == 0) null else locationId
 
         return Pager(
             config = PagingConfig(
@@ -68,9 +59,7 @@ class CampaignRepositoryImpl(
                 CampaignsPagingSource(
                     campaignApi,
                     categoryId,
-                    status,
-                    locationId = id,
-                    isRegistered = isRegistered
+                    campaignParams = params,
                 )
             }
         ).flow

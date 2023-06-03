@@ -17,7 +17,8 @@ interface CampaignApi {
         @Query("page") page: Int,
         @Query("status") status: String? = null,
         @Query("location_id") locationId: Int? = null,
-        @Query("is_registered") isRegistered: Boolean? = null
+        @Query("is_registered") isRegistered: Boolean? = null,
+        @Query("search") search: String? = null
     ): CampaignResponse
 
     @GET("campaign-categories/{id}/campaigns")
@@ -26,7 +27,8 @@ interface CampaignApi {
         @Query("page") page: Int,
         @Query("status") status: String? = null,
         @Query("location_id") locationId: Int? = null,
-        @Query("is_registered") isRegistered: Boolean? = null
+        @Query("is_registered") isRegistered: Boolean? = null,
+        @Query("search") search: String? = null
     ): CampaignResponse
 
     @GET("campaigns/{id}/details")

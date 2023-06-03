@@ -43,6 +43,7 @@ import kotlinx.coroutines.launch
 fun CampaignListScreen(
     id: Int = -1,
     name: String?,
+    searchQuery: String? = null,
     navigator: DestinationsNavigator,
     viewModel: CampaignListViewModel = hiltViewModel()
 ) {
@@ -54,15 +55,17 @@ fun CampaignListScreen(
 
 
     LaunchedEffect(Unit) {
-        if(state.categoryId == -1) {
+        if(state.categoryId != id) {
             viewModel.setCategoryId(id)
+        }else if(state.search != searchQuery) {
+            viewModel.setSearch(searchQuery)
         }
     }
 
     val campaigns: LazyPagingItems<CampaignItem> = if (id != -1) {
-        viewModel.getCampaignsByCategory(id, state.status, state.locationId, state.isRegistered).collectAsLazyPagingItems()
+        viewModel.getCampaignsByCategory(id).collectAsLazyPagingItems()
     } else {
-        viewModel.getAllCampaigns(state.status, state.locationId, state.isRegistered).collectAsLazyPagingItems()
+        viewModel.getAllCampaigns().collectAsLazyPagingItems()
     }
 
     val coroutineScope = rememberCoroutineScope()
@@ -239,7 +242,10 @@ fun CampaignListScreenPreview() {
     TraverseeTheme {
         CampaignListScreen(
             name = "All Campaigns",
-            navigator = EmptyDestinationsNavigator
+            navigator = EmptyDestinationsNavigator,
+            id = -1,
+            viewModel = hiltViewModel(),
+            searchQuery = null,
         )
     }
 }

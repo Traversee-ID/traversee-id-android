@@ -28,6 +28,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.alvindev.NavGraphs
 import com.alvindev.appCurrentDestinationAsState
+import com.alvindev.destinations.CampaignListScreenDestination
 import com.alvindev.startAppDestination
 import com.alvindev.traverseeid.core.presentation.component.TopSearchBar
 import com.alvindev.traverseeid.core.theme.TraverseeBlack
@@ -39,6 +40,7 @@ import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,10 +69,11 @@ class MainActivity : ComponentActivity() {
                     val navigationStringId: Int =
                         NavigationMapper.mapToNavigationStringResource(currentRoute)
                     val user = Firebase.auth.currentUser
-                    val titleTopBarCampaign = stringResource(id = R.string.hello_user, user?.displayName ?: "-")
+                    val titleTopBarCampaign =
+                        stringResource(id = R.string.hello_user, user?.displayName ?: "-")
 
-                    var searchText by remember{ mutableStateOf("")}
-                    var expandable by remember{ mutableStateOf(false)}
+                    var searchText by remember { mutableStateOf("") }
+                    var expandable by remember { mutableStateOf(false) }
 
                     Scaffold(
                         bottomBar = {
@@ -103,20 +106,33 @@ class MainActivity : ComponentActivity() {
                                                 }
                                             }
                                         )
-                                    }
-                                    else if(currentRoute == ScreenRoute.Campaign || currentRoute == ScreenRoute.Tourism){
-                                        if(expandable){
+                                    } else if (currentRoute == ScreenRoute.Campaign || currentRoute == ScreenRoute.Tourism) {
+                                        if (expandable) {
                                             TopSearchBar(
-                                                title = if(currentRoute == ScreenRoute.Campaign) titleTopBarCampaign else title,
+                                                title = if (currentRoute == ScreenRoute.Campaign) titleTopBarCampaign else title,
                                                 searchText = searchText,
-                                                placeholderText = stringResource(id = R.string.search, title),
+                                                placeholderText = stringResource(
+                                                    id = R.string.search,
+                                                    title
+                                                ),
                                                 onSearchTextChanged = { searchText = it },
                                                 onClearClick = { searchText = "" },
                                                 onNavigateBack = { expandable = false },
-                                                backgroundColor = if(currentRoute == ScreenRoute.Campaign) TraverseePrimaryVariant else Color.White,
-                                                contentColor = if(currentRoute == ScreenRoute.Campaign) Color.White else TraverseeBlack,
+                                                backgroundColor = if (currentRoute == ScreenRoute.Campaign) TraverseePrimaryVariant else Color.White,
+                                                contentColor = if (currentRoute == ScreenRoute.Campaign) Color.White else TraverseeBlack,
+                                                onSubmit = {
+                                                    expandable = false
+                                                    if (currentRoute == ScreenRoute.Campaign) {
+                                                        navController.navigate(
+                                                            CampaignListScreenDestination(
+                                                                searchQuery = searchText.trim(),
+                                                                name = searchText.trim()
+                                                            )
+                                                        )
+                                                    }
+                                                }
                                             )
-                                        }else{
+                                        } else {
                                             TopBarMainScreen(
                                                 title = title,
                                                 actions = {
@@ -132,12 +148,11 @@ class MainActivity : ComponentActivity() {
                                                         )
                                                     }
                                                 },
-                                                backgroundColor = if(currentRoute == ScreenRoute.Campaign) TraverseePrimaryVariant else Color.White,
-                                                contentColor = if(currentRoute == ScreenRoute.Campaign) Color.White else TraverseeBlack,
+                                                backgroundColor = if (currentRoute == ScreenRoute.Campaign) TraverseePrimaryVariant else Color.White,
+                                                contentColor = if (currentRoute == ScreenRoute.Campaign) Color.White else TraverseeBlack,
                                             )
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         TopBarMainScreen(title = title)
                                     }
                                 } else {
@@ -295,7 +310,7 @@ fun TopBarCommonScreen(
     onBackClick: () -> Unit
 ) {
     TopAppBar(
-        modifier= Modifier,
+        modifier = Modifier,
         title = {
             Text(
                 modifier = Modifier.fillMaxWidth(0.8f),

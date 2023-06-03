@@ -24,12 +24,10 @@ class ForumRepositoryImpl @Inject constructor(
 ) : ForumRepository {
 
     override suspend fun createPost(
-        title: String,
-        text: String
+        body: ForumPostBody
     ): LiveData<ResultState<ForumPostItem>> =
         liveData {
             try {
-                val body = ForumPostBody(title, text)
                 val response = forumApi.createPost(body)
                 response.data?.let {
                     emit(ResultState.Success(it))

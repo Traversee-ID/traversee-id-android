@@ -13,4 +13,5 @@ data class CampaignListState(
     ),
     val locationId: Int? = null,
     val isRegistered: Boolean? = null,
+    val search: String? = null
 )

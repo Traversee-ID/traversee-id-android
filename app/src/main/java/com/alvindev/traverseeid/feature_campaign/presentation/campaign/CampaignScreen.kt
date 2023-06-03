@@ -83,7 +83,7 @@ fun CampaignScreen(
                     navigator.navigate(
                         CampaignListScreenDestination(
                             id = -1,
-                            name = stringAllCampaigns
+                            name = stringAllCampaigns,
                         )
                     )
                 }

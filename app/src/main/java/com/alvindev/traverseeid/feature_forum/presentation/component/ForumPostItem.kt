@@ -57,7 +57,8 @@ fun ForumPostItem(
                     .size(40.dp)
                     .clip(RoundedCornerShape(50)),
                 contentScale = ContentScale.Crop,
-                alignment = Alignment.Center
+                alignment = Alignment.Center,
+                fallback = painterResource(id = R.drawable.ic_profile),
             )
         } ?: Image(
             painterResource(id = R.drawable.ic_profile),

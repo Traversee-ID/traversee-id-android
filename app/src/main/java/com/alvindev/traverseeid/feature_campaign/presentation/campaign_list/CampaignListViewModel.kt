@@ -9,10 +9,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.core.util.ResourcesProvider
+import com.alvindev.traverseeid.feature_campaign.data.model.CampaignParams
 import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationEntity
 import com.alvindev.traverseeid.feature_campaign.domain.use_case.UseCasesCampaign
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,11 +20,11 @@ import javax.inject.Inject
 class CampaignListViewModel @Inject constructor(
     private val useCases: UseCasesCampaign,
     private val resourcesProvider: ResourcesProvider
-): ViewModel() {
+) : ViewModel() {
     var state by mutableStateOf(CampaignListState())
-    private set
+        private set
 
-    init{
+    init {
         getCampaignLocations()
     }
 
@@ -40,17 +40,41 @@ class CampaignListViewModel @Inject constructor(
         state = state.copy(categoryId = categoryId)
     }
 
+    fun setSearch(search: String?) {
+        state = state.copy(search = search)
+    }
+
     fun setIsRegistered(isRegistered: Boolean?) {
         state = state.copy(isRegistered = isRegistered)
     }
 
-    fun getAllCampaigns(status: String?, locationId: Int?, isRegistered: Boolean?) = useCases.getAllCampaigns(status, locationId, isRegistered).cachedIn(viewModelScope)
-    fun getCampaignsByCategory(categoryId: Int, status: String?, locationId: Int?, isRegistered: Boolean?) = useCases.getCampaignsByCategory(categoryId, status, locationId, isRegistered).cachedIn(viewModelScope)
+    fun getAllCampaigns() = useCases.getAllCampaigns(
+        CampaignParams(
+            status = state.status,
+            locationId = state.locationId,
+            isRegistered = state.isRegistered,
+            search = state.search
+        )
+    ).cachedIn(viewModelScope)
+
+    fun getCampaignsByCategory(categoryId: Int) = useCases.getCampaignsByCategory(
+        categoryId,
+        CampaignParams(
+            status = state.status,
+            locationId = state.locationId,
+            isRegistered = state.isRegistered,
+            search = state.search
+        )
+    ).cachedIn(viewModelScope)
+
     private fun getCampaignLocations() = viewModelScope.launch {
-        useCases.getCampaignLocations().asFlow().collect{
-            state = when(it){
-                is ResultState.Success ->{
-                    val allLocation = CampaignLocationEntity(0, resourcesProvider.getString(com.alvindev.traverseeid.R.string.Indonesia))
+        useCases.getCampaignLocations().asFlow().collect {
+            state = when (it) {
+                is ResultState.Success -> {
+                    val allLocation = CampaignLocationEntity(
+                        0,
+                        resourcesProvider.getString(com.alvindev.traverseeid.R.string.Indonesia)
+                    )
                     val list = mutableListOf(allLocation)
                     list.addAll(it.data)
                     state.copy(campaignLocations = list)

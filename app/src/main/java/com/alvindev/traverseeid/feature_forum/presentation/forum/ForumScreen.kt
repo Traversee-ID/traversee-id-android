@@ -70,7 +70,7 @@ fun ForumScreen(
 
             ForumPostItem(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = 16.dp)
                     .clickable {
                         val postArgument = post?.copy(
                             forum = post.forum.copy(
@@ -80,12 +80,12 @@ fun ForumScreen(
                         )
                         navigator.navigate(ForumDetailsScreenDestination(post = postArgument))
                     },
-                authorName = post?.forum?.authorName ?: "",
+                authorName = post?.forum?.authorName ?: "-",
                 authorCaption = post?.forum?.text ?: "",
                 totalLike = totalLikes,
                 totalComment = post?.forum?.totalComments ?: 0,
                 postTime = post?.forum?.createdAt ?: "",
-                authorImage = post?.forum?.authorProfileImage ?: "",
+                authorImage = post?.forum?.authorProfileImage,
                 isOfficial = false,
                 isLiked = isLiked,
                 onLiked = {

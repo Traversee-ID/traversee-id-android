@@ -100,8 +100,8 @@ fun ForumDetailsScreen(
             post?.forum?.let {
                 ForumPostItem(
                     modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                    authorName = post.forum.authorName ?: "",
-                    postTime = post.forum.createdAt ?: "",
+                    authorName = post.forum.authorName ?: "-",
+                    postTime = post.forum.createdAt ?: "-",
                     totalLike = state.totalLikes,
                     totalComment = state.totalComments,
                     authorCaption = post.forum.text ?: "",
@@ -113,7 +113,7 @@ fun ForumDetailsScreen(
                         }
                     },
                     isOfficial = false,
-                    authorImage = post.forum.authorProfileImage ?: "",
+                    authorImage = post.forum.authorProfileImage,
                     isLiked = state.isLiked,
                 )
             }
