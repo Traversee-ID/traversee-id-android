@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_campaign.data.model.*
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationEntity
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
+import com.alvindev.traverseeid.core.domain.entity.LocationEntity
+import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 interface CampaignRepository {
@@ -25,5 +25,5 @@ interface CampaignRepository {
 
     suspend fun submitCampaign(campaignId: Int, submissionUrl: String): LiveData<ResultState<CampaignSubmissionData>>
 
-    suspend fun getCampaignLocations(): LiveData<ResultState<List<CampaignLocationEntity>>>
+    suspend fun getCampaignLocations(): LiveData<ResultState<List<LocationEntity>>>
 }

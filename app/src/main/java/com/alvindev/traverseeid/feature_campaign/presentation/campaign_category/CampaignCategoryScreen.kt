@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.alvindev.destinations.CampaignListScreenDestination
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
+import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import com.ramcosta.composedestinations.annotation.Destination
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

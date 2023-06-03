@@ -1,5 +1,7 @@
 package com.alvindev.traverseeid.feature_campaign.data.remote
 
+import com.alvindev.traverseeid.core.data.model.CategoriesResponse
+import com.alvindev.traverseeid.core.data.model.LocationsResponse
 import com.alvindev.traverseeid.feature_campaign.data.model.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -47,5 +49,5 @@ interface CampaignApi {
     ): Response<CampaignSubmissionResponse>
 
     @GET("campaign-locations")
-    suspend fun getCampaignLocations(): CampaignLocationsResponse
+    suspend fun getCampaignLocations(): LocationsResponse
 }

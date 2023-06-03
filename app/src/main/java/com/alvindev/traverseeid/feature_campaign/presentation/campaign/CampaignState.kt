@@ -1,7 +1,7 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.campaign
 
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
+import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 
 data class CampaignState(
     val isLoading: Boolean = false,

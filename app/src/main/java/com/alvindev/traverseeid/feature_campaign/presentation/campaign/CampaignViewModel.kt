@@ -12,13 +12,13 @@ import androidx.lifecycle.viewModelScope
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.util.ResourcesProvider
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
+import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class CampaignViewModel @Inject constructor(
     private val useCases: UseCasesCampaign,
-    private val resoureseProvider: ResourcesProvider
+    private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
     var state by mutableStateOf(CampaignState())
         private set
@@ -57,7 +57,7 @@ class CampaignViewModel @Inject constructor(
     }
 
     private fun getCategories() = viewModelScope.launch{
-        useCases.getCategories().asFlow().collect{
+        useCases.getCampaignCategories().asFlow().collect{
             state = when(it){
                 is ResultState.Loading -> {
                     state.copy(
@@ -68,8 +68,8 @@ class CampaignViewModel @Inject constructor(
                 is ResultState.Success -> {
                     val allCampaigns = CategoryEntity(
                         id = -1,
-                        name = resoureseProvider.getString(R.string.all_campaigns),
-                        imageUrl = "",
+                        name = resourcesProvider.getString(R.string.all_campaigns),
+                        imageUrl = null,
                     )
 
                     val categories = it.data.toMutableList()

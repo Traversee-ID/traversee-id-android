@@ -29,7 +29,7 @@ import com.alvindev.traverseeid.feature_campaign.presentation.component.MyCampai
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.core.theme.*
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
+import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -105,7 +105,7 @@ fun CampaignScreen(
                 SectionDiscoverCampaign(
                     campaignCategories = if (it.size > 5) categoryArrayList.subList(
                         0,
-                        5
+                        4
                     ) else categoryArrayList,
                     actionOnClick = {
                         navigator.navigate(CampaignCategoryScreenDestination(campaignCategories = categoryArrayList))

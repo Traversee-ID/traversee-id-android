@@ -18,7 +18,7 @@ import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignRegistrationConstant
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignStatusConstant
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationEntity
+import com.alvindev.traverseeid.core.domain.entity.LocationEntity
 
 @Composable
 fun FilterBottomSheet(
@@ -27,7 +27,7 @@ fun FilterBottomSheet(
     selectedRegistartion: String? = null,
     onClose: () -> Unit = {},
     onApply: (isRegistered: Boolean?, status: String?, locationId: Int?) -> Unit = { _, _, _ -> },
-    campaignLocations: List<CampaignLocationEntity>,
+    campaignLocations: List<LocationEntity>,
     locationSelected: Int? = null,
 ) {
     val radioStatusOptions =

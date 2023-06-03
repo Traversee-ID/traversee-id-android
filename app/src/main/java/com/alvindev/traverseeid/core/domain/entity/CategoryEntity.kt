@@ -1,4 +1,4 @@
-package com.alvindev.traverseeid.feature_campaign.domain.entity
+package com.alvindev.traverseeid.core.domain.entity
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

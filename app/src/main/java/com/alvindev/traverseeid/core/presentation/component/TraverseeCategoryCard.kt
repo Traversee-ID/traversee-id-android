@@ -22,7 +22,7 @@ import com.alvindev.traverseeid.core.theme.Typography
 @Composable
 fun TraverseeCategoryCard(
     modifier: Modifier = Modifier,
-    image: String,
+    image: String? = null,
     contentDescription: String,
     text: String,
     isFullSize: Boolean = false,
@@ -57,6 +57,7 @@ fun TraverseeCategoryCard(
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center,
+                fallback = painterResource(id = R.drawable.dummy_komodo_island)
             )
         }
         Text(
