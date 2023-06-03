@@ -129,4 +129,6 @@
     <string name="trip_details">Trip Details</string>
     <string name="days_left">Days left</string>
     <string name="ended">Ended</string>
+    <string name="all_tourism">All Tourism</string>
+    <string name="about_tourism">About the Tourism</string>
 </resources>

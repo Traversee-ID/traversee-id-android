@@ -1,25 +1,29 @@
 package com.alvindev.traverseeid.feature_tourism.presentation.component
 
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.Typography
@@ -28,7 +32,9 @@ import com.alvindev.traverseeid.core.theme.Typography
 @Composable
 fun ImageSlider(
     modifier: Modifier = Modifier,
-    images: List<Int> = listOf(),
+    images: List<String> = listOf(),
+    isFavorite: Boolean = false,
+    favoriteAction: () -> Unit = {}
 ) {
     val pagerState = rememberPagerState()
     Box(modifier = modifier) {
@@ -38,24 +44,42 @@ fun ImageSlider(
             key = { images[it] },
             pageSize = PageSize.Fill
         ) { index ->
-            Image(
+            AsyncImage(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = images[index]),
+                model = images[index],
+                fallback = painterResource(id = R.drawable.app_logo),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
             )
         }
         Box(
             modifier = Modifier
-                .offset(y = -(8).dp, x = (-8).dp)
-                .background(Color.Black.copy(alpha = 0.2f), shape = RoundedCornerShape(4.dp))
+                .offset(y = -(8).dp, x = (8).dp)
+                .background(Color.Black.copy(alpha = 0.5f), shape = RoundedCornerShape(4.dp))
                 .padding(8.dp)
-                .align(Alignment.BottomEnd)
+                .align(Alignment.BottomStart)
         ) {
             Text(
                 text = "${pagerState.currentPage + 1}/${images.size}",
                 style = Typography.subtitle2.copy(color = Color.White),
                 textAlign = TextAlign.Center
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .offset(y = -(8).dp, x = (-8).dp)
+                .background(Color.Black.copy(alpha = 0.5f), shape = RoundedCornerShape(4.dp))
+                .padding(8.dp)
+                .align(Alignment.BottomEnd)
+        ) {
+            Icon(
+                modifier = Modifier.size(24.dp).clickable {
+                    favoriteAction()
+                },
+                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                tint = Color.White,
+                contentDescription = "favorite",
             )
         }
     }
@@ -68,10 +92,7 @@ fun ImageSliderPreview() {
         ImageSlider(
             modifier = Modifier.aspectRatio(1f),
             images = listOf(
-                R.drawable.dummy_komodo_island,
-                R.drawable.dummy_bromo,
-                R.drawable.dummy_borobudur,
-                R.drawable.dummy_kuta_beach,
+               ""
             )
         )
     }

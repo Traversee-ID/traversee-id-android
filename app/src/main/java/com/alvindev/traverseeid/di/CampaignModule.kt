@@ -1,12 +1,11 @@
 package com.alvindev.traverseeid.di
 
 import ApiConfig
-import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
+import com.alvindev.traverseeid.feature_campaign.domain.use_case.GetCampaignCategories
 import com.alvindev.traverseeid.feature_campaign.data.remote.CampaignApi
 import com.alvindev.traverseeid.feature_campaign.data.repository.CampaignRepositoryImpl
 import com.alvindev.traverseeid.feature_campaign.domain.repository.CampaignRepository
 import com.alvindev.traverseeid.feature_campaign.domain.use_case.*
-import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +32,7 @@ class CampaignModule {
     @Singleton
     fun provideCampaignUseCases(repository: CampaignRepository): UseCasesCampaign {
         return UseCasesCampaign(
-            getCategories = GetCategories(repository),
+            getCampaignCategories = GetCampaignCategories(repository),
             getAllCampaigns = GetAllCampaigns(repository),
             getCampaignsByCategory = GetCampaignsByCategory(repository),
             getFirstPageRegisteredCampaigns = GetFirstPageRegisteredCampaigns(repository),

@@ -53,19 +53,10 @@ fun CampaignListScreen(
     val isHideButton = name == stringResource(id = R.string.campaign_around)
     val state = viewModel.state
 
-
-    LaunchedEffect(Unit) {
-        if(state.categoryId != id) {
-            viewModel.setCategoryId(id)
-        }else if(state.search != searchQuery) {
-            viewModel.setSearch(searchQuery)
-        }
-    }
-
     val campaigns: LazyPagingItems<CampaignItem> = if (id != -1) {
-        viewModel.getCampaignsByCategory(id).collectAsLazyPagingItems()
+        viewModel.getCampaignsByCategory(id, searchQuery).collectAsLazyPagingItems()
     } else {
-        viewModel.getAllCampaigns().collectAsLazyPagingItems()
+        viewModel.getAllCampaigns(searchQuery).collectAsLazyPagingItems()
     }
 
     val coroutineScope = rememberCoroutineScope()

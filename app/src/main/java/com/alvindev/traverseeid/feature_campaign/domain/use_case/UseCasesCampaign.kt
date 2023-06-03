@@ -1,7 +1,7 @@
 package com.alvindev.traverseeid.feature_campaign.domain.use_case
 
 data class UseCasesCampaign(
-    val getCategories: GetCategories,
+    val getCampaignCategories: GetCampaignCategories,
     val getAllCampaigns: GetAllCampaigns,
     val getCampaignsByCategory: GetCampaignsByCategory,
     val getFirstPageRegisteredCampaigns: GetFirstPageRegisteredCampaigns,

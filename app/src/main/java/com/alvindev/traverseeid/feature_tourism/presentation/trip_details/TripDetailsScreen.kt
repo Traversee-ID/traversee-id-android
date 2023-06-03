@@ -52,10 +52,9 @@ fun TripDetailsScreen(
                 modifier = Modifier
                     .aspectRatio(1f),
                 images = listOf(
-                    R.drawable.dummy_komodo_island,
-                    R.drawable.dummy_bromo,
-                    R.drawable.dummy_borobudur,
-                    R.drawable.dummy_kuta_beach,
+                    "https://picsum.photos/seed/picsum/200/300",
+                    "https://picsum.photos/seed/picsum/200/300",
+                    "https://picsum.photos/seed/picsum/200/300",
                 )
             )
             Column(

@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.core.util.ResourcesProvider
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignParams
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationEntity
+import com.alvindev.traverseeid.core.domain.entity.LocationEntity
 import com.alvindev.traverseeid.feature_campaign.domain.use_case.UseCasesCampaign
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -35,35 +36,26 @@ class CampaignListViewModel @Inject constructor(
     fun setLocationId(locationId: Int?) {
         state = state.copy(locationId = locationId)
     }
-
-    fun setCategoryId(categoryId: Int) {
-        state = state.copy(categoryId = categoryId)
-    }
-
-    fun setSearch(search: String?) {
-        state = state.copy(search = search)
-    }
-
     fun setIsRegistered(isRegistered: Boolean?) {
         state = state.copy(isRegistered = isRegistered)
     }
 
-    fun getAllCampaigns() = useCases.getAllCampaigns(
+    fun getAllCampaigns(searchQuery: String?) = useCases.getAllCampaigns(
         CampaignParams(
             status = state.status,
             locationId = state.locationId,
             isRegistered = state.isRegistered,
-            search = state.search
+            search = searchQuery
         )
     ).cachedIn(viewModelScope)
 
-    fun getCampaignsByCategory(categoryId: Int) = useCases.getCampaignsByCategory(
+    fun getCampaignsByCategory(categoryId: Int, searchQuery: String?) = useCases.getCampaignsByCategory(
         categoryId,
         CampaignParams(
             status = state.status,
             locationId = state.locationId,
             isRegistered = state.isRegistered,
-            search = state.search
+            search = searchQuery
         )
     ).cachedIn(viewModelScope)
 
@@ -71,9 +63,9 @@ class CampaignListViewModel @Inject constructor(
         useCases.getCampaignLocations().asFlow().collect {
             state = when (it) {
                 is ResultState.Success -> {
-                    val allLocation = CampaignLocationEntity(
+                    val allLocation = LocationEntity(
                         0,
-                        resourcesProvider.getString(com.alvindev.traverseeid.R.string.Indonesia)
+                        resourcesProvider.getString(R.string.Indonesia)
                     )
                     val list = mutableListOf(allLocation)
                     list.addAll(it.data)

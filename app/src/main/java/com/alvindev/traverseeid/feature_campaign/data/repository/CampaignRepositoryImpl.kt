@@ -9,8 +9,8 @@ import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_campaign.data.model.*
 import com.alvindev.traverseeid.feature_campaign.data.paging_source.CampaignsPagingSource
 import com.alvindev.traverseeid.feature_campaign.data.remote.CampaignApi
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignLocationEntity
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CategoryEntity
+import com.alvindev.traverseeid.core.domain.entity.LocationEntity
+import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.feature_campaign.domain.repository.CampaignRepository
 import kotlinx.coroutines.flow.Flow
 import org.json.JSONException
@@ -155,7 +155,7 @@ class CampaignRepositoryImpl(
         }
     }
 
-    override suspend fun getCampaignLocations(): LiveData<ResultState<List<CampaignLocationEntity>>> =
+    override suspend fun getCampaignLocations(): LiveData<ResultState<List<LocationEntity>>> =
         liveData {
             try {
                 val response = campaignApi.getCampaignLocations()

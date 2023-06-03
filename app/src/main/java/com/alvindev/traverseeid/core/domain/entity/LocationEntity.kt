@@ -1,11 +1,11 @@
-package com.alvindev.traverseeid.feature_campaign.domain.entity
+package com.alvindev.traverseeid.core.domain.entity
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class CampaignLocationEntity(
+data class LocationEntity(
     @field:SerializedName("id")
     val id: Int,
 
