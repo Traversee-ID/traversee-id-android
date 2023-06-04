@@ -140,7 +140,8 @@ fun CampaignListScreen(
                         imageUrl = item?.campaign?.imageUrl,
                         onClick = {
                             navigator.navigate(CampaignDetailsScreenDestination(campaignItem = item))
-                        }
+                        },
+                        status = item?.campaign?.status ?: "",
                     )
                 }
 

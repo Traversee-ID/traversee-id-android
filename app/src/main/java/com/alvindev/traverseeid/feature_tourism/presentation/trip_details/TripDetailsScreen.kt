@@ -1,17 +1,15 @@
 package com.alvindev.traverseeid.feature_tourism.presentation.trip_details
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,9 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -80,17 +80,36 @@ fun TripDetailsScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(bottom = 64.dp),
             ) {
-                ImageSlider(
+                Box(
                     modifier = Modifier
-                        .aspectRatio(1f),
-                    images = state.trip.imagesUrl,
-                    isTourism = false,
-                )
+                        .aspectRatio(1f)
+                        .padding(bottom = 8.dp)
+                ) {
+                    ImageSlider(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        images = state.trip.imagesUrl,
+                    )
+
+                    //background color
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        TraverseeBlack.copy(alpha = 0.5f),
+                                        TraverseeBlack.copy(alpha = 0.1f)
+                                    ),
+                                )
+                            )
+                    )
+                }
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
                         text = state.trip.title ?: "-",
@@ -108,7 +127,7 @@ fun TripDetailsScreen(
 
                         Text(
                             text = state.trip.categories.joinToString(separator = ", "),
-                            style = MaterialTheme.typography.caption,
+                            style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.W500),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -122,12 +141,12 @@ fun TripDetailsScreen(
                 ) {
                     Text(
                         text = stringResource(id = R.string.organizer) + ":",
-                        style = Typography.subtitle2,
+                        style = Typography.subtitle2.copy(color = TraverseeBlack600, fontWeight = FontWeight.W500),
                         color = TraverseeBlack
                     )
                     Text(
                         text = state.trip.organizer ?: "-",
-                        style = Typography.subtitle2,
+                        style = Typography.subtitle2.copy(color= MaterialTheme.colors.primaryVariant),
                         modifier = Modifier
                             .padding(start = 4.dp),
                         color = TraverseeSecondaryVariant
@@ -160,6 +179,37 @@ fun TripDetailsScreen(
                         }
                     )
                 }
+            }
+
+            // top bar
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(TraverseeBlack.copy(alpha = 0.5f))
+                    .padding(16.dp)
+                    .align(Alignment.TopStart),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconButton(
+                    modifier = Modifier.size(24.dp),
+                    onClick = {
+                        navigator.popBackStack()
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = stringResource(id = R.string.back),
+                        tint = Color.White
+                    )
+                }
+
+                Text(
+                    modifier = Modifier.weight(0.8f),
+                    text = stringResource(id = R.string.trip_details),
+                    textAlign = TextAlign.Center,
+                    style = Typography.h6,
+                    color = Color.White
+                )
             }
 
             TraverseeButton(
@@ -263,10 +313,10 @@ fun ScheduleTrip(
         stringResource(id = R.string.destination),
     )
     val scheduleIcons = listOf(
-        Icons.Outlined.DateRange,
-        Icons.Outlined.Schedule,
-        Icons.Outlined.HourglassTop,
-        Icons.Outlined.Flight,
+        painterResource(id = R.drawable.ic_schedule),
+        painterResource(id = R.drawable.ic_duration),
+        painterResource(id = R.drawable.ic_deadline),
+        painterResource(id = R.drawable.ic_destination),
     )
 
     val configuration = LocalConfiguration.current
@@ -275,7 +325,7 @@ fun ScheduleTrip(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
     ) {
-        scheduleIcons.forEachIndexed { index, icon ->
+        scheduleIcons.forEachIndexed { index, painter ->
             TripIconCard(
                 modifier = Modifier
                     .width(screenWidth / 2)
@@ -283,7 +333,7 @@ fun ScheduleTrip(
                     .padding(4.dp)
                     .shadow(2.dp, shape = Shapes.large)
                     .background(MaterialTheme.colors.surface, Shapes.large),
-                icon = icon,
+                painter = painter,
                 title = scheduleTitle[index],
                 description = when(index){
                     0 -> schedule

@@ -138,4 +138,8 @@
     <string name="deadline">Deadline</string>
     <string name="book_via_whatsapp">Book via WhatsApp</string>
     <string name="book_via_whatsapp_message">Hello %s, I want to booking \"%s\" trip</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
+    <string name="edit">Edit</string>
+    <string name="already_registered">Already Registered</string>
 </resources>

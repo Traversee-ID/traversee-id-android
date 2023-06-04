@@ -24,7 +24,7 @@ fun TraverseeRowIcon(
     drawable: Int? = null,
     iconSize: Dp = 24.dp,
     iconPaddingEnd: Dp = 4.dp,
-    iconTintColor: Color = MaterialTheme.colors.secondary,
+    iconTintColor: Color = MaterialTheme.colors.secondaryVariant,
     text: String,
     textColor: Color = TraverseeBlack,
     textStyle: TextStyle = Typography.caption,

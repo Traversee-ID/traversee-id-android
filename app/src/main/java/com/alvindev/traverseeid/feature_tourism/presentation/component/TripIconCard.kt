@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.feature_tourism.presentation.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,11 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeBlack
 import com.alvindev.traverseeid.core.theme.TraverseeSecondary
@@ -26,7 +30,7 @@ import com.alvindev.traverseeid.core.theme.TraverseeSecondary
 @Composable
 fun TripIconCard(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    painter: Painter,
     title: String,
     description: String
 ) {
@@ -35,14 +39,13 @@ fun TripIconCard(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
+        Image(
             modifier = Modifier.size(32.dp),
-            imageVector = icon,
+            painter = painter,
             contentDescription = title,
-            tint = TraverseeSecondary
         )
         Text(
-            modifier = Modifier.padding(vertical = 4.dp),
+            modifier = Modifier.padding(top = 4.dp),
             text = title,
             style = MaterialTheme.typography.caption.copy(
                 color = TraverseeBlack,
@@ -65,7 +68,7 @@ fun TripIconCardPreview() {
         modifier = Modifier
             .shadow(elevation = 4.dp, shape = Shapes.large)
             .background(MaterialTheme.colors.surface, Shapes.large),
-        icon = Icons.Outlined.Cloud,
+        painter = painterResource(id = R.drawable.ic_timer),
         title = "Weather",
         description = "Sunny"
     )

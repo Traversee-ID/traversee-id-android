@@ -249,7 +249,8 @@ fun SectionCampaignAround(
                     endDate = "June 17",
                     place = "Magelang",
                     participants = 1000,
-                    onClick = campaignOnClick
+                    onClick = campaignOnClick,
+                    status = "completed"
                 )
             }
         }
@@ -293,7 +294,7 @@ fun SectionDiscoverCampaign(
                         .width(screenWidth / 2.8f)
                         .background(Color.White, shape = Shapes.large)
                         .clickable { categoryOnClick(category) },
-                    image = category.imageUrl ?: "",
+                    image = category.imageUrl,
                     contentDescription = category.name ?: "",
                     text = category.name ?: "",
                 )

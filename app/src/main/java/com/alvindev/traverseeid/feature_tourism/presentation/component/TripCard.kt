@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,7 +77,6 @@ fun TripCard(
                             .padding(end = 4.dp),
                         text = title,
                         style = Typography.subtitle2,
-                        color = MaterialTheme.colors.secondaryVariant,
                     )
                     TraverseeRowIcon(
                         text = duration,
@@ -88,7 +88,7 @@ fun TripCard(
                 if(categories.isNotEmpty()){
                     Text(
                         text = categories,
-                        style = MaterialTheme.typography.caption,
+                        style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.W600, color = MaterialTheme.colors.secondaryVariant),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -105,7 +105,6 @@ fun TripCard(
                             .padding(end = 4.dp),
                         text = price,
                         style = Typography.subtitle2,
-                        color = MaterialTheme.colors.secondaryVariant,
                     )
                     Text(
                         text = "${startDate.toDate()} - ${endDate.toDate()}",

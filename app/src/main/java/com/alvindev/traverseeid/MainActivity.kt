@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -17,8 +18,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,6 +54,12 @@ class MainActivity : ComponentActivity() {
         ScreenRoute.Tourism,
         ScreenRoute.Sentiment,
         ScreenRoute.Settings,
+    )
+
+    private val detailsRoutes = listOf(
+        ScreenRoute.CampaignDetails,
+        ScreenRoute.TripDetails,
+        ScreenRoute.TourismDetails,
     )
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
@@ -109,6 +118,13 @@ class MainActivity : ComponentActivity() {
                                     } else if (currentRoute == ScreenRoute.Campaign || currentRoute == ScreenRoute.Tourism) {
                                         if (expandable) {
                                             TopSearchBar(
+                                                modifier = if (currentRoute == ScreenRoute.Campaign) Modifier
+                                                    .clip(
+                                                        RoundedCornerShape(
+                                                            bottomStart = 20.dp,
+                                                            bottomEnd = 20.dp
+                                                        )
+                                                    ) else Modifier,
                                                 title = if (currentRoute == ScreenRoute.Campaign) titleTopBarCampaign else title,
                                                 searchText = searchText,
                                                 placeholderText = stringResource(
@@ -123,6 +139,7 @@ class MainActivity : ComponentActivity() {
                                                 onSubmit = {
                                                     expandable = false
                                                     if (currentRoute == ScreenRoute.Campaign) {
+                                                        routeName = searchText.trim()
                                                         navController.navigate(
                                                             CampaignListScreenDestination(
                                                                 searchQuery = searchText.trim(),
@@ -134,7 +151,7 @@ class MainActivity : ComponentActivity() {
                                             )
                                         } else {
                                             TopBarMainScreen(
-                                                title = title,
+                                                title = if (currentRoute == ScreenRoute.Campaign) titleTopBarCampaign else title,
                                                 actions = {
                                                     IconButton(
                                                         onClick = {
@@ -150,6 +167,13 @@ class MainActivity : ComponentActivity() {
                                                 },
                                                 backgroundColor = if (currentRoute == ScreenRoute.Campaign) TraverseePrimaryVariant else Color.White,
                                                 contentColor = if (currentRoute == ScreenRoute.Campaign) Color.White else TraverseeBlack,
+                                                modifier = if (currentRoute == ScreenRoute.Campaign) Modifier
+                                                    .clip(
+                                                        RoundedCornerShape(
+                                                            bottomStart = 20.dp,
+                                                            bottomEnd = 20.dp
+                                                        )
+                                                    ) else Modifier
                                             )
                                         }
                                     } else {
@@ -160,10 +184,10 @@ class MainActivity : ComponentActivity() {
                                         title = title,
                                         onBackClick = {
                                             navController.popBackStack()
-                                        }
+                                        },
                                     )
                                 }
-                            } else if (routeName.isNotEmpty()) {
+                            } else if (routeName.isNotEmpty() && (currentRoute in detailsRoutes).not()) {
                                 TopBarCommonScreen(
                                     title = routeName,
                                     onBackClick = {
@@ -243,7 +267,7 @@ private fun BottomBar(
     BottomNavigation(
         modifier = modifier,
         backgroundColor = Color.White,
-        contentColor = MaterialTheme.colors.primary,
+        contentColor = MaterialTheme.colors.primaryVariant,
         elevation = 4.dp
     ) {
         val currentDestination = navController.appCurrentDestinationAsState().value
@@ -254,7 +278,7 @@ private fun BottomBar(
             BottomNavigationItem(
                 icon = {
                     Icon(
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(18.dp),
                         imageVector = item.icon,
                         contentDescription = item.title
                     )
@@ -263,10 +287,11 @@ private fun BottomBar(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = item.title,
+                        fontWeight = FontWeight.W600,
                         fontSize = 9.5.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        letterSpacing = 0.5.sp,
+                        letterSpacing = 0.3.sp,
                     )
                 },
                 alwaysShowLabel = false,
@@ -287,12 +312,14 @@ private fun BottomBar(
 
 @Composable
 fun TopBarMainScreen(
+    modifier: Modifier = Modifier,
     title: String,
     actions: @Composable RowScope.() -> Unit = {},
     backgroundColor: Color = Color.White,
-    contentColor: Color = TraverseeBlack
+    contentColor: Color = TraverseeBlack,
 ) {
     TopAppBar(
+        modifier = modifier,
         title = {
             Text(
                 text = title,
@@ -300,14 +327,16 @@ fun TopBarMainScreen(
         },
         actions = actions,
         backgroundColor = backgroundColor,
-        contentColor = contentColor
+        contentColor = contentColor,
     )
 }
 
 @Composable
 fun TopBarCommonScreen(
     title: String,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    contentColor: Color = TraverseeBlack,
+    backgroundColor: Color = Color.White,
 ) {
     TopAppBar(
         modifier = Modifier,
@@ -316,6 +345,8 @@ fun TopBarCommonScreen(
                 modifier = Modifier.fillMaxWidth(0.8f),
                 text = title,
                 textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         navigationIcon = {
@@ -323,11 +354,12 @@ fun TopBarCommonScreen(
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "back",
+                    tint = contentColor
                 )
             }
         },
-        backgroundColor = Color.White,
-        contentColor = TraverseeBlack
+        backgroundColor = backgroundColor,
+        contentColor = contentColor,
     )
 }
 

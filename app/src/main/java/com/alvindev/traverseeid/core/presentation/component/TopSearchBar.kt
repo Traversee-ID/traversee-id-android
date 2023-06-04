@@ -27,6 +27,7 @@ import com.alvindev.traverseeid.core.theme.TraverseeBlack
 @ExperimentalComposeUiApi
 @Composable
 fun TopSearchBar(
+    modifier: Modifier = Modifier,
     title: String,
     searchText: String,
     placeholderText: String = "",
@@ -42,6 +43,7 @@ fun TopSearchBar(
     val focusRequester = remember { FocusRequester() }
 
     TopAppBar(
+        modifier = modifier,
         title = { Text(title) },
         backgroundColor = backgroundColor,
         contentColor = contentColor,

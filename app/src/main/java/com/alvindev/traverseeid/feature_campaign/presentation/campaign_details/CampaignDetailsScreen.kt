@@ -1,6 +1,8 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.campaign_details
 
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,17 +11,20 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Place
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -64,7 +69,7 @@ fun CampaignDetailsScreen(
     val screenWidth = configuration.screenWidthDp.dp - 32.dp
 
     LaunchedEffect(Unit) {
-        if(state.campaign == null){
+        if (state.campaign == null) {
             campaignItem?.let {
                 viewModel.setCampaignItem(it)
             } ?: id?.let {
@@ -142,17 +147,28 @@ fun CampaignDetailsScreen(
                         contentScale = ContentScale.Crop
                     )
 
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        TraverseeBlack.copy(alpha = 0.5f),
+                                        TraverseeBlack.copy(alpha = 0.1f)
+                                    ),
+                                )
+                            )
+                    )
+
                     if (state.campaignUserCondition >= CampaignParticipantConstant.REGISTERED_AND_SUBMITTED) {
-                        Icon(
+                        Image(
                             modifier = Modifier
-                                .align(Alignment.BottomEnd)
+                                .size(60.dp)
+                                .offset(y = (-30).dp)
                                 .padding(8.dp)
-                                .size(24.dp)
-                                .background(color = Color.White, shape = RoundedCornerShape(50))
-                                .padding(2.dp),
-                            imageVector = Icons.Default.Check,
+                                .align(Alignment.BottomEnd),
                             contentDescription = stringResource(id = R.string.campaign_ended),
-                            tint = TraverseeGreen,
+                            painter = painterResource(id = R.drawable.ic_completed),
                         )
                     }
                 }
@@ -174,19 +190,19 @@ fun CampaignDetailsScreen(
                         Text(
                             modifier = Modifier.weight(1f),
                             text = state.campaign?.categoryName ?: "",
-                            style = Typography.subtitle2.copy(color = MaterialTheme.colors.secondaryVariant)
+                            style = Typography.subtitle2
                         )
 
                         Text(
                             text = "${state.campaign?.startDate} - ${state.campaign?.endDate}",
-                            style = Typography.subtitle2.copy(color = MaterialTheme.colors.secondary)
+                            style = Typography.subtitle2.copy(color = TraverseeBlack600)
                         )
                     }
 
                     Text(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         text = state.campaign?.name ?: "",
-                        style = Typography.h1.copy(color = MaterialTheme.colors.secondaryVariant)
+                        style = Typography.h1.copy(color = MaterialTheme.colors.primaryVariant)
                     )
                     TraverseeRowIcon(
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -200,13 +216,15 @@ fun CampaignDetailsScreen(
                     ) {
                         Text(
                             text = stringResource(id = R.string.iniated_by) + ":",
-                            style = Typography.subtitle2,
+                            style = Typography.subtitle2.copy(
+                                color = TraverseeBlack600,
+                                fontWeight = FontWeight.W500
+                            ),
                             color = TraverseeBlack
                         )
                         Text(
                             text = state.campaignDetails?.initiatorName ?: "",
-                            style = Typography.subtitle2,
-                            fontWeight = FontWeight.W400,
+                            style = Typography.subtitle2.copy(color = MaterialTheme.colors.primaryVariant),
                             modifier = Modifier
                                 .padding(start = 4.dp),
                             color = TraverseeSecondaryVariant
@@ -289,6 +307,59 @@ fun CampaignDetailsScreen(
                 }
             }
 
+            // top bar
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(TraverseeBlack.copy(alpha = 0.5f))
+                    .padding(16.dp)
+                    .align(Alignment.TopStart),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconButton(
+                    modifier = Modifier.size(24.dp),
+                    onClick = {
+                        navigator.popBackStack()
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = stringResource(id = R.string.back),
+                        tint = Color.White
+                    )
+                }
+
+
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(id = R.string.campaign_details),
+                    textAlign = TextAlign.Center,
+                    style = Typography.h6,
+                    color = Color.White
+                )
+
+                IconButton(
+                    modifier = Modifier.size(24.dp),
+                    onClick = {
+                        state.campaign?.let {
+                            val forumPostArg = ForumCampaignEntity(
+                                id = it.id,
+                                name = it.name ?: "-",
+                                imageUrl = it.imageUrl,
+                                category = it.categoryName ?: "-",
+                            )
+                            navigator.navigate(ForumPostScreenDestination(campaign = forumPostArg))
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "share",
+                        tint = Color.White
+                    )
+                }
+            }
+
             Footer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -301,17 +372,6 @@ fun CampaignDetailsScreen(
                 onClickButton = {
                     viewModel.setShowDialog(true)
                 },
-                onClickShare = {
-                    state.campaign?.let {
-                        val forumPostArg = ForumCampaignEntity(
-                            id = it.id,
-                            name = it.name ?: "-",
-                            imageUrl = it.imageUrl,
-                            category = it.categoryName ?: "-",
-                        )
-                        navigator.navigate(ForumPostScreenDestination(campaign = forumPostArg))
-                    }
-                }
             )
         }
     }
@@ -326,11 +386,10 @@ fun AboutCampaign(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             title = stringResource(id = R.string.about_campaign)
         )
-        Text(
+        TraverseeExpandableText(
             modifier = Modifier.padding(horizontal = 16.dp),
             text = description,
-            style = Typography.body2,
-            textAlign = TextAlign.Justify,
+            minimizedMaxLines = 5,
         )
     }
 }
@@ -474,25 +533,11 @@ fun Footer(
     textButton: String,
     enabledButton: Boolean,
     onClickButton: () -> Unit,
-    onClickShare: () -> Unit,
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        TraverseeOutlinedButton(
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-                .fillMaxHeight(),
-            contentPadding = PaddingValues(4.dp),
-            onClick = onClickShare,
-            shape = Shapes.medium,
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Share,
-                contentDescription = "Share",
-            )
-        }
         TraverseeButton(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp),

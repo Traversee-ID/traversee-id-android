@@ -1,12 +1,9 @@
 package com.alvindev.traverseeid.feature_campaign.presentation.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,12 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.theme.*
-import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -62,17 +59,14 @@ fun MyCampaignCard(
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center
                 )
-                if(status == "Ended") {
-                    Icon(
+                if(status.lowercase() == "completed") {
+                    Image(
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
+                            .size(40.dp)
                             .padding(8.dp)
-                            .size(24.dp)
-                            .background(color = Color.White, shape = RoundedCornerShape(50))
-                            .padding(2.dp),
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Campaign Ended",
-                        tint = TraverseeGreen,
+                            .align(Alignment.BottomEnd),
+                        contentDescription = stringResource(id = R.string.campaign_ended),
+                        painter = painterResource(id = R.drawable.ic_completed),
                     )
                 }
             }
@@ -99,7 +93,6 @@ fun MyCampaignCard(
                 Text(
                     text = title,
                     style = Typography.subtitle2,
-                    color = MaterialTheme.colors.secondaryVariant,
                 )
                 Row(
                     modifier = Modifier
@@ -116,7 +109,7 @@ fun MyCampaignCard(
                         tint = MaterialTheme.colors.secondary
                     )
                     Text(
-                        text = "$participants participants",
+                        text = stringResource(id = R.string.participants, participants),
                         style = Typography.caption,
                         color = TraverseeBlack
                     )
@@ -135,11 +128,11 @@ fun MyCampaignCardPreview() {
                 .fillMaxWidth()
                 .padding(16.dp),
             title = "Borobudur Temple",
-            status = "Ended",
+            status = "completed",
             startDate = "12/12/2021",
             endDate = "12/12/2021",
             participants = 100,
-            imageUrl = "https://www.pegipegi.com/travel/wp-content/uploads/2019/10/borobudur-1.jpg"
+            imageUrl = "https://picsum.photos/200/300"
         )
     }
 }

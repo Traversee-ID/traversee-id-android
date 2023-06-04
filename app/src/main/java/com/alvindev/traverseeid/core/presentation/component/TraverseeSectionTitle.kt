@@ -47,7 +47,7 @@ fun TraverseeSectionTitle(
         actionText?.let {
                 Text(
                     modifier = Modifier.clickable { actionOnClick() },
-                    text = actionText.uppercase(),
+                    text = actionText.lowercase(),
                     style = Typography.button,
                     color = MaterialTheme.colors.primaryVariant,
                 )

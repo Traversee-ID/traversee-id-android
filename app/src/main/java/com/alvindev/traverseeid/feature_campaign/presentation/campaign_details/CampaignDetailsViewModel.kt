@@ -65,7 +65,7 @@ class CampaignDetailsViewModel @Inject constructor(
                             state = state.copy(
                                 campaignDetails = it.data.campaignDetail,
                                 error = null,
-                                textButton = "Campaign Ended",
+                                textButton = resourcesProvider.getString(R.string.campaign_ended),
                                 enabledButton = false,
                                 campaignUserCondition = CampaignParticipantConstant.ENDED,
                             )
@@ -76,7 +76,7 @@ class CampaignDetailsViewModel @Inject constructor(
                                     state = state.copy(
                                         campaignDetails = it.data.campaignDetail,
                                         error = null,
-                                        textButton = "Already Registered",
+                                        textButton = resourcesProvider.getString(R.string.already_registered),
                                         enabledButton = false,
                                         campaignUserCondition = CampaignParticipantConstant.REGISTERED,
                                     )
@@ -85,7 +85,7 @@ class CampaignDetailsViewModel @Inject constructor(
                                     state = state.copy(
                                         campaignDetails = it.data.campaignDetail,
                                         error = null,
-                                        textButton = "Register",
+                                        textButton = resourcesProvider.getString(R.string.register),
                                         enabledButton = true,
                                         campaignUserCondition = CampaignParticipantConstant.NOT_REGISTERED
                                     )

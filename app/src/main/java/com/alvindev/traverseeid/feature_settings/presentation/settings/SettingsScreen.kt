@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.RoomPreferences
 import androidx.compose.material.icons.outlined.Campaign
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.RoomPreferences
@@ -22,7 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -81,10 +79,11 @@ fun SettingsScreen(
 
     Column(
         modifier = Modifier
-            .padding(16.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
         ProfileCard(
             user = UserPreference(
                 name = state.firebaseUser?.displayName,
@@ -102,13 +101,13 @@ fun SettingsScreen(
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         listItem.forEach { item ->
             SettingsButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp),
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                 text = item.title,
                 icon = item.icon,
                 onClick = item.onClick,
@@ -118,14 +117,14 @@ fun SettingsScreen(
         TraverseeDivider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(vertical = 8.dp),
             thickness = 4.dp
         )
 
         SettingsButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 24.dp),
+                .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
             text = stringResource(id = R.string.privacy_and_policy),
             onClick = {},
         )
@@ -133,7 +132,7 @@ fun SettingsScreen(
         TraverseeOutlinedButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp),
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             onClick = {
                 viewModel.logout()
                 navigator.navigate(ScreenRoute.Login) {

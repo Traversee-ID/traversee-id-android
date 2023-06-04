@@ -34,9 +34,6 @@ import com.alvindev.traverseeid.core.theme.Typography
 fun ImageSlider(
     modifier: Modifier = Modifier,
     images: List<String> = listOf(),
-    isFavorite: Boolean = false,
-    favoriteAction: () -> Unit = {},
-    isTourism: Boolean = true,
 ) {
     val pagerState = rememberPagerState()
     Box(modifier = modifier) {
@@ -58,10 +55,10 @@ fun ImageSlider(
             
             Box(
                 modifier = Modifier
-                    .offset(y = -(8).dp, x = (8).dp)
+                    .offset(y = -(8).dp, x = -(8).dp)
                     .background(Color.Black.copy(alpha = 0.5f), shape = RoundedCornerShape(4.dp))
                     .padding(8.dp)
-                    .align(Alignment.BottomStart)
+                    .align(Alignment.BottomEnd)
             ) {
                 Text(
                     text = "${pagerState.currentPage + 1}/${images.size}",
@@ -77,25 +74,6 @@ fun ImageSlider(
                 alignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             )
-        }
-
-        if(isTourism){
-            Box(
-                modifier = Modifier
-                    .offset(y = -(8).dp, x = (-8).dp)
-                    .background(Color.Black.copy(alpha = 0.5f), shape = RoundedCornerShape(4.dp))
-                    .padding(8.dp)
-                    .align(Alignment.BottomEnd)
-            ) {
-                Icon(
-                    modifier = Modifier.size(24.dp).clickable {
-                        favoriteAction()
-                    },
-                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    tint = Color.White,
-                    contentDescription = "favorite",
-                )
-            }
         }
     }
 }

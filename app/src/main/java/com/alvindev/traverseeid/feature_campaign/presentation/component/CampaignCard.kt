@@ -44,6 +44,7 @@ fun CampaignCard(
     participants: Int,
     onClick: () -> Unit = {},
     imageUrl: String? = null,
+    status: String,
 ) {
     Card(
         modifier = modifier,
@@ -103,6 +104,17 @@ fun CampaignCard(
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
+
+                if(status.lowercase() == "completed") {
+                    Image(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(8.dp)
+                            .align(Alignment.BottomStart),
+                        contentDescription = stringResource(id = R.string.campaign_ended),
+                        painter = painterResource(id = R.drawable.ic_completed),
+                    )
+                }
             }
 
             Column(
@@ -115,7 +127,7 @@ fun CampaignCard(
                     text = category,
                     style = Typography.caption.copy(
                         color = MaterialTheme.colors.secondaryVariant,
-                        fontWeight = FontWeight.W500
+                        fontWeight = FontWeight.W600
                     ),
                 )
                 Text(
@@ -151,6 +163,7 @@ fun CampaignCardPreview() {
             endDate = "June 17",
             place = "Magelang",
             participants = 1000,
+            status = "completed",
         )
     }
 }
