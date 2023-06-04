@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -19,16 +19,16 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.core.util.currencyFormat
+import com.alvindev.traverseeid.core.util.toDate
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TripCard(
     modifier: Modifier = Modifier,
     title: String,
-    duration: Int,
-    location: String,
-    price: Int,
+    duration: String,
+    categories: String,
+    price: String,
     startDate: String,
     endDate: String,
     imageUrl: String? = null,
@@ -53,7 +53,7 @@ fun TripCard(
                     alignment = Alignment.Center
                 )
             } ?: Image(
-                painter = painterResource(id = R.drawable.dummy_komodo_island),
+                painter = painterResource(id = R.drawable.ic_logo),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -79,32 +79,39 @@ fun TripCard(
                         color = MaterialTheme.colors.secondaryVariant,
                     )
                     TraverseeRowIcon(
-                        text = "$duration Days",
+                        text = duration,
                         icon = Icons.Default.Schedule,
                         iconSize = 16.dp,
                     )
                 }
 
-                TraverseeRowIcon(
-                    text = location,
-                    icon = Icons.Outlined.Place,
-                    iconSize = 16.dp,
-                )
+                if(categories.isNotEmpty()){
+                    Text(
+                        text = categories,
+                        style = MaterialTheme.typography.caption,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
 
                 Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 4.dp),
-                        text = price.currencyFormat(),
+                        text = price,
                         style = Typography.subtitle2,
                         color = MaterialTheme.colors.secondaryVariant,
                     )
                     Text(
-                        text = "$startDate - $endDate",
+                        text = "${startDate.toDate()} - ${endDate.toDate()}",
                         style = Typography.caption,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -119,8 +126,8 @@ fun TripCardPreview() {
         title = "Borobudur",
         startDate = "May 17",
         endDate = "June 17",
-        location = "Magelang",
-        price = 1_200_000,
-        duration = 3,
+        categories = "Magelang",
+        price = "Rp. 1.000.000",
+        duration = "3 Days",
     )
 }

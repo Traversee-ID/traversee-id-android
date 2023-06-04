@@ -46,6 +46,18 @@ class CampaignRepositoryImpl(
         ).flow
     }
 
+    override suspend fun getCampaignById(campaignId: Int): LiveData<ResultState<CampaignItem>> =
+        liveData {
+            try {
+                val response = campaignApi.getCampaignById(campaignId)
+                response.data?.let {
+                    emit(ResultState.Success(it))
+                } ?: emit(ResultState.Error(response.message.toString()))
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.message.toString()))
+            }
+        }
+
     override fun getCampaignsByCategory(
         categoryId: Int,
         params: CampaignParams

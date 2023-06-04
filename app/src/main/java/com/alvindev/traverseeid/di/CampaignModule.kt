@@ -34,6 +34,7 @@ class CampaignModule {
         return UseCasesCampaign(
             getCampaignCategories = GetCampaignCategories(repository),
             getAllCampaigns = GetAllCampaigns(repository),
+            getCampaignById = GetCampaignById(repository),
             getCampaignsByCategory = GetCampaignsByCategory(repository),
             getFirstPageRegisteredCampaigns = GetFirstPageRegisteredCampaigns(repository),
             getCampaignDetails = GetCampaignDetails(repository),

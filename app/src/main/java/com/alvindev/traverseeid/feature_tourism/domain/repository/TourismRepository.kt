@@ -7,7 +7,9 @@ import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.core.domain.entity.LocationEntity
 import com.alvindev.traverseeid.feature_tourism.data.model.TourismParams
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismDetailsEntity
+import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismEntity
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismItem
+import com.alvindev.traverseeid.feature_tourism.domain.entity.TripEntity
 import kotlinx.coroutines.flow.Flow
 
 interface TourismRepository {
@@ -17,9 +19,17 @@ interface TourismRepository {
 
     fun getTourisms(params: TourismParams): Flow<PagingData<TourismItem>>
 
+    suspend fun getTourismById(id: Int): LiveData<ResultState<TourismItem>>
+
     suspend fun getTourismDetails(id: Int): LiveData<ResultState<TourismDetailsEntity>>
 
     suspend fun postFavoriteTourism(id: Int): LiveData<ResultState<TourismItem>>
 
     suspend fun deleteFavoriteTourism(id: Int): LiveData<ResultState<TourismItem>>
+    fun getOpenTrip(): Flow<PagingData<TripEntity>>
+
+    suspend fun getFirstPageOpenTrip(): LiveData<ResultState<List<TripEntity>>>
+
+    suspend fun getTripDestinations(id: Int): LiveData<ResultState<List<TourismEntity>>>
+
 }

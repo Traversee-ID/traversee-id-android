@@ -36,7 +36,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 )
 @Composable
 fun TourismListScreen(
-    id: Int = -1,
+    id: Int? = null,
     name: String? = null,
     navigator: DestinationsNavigator,
     viewModel: TourismListViewModel = hiltViewModel()

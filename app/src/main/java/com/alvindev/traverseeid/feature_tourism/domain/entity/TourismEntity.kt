@@ -19,5 +19,8 @@ data class TourismEntity(
 	val name: String? = null,
 
 	@field:SerializedName("id")
-	val id: Int
+	val id: Int,
+
+	@field:SerializedName("trip_id")
+	val tripId: Int? = null,
 ) : Parcelable

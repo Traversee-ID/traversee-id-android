@@ -34,9 +34,13 @@ class TourismModule {
             getTourismCategories = GetTourismCategories(repository),
             getTourismLocations = GetTourismLocations(repository),
             getTourisms = GetTourisms(repository),
+            getTourismById = GetTourismById(repository),
             getTourismDetails = GetTourismDetails(repository),
             postFavoriteTourism = PostFavoriteTourism(repository),
-            deleteFavoriteTourism = DeleteFavoriteTourism(repository)
+            deleteFavoriteTourism = DeleteFavoriteTourism(repository),
+            getOpenTrip = GetOpenTrip(repository),
+            getFirstPageOpenTrip = GetFirstPageOpenTrip(repository),
+            getTripDestinations = GetTripDestinations(repository),
         )
     }
 }

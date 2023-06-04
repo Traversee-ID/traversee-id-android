@@ -40,6 +40,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 )
 @Composable
 fun TourismDetailsScreen(
+    id: Int? = null,
     tourismItem: TourismItem? = null,
     viewModel: TourismDetailsViewModel = hiltViewModel()
 ) {
@@ -47,8 +48,12 @@ fun TourismDetailsScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        tourismItem?.let {
-            viewModel.setInitialState(it)
+        if(state.tourism == null){
+            tourismItem?.let {
+                viewModel.setInitialState(it)
+            } ?: id?.let {
+                viewModel.setInitialStateWithId(it)
+            }
         }
     }
 

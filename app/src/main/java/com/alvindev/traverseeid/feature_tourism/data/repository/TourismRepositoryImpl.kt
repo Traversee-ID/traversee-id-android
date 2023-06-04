@@ -10,9 +10,12 @@ import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.core.domain.entity.LocationEntity
 import com.alvindev.traverseeid.feature_tourism.data.model.TourismParams
 import com.alvindev.traverseeid.feature_tourism.data.paging_soruce.TourismPagingSource
+import com.alvindev.traverseeid.feature_tourism.data.paging_soruce.TripPagingSource
 import com.alvindev.traverseeid.feature_tourism.data.remote.TourismApi
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismDetailsEntity
+import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismEntity
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismItem
+import com.alvindev.traverseeid.feature_tourism.domain.entity.TripEntity
 import com.alvindev.traverseeid.feature_tourism.domain.repository.TourismRepository
 import kotlinx.coroutines.flow.Flow
 import org.json.JSONException
@@ -59,6 +62,18 @@ class TourismRepositoryImpl @Inject constructor(
             }
         ).flow
     }
+
+    override suspend fun getTourismById(id: Int): LiveData<ResultState<TourismItem>> =
+        liveData {
+            try {
+                val response = tourismApi.getTourismById(id)
+                response.data?.let {
+                    emit(ResultState.Success(it))
+                } ?: emit(ResultState.Error(response.message.toString()))
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.message.toString()))
+            }
+        }
 
     override suspend fun getTourismDetails(id: Int): LiveData<ResultState<TourismDetailsEntity>> =
         liveData {
@@ -117,6 +132,43 @@ class TourismRepositoryImpl @Inject constructor(
                 }
             } catch (e: Exception) {
                 emit(ResultState.Error(e.localizedMessage ?: e.message.toString()))
+            }
+        }
+
+    override fun getOpenTrip(): Flow<PagingData<TripEntity>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+            ),
+            pagingSourceFactory = {
+                TripPagingSource(
+                    tourismApi,
+                )
+            }
+        ).flow
+    }
+
+    override suspend fun getFirstPageOpenTrip(): LiveData<ResultState<List<TripEntity>>> =
+        liveData {
+            try {
+                val response = tourismApi.getOpenTrip(1)
+                response.data?.let {
+                    emit(ResultState.Success(it))
+                } ?: emit(ResultState.Error(response.message.toString()))
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.message.toString()))
+            }
+        }
+
+    override suspend fun getTripDestinations(id: Int): LiveData<ResultState<List<TourismEntity>>> =
+        liveData {
+            try {
+                val response = tourismApi.getTripDestinations(id)
+                response.data?.let {
+                    emit(ResultState.Success(it))
+                } ?: emit(ResultState.Error(response.message.toString()))
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.message.toString()))
             }
         }
 }

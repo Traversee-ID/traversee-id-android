@@ -2,6 +2,7 @@ package com.alvindev.traverseeid.feature_tourism.presentation.component
 
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -34,53 +35,67 @@ fun ImageSlider(
     modifier: Modifier = Modifier,
     images: List<String> = listOf(),
     isFavorite: Boolean = false,
-    favoriteAction: () -> Unit = {}
+    favoriteAction: () -> Unit = {},
+    isTourism: Boolean = true,
 ) {
     val pagerState = rememberPagerState()
     Box(modifier = modifier) {
-        HorizontalPager(
-            pageCount = images.size,
-            state = pagerState,
-            key = { images[it] },
-            pageSize = PageSize.Fill
-        ) { index ->
-            AsyncImage(
-                modifier = Modifier.fillMaxSize(),
-                model = images[index],
-                fallback = painterResource(id = R.drawable.app_logo),
+        if(images.isNotEmpty()){
+            HorizontalPager(
+                pageCount = images.size,
+                state = pagerState,
+                key = { images[it] },
+                pageSize = PageSize.Fill
+            ) { index ->
+                AsyncImage(
+                    modifier = Modifier.fillMaxSize(),
+                    model = images[index],
+                    fallback = painterResource(id = R.drawable.app_logo),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                )
+            }
+            
+            Box(
+                modifier = Modifier
+                    .offset(y = -(8).dp, x = (8).dp)
+                    .background(Color.Black.copy(alpha = 0.5f), shape = RoundedCornerShape(4.dp))
+                    .padding(8.dp)
+                    .align(Alignment.BottomStart)
+            ) {
+                Text(
+                    text = "${pagerState.currentPage + 1}/${images.size}",
+                    style = Typography.subtitle2.copy(color = Color.White),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }else{
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-            )
-        }
-        Box(
-            modifier = Modifier
-                .offset(y = -(8).dp, x = (8).dp)
-                .background(Color.Black.copy(alpha = 0.5f), shape = RoundedCornerShape(4.dp))
-                .padding(8.dp)
-                .align(Alignment.BottomStart)
-        ) {
-            Text(
-                text = "${pagerState.currentPage + 1}/${images.size}",
-                style = Typography.subtitle2.copy(color = Color.White),
-                textAlign = TextAlign.Center
+                alignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
             )
         }
 
-        Box(
-            modifier = Modifier
-                .offset(y = -(8).dp, x = (-8).dp)
-                .background(Color.Black.copy(alpha = 0.5f), shape = RoundedCornerShape(4.dp))
-                .padding(8.dp)
-                .align(Alignment.BottomEnd)
-        ) {
-            Icon(
-                modifier = Modifier.size(24.dp).clickable {
-                    favoriteAction()
-                },
-                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                tint = Color.White,
-                contentDescription = "favorite",
-            )
+        if(isTourism){
+            Box(
+                modifier = Modifier
+                    .offset(y = -(8).dp, x = (-8).dp)
+                    .background(Color.Black.copy(alpha = 0.5f), shape = RoundedCornerShape(4.dp))
+                    .padding(8.dp)
+                    .align(Alignment.BottomEnd)
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp).clickable {
+                        favoriteAction()
+                    },
+                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    tint = Color.White,
+                    contentDescription = "favorite",
+                )
+            }
         }
     }
 }

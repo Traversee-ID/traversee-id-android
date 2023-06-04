@@ -12,6 +12,7 @@ import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignPartici
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignStatusConstant
 import com.alvindev.traverseeid.feature_campaign.domain.use_case.UseCasesCampaign
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +32,14 @@ class CampaignDetailsViewModel @Inject constructor(
             isRegistered = campaignItem.isRegistered
         )
         getCampaignDetails(campaignItem.campaign.id)
+    }
+
+    fun setCampaignById(campaignId: Int) {
+        state = state.copy(
+            isLoading = true,
+            error = null,
+        )
+        getCampaignById(campaignId)
     }
 
     fun setShowDialog(isShow: Boolean) {
@@ -117,6 +126,34 @@ class CampaignDetailsViewModel @Inject constructor(
                             }
                         }
                     }
+                }
+                is ResultState.Error -> {
+                    state = state.copy(
+                        isLoading = false,
+                        campaignDetails = null,
+                        submissionUrl = "",
+                        error = it.error,
+                        textButton = resourcesProvider.getString(R.string.register),
+                        enabledButton = false,
+                        campaignUserCondition = CampaignParticipantConstant.NOT_REGISTERED
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getCampaignById(campaignId: Int) = viewModelScope.launch {
+        useCases.getCampaignById(campaignId).asFlow().collect{
+            when(it){
+                is ResultState.Loading -> {
+                    state = state.copy(
+                        campaignDetails = null,
+                        submissionUrl = "",
+                        error = null,
+                    )
+                }
+                is ResultState.Success -> {
+                    setCampaignItem(it.data)
                 }
                 is ResultState.Error -> {
                     state = state.copy(

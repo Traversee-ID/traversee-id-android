@@ -85,6 +85,7 @@ class AuthRepositoryImpl @Inject constructor(
             userPreference = userPreference?.copy(token = token)
             userPreference?.let { dataStore.saveUserLogin(it) }
             token?.let { ApiConfig.TOKEN = it }
+            Log.d(TAG, "getCurrentUser: $token")
 
             //get user language preference
             val userDataStore = dataStore.getUser()

@@ -53,6 +53,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 )
 @Composable
 fun CampaignDetailsScreen(
+    id: Int? = null,
     campaignItem: CampaignItem? = null,
     navigator: DestinationsNavigator,
     viewModel: CampaignDetailsViewModel = hiltViewModel()
@@ -66,6 +67,8 @@ fun CampaignDetailsScreen(
         if(state.campaign == null){
             campaignItem?.let {
                 viewModel.setCampaignItem(it)
+            } ?: id?.let {
+                viewModel.setCampaignById(it)
             }
         }
     }
@@ -206,7 +209,7 @@ fun CampaignDetailsScreen(
                             fontWeight = FontWeight.W400,
                             modifier = Modifier
                                 .padding(start = 4.dp),
-                            color = TraverseeBlack
+                            color = TraverseeSecondaryVariant
                         )
                     }
 
@@ -255,7 +258,7 @@ fun CampaignDetailsScreen(
                                 modifier = Modifier.padding(end = 16.dp),
                                 icon = R.drawable.ic_participants,
                                 title = state.campaign.totalParticipants.digitSeparator(),
-                                description = stringResource(id = R.string.participants),
+                                description = stringResource(id = R.string.Participants),
                             )
                             CampaignRowIcon(
                                 icon = R.drawable.ic_timer,

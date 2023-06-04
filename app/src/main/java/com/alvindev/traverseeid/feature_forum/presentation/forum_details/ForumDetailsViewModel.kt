@@ -78,10 +78,13 @@ class ForumDetailsViewModel @Inject constructor(
         useCases.createComment(forumId, state.text).asFlow().collect {
             when (it) {
                 is ResultState.Success -> {
+                    val comment = it.data
+                    val comments = state.comments.toMutableList()
+                    comments.add(0, comment)
                     state = state.copy(
                         text = "",
                         isSuccess = true,
-                        comments = state.comments + it.data,
+                        comments = comments,
                         isSubmitting = false,
                         totalComments = state.totalComments + 1,
                     )

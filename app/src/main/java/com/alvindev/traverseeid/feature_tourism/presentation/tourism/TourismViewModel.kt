@@ -26,18 +26,18 @@ class TourismViewModel @Inject constructor(
     init {
         getTourismCategories()
     }
-
     private fun getTourismCategories() = viewModelScope.launch {
         useCases.getTourismCategories().asFlow().collect{
             when(it){
                 is ResultState.Loading -> {
                     state = state.copy(
+                        isLoading = true,
                         error = null
                     )
                 }
                 is ResultState.Success -> {
                     val allTourism = CategoryEntity(
-                        id = -1,
+                        id = 0,
                         name = resourcesProvider.getString(R.string.all_tourism),
                         imageUrl = null,
                     )
@@ -46,9 +46,35 @@ class TourismViewModel @Inject constructor(
                     categories.add(0, allTourism)
 
                     state = state.copy(
+                        error = null,
+                        tourismCategories = categories,
+                    )
+                    getOpenTrips()
+                }
+                is ResultState.Error -> {
+                    state = state.copy(
+                        isLoading = false,
+                        error = it.error,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getOpenTrips() = viewModelScope.launch {
+        useCases.getFirstPageOpenTrip().asFlow().collect{
+            when(it){
+                is ResultState.Loading -> {
+                    state = state.copy(
+                        isLoading = true,
+                        error = null
+                    )
+                }
+                is ResultState.Success -> {
+                    state = state.copy(
                         isLoading = false,
                         error = null,
-                        tourismCategories = it.data
+                        openTrips = it.data
                     )
                 }
                 is ResultState.Error -> {

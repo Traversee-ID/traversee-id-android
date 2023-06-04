@@ -8,11 +8,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.PersonOutline
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.Comment
-import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,7 +28,9 @@ import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.core.util.digitSeparator
+import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCampaignEntity
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ForumPostItem(
     modifier: Modifier = Modifier,
@@ -44,6 +43,8 @@ fun ForumPostItem(
     totalComment: Int = 0,
     onLiked: () -> Unit = {},
     isLiked: Boolean = false,
+    campaign: ForumCampaignEntity? = null,
+    cardOnClick: (id: Int) -> Unit = {},
 ) {
     Row(
         modifier = modifier,
@@ -112,48 +113,63 @@ fun ForumPostItem(
                 textAlign = TextAlign.Justify,
             )
 
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(bottom = 16.dp),
-//                elevation = 4.dp,
-//                onClick = onClickCard,
-//                shape = Shapes.large,
-//                backgroundColor = Color.White,
-//            ) {
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 16.dp, vertical = 8.dp),
-//                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.dummy_borobudur),
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .size(100.dp)
-//                            .clip(Shapes.large),
-//                        contentScale = ContentScale.Crop,
-//                        alignment = Alignment.Center
-//                    )
-//
-//                    Column(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(start = 8.dp),
-//                        verticalArrangement = Arrangement.spacedBy(4.dp)
-//                    ) {
-//                        Text(
-//                            text = "Cultural",
-//                            style = Typography.caption,
-//                        )
-//                        Text(
-//                            text = "Share your experience at Borobudur",
-//                            style = Typography.subtitle2,
-//                            color = MaterialTheme.colors.primaryVariant,
-//                        )
-//                    }
-//                }
-//            }
+            campaign?.let {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    elevation = 4.dp,
+                    onClick = {
+                        cardOnClick(it.id)
+                    },
+                    shape = Shapes.large,
+                    backgroundColor = Color.White,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                    ) {
+                        it.imageUrl?.let{
+                            AsyncImage(
+                                model = it,
+                                fallback = painterResource(id = R.drawable.ic_logo),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .clip(Shapes.large),
+                                contentScale = ContentScale.Crop,
+                                alignment = Alignment.Center
+                            )
+                        } ?: Image(
+                            painter = painterResource(id = R.drawable.ic_logo),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(Shapes.large),
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        )
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = it.category,
+                                style = Typography.caption,
+                            )
+                            Text(
+                                text = it.name,
+                                style = Typography.subtitle2,
+                                color = MaterialTheme.colors.primaryVariant,
+                            )
+                        }
+                    }
+                }
+            }
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),

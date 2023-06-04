@@ -12,4 +12,7 @@ data class ForumPostItem(
 
     @field:SerializedName("is_liked")
     val isLiked: Boolean,
+
+    @field:SerializedName("campaign")
+    val campaign: ForumCampaignEntity? = null,
 ) : Parcelable

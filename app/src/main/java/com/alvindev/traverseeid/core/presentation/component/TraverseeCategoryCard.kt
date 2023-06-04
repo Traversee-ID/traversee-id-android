@@ -28,7 +28,7 @@ fun TraverseeCategoryCard(
     isFullSize: Boolean = false,
 ) {
     val allCampaigns = stringResource(id = R.string.all_campaigns)
-    val allPlaces = stringResource(id = R.string.all_places)
+    val allPlaces = stringResource(id = R.string.all_tourism)
     val isAllCategory = text == allCampaigns || text == allPlaces
 
     Column(

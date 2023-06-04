@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.alvindev.destinations.CampaignDetailsScreenDestination
 import com.alvindev.destinations.ForumDetailsScreenDestination
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
@@ -99,6 +100,12 @@ fun ForumScreen(
                         totalLikes += 1
                     }
                 },
+                campaign = post?.campaign,
+                cardOnClick = {
+                    post?.campaign?.id?.let { campaignId ->
+                        navigator.navigate(CampaignDetailsScreenDestination(id = campaignId))
+                    }
+                }
             )
             TraverseeDivider(
                 modifier = Modifier.padding(16.dp),

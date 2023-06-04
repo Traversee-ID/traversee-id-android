@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvindev.destinations.CampaignDetailsScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.common.ListState
 import com.alvindev.traverseeid.core.presentation.component.TraverseeAlertDialog
@@ -32,6 +33,8 @@ import com.alvindev.traverseeid.feature_forum.presentation.component.ForumCommen
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumPostItem
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Destination(
     route = ScreenRoute.ForumDetails,
@@ -39,6 +42,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 fun ForumDetailsScreen(
     post: ForumPostItem? = null,
+    navigator: DestinationsNavigator,
     viewModel: ForumDetailsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state
@@ -115,6 +119,12 @@ fun ForumDetailsScreen(
                     isOfficial = false,
                     authorImage = post.forum.authorProfileImage,
                     isLiked = state.isLiked,
+                    campaign = post.campaign,
+                    cardOnClick = {
+                        post.campaign?.id?.let { campaignId ->
+                            navigator.navigate(CampaignDetailsScreenDestination(id = campaignId))
+                        }
+                    }
                 )
             }
         }
@@ -213,6 +223,8 @@ fun ForumDetailsScreen(
 @Composable
 fun ForumDetailsScreenPreview() {
     TraverseeTheme {
-        ForumDetailsScreen()
+        ForumDetailsScreen(
+            navigator = EmptyDestinationsNavigator
+        )
     }
 }

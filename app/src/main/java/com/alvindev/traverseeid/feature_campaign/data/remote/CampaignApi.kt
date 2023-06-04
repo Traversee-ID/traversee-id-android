@@ -23,6 +23,9 @@ interface CampaignApi {
         @Query("search") search: String? = null
     ): CampaignResponse
 
+    @GET("campaigns/{id}")
+    suspend fun getCampaignById(@Path("id") id: Int): CampaignByIdResponse
+
     @GET("campaign-categories/{id}/campaigns")
     suspend fun getCampaignsByCategory(
         @Path("id") id: Int,

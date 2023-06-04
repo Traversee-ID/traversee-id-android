@@ -4,7 +4,11 @@ data class UseCasesTourism(
     val getTourismCategories: GetTourismCategories,
     val getTourismLocations: GetTourismLocations,
     val getTourisms: GetTourisms,
+    val getTourismById: GetTourismById,
     val getTourismDetails: GetTourismDetails,
     val postFavoriteTourism: PostFavoriteTourism,
-    val deleteFavoriteTourism: DeleteFavoriteTourism
+    val deleteFavoriteTourism: DeleteFavoriteTourism,
+    val getOpenTrip: GetOpenTrip,
+    val getFirstPageOpenTrip: GetFirstPageOpenTrip,
+    val getTripDestinations: GetTripDestinations,
 )

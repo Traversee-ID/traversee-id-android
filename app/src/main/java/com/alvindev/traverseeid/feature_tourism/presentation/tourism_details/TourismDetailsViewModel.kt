@@ -22,10 +22,15 @@ class TourismDetailsViewModel @Inject constructor(
 
     fun setInitialState(tourismItem: TourismItem) {
         state = state.copy(
+            isLoading = true,
             tourism = tourismItem.tourism,
             isFavorite = tourismItem.isFavorite
         )
         getTourismDetails(tourismItem.tourism.id)
+    }
+
+    fun setInitialStateWithId(id: Int) {
+        getTourismById(id)
     }
 
     private fun getTourismDetails(id: Int) = viewModelScope.launch {
@@ -45,6 +50,26 @@ class TourismDetailsViewModel @Inject constructor(
                     isLoading = false,
                     error = it.error,
                     tourismDetails = null
+                )
+            }
+        }
+    }
+
+    private fun getTourismById(id: Int) = viewModelScope.launch {
+        useCases.getTourismById(id).asFlow().collect {
+            when (it) {
+                is ResultState.Loading -> state = state.copy(
+                    isLoading = true,
+                    error = null,
+                    tourism = null
+                )
+                is ResultState.Success -> {
+                    setInitialState(it.data)
+                }
+                is ResultState.Error -> state = state.copy(
+                    isLoading = false,
+                    error = it.error,
+                    tourism = null
                 )
             }
         }

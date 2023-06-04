@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alvindev.destinations.TourismListScreenDestination
+import com.alvindev.destinations.TripDetailsScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
@@ -28,8 +29,7 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitl
 import com.alvindev.traverseeid.core.presentation.component.TourismCard
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.feature_campaign.domain.entity.CampaignEntity
-import com.alvindev.traverseeid.feature_tourism.domain.entity.OpenTripEntity
+import com.alvindev.traverseeid.feature_tourism.domain.entity.TripEntity
 import com.alvindev.traverseeid.feature_tourism.presentation.component.TripCard
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
@@ -53,32 +53,24 @@ fun TourismScreen(
         ) {
             CircularProgressIndicator()
         }
-    } else if (state.error != null) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = state.error,
-                style = Typography.body2,
-                color = Color.Red,
-            )
-        }
     } else {
         LazyColumn(
             contentPadding = PaddingValues(vertical = 16.dp),
         ) {
-            item {
-                SectionOpenTrip(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    actionOnClick = {
-                        navigator.navigate(ScreenRoute.TripList)
-                    },
-                    tripOnClick = {
-                        navigator.navigate(ScreenRoute.TripDetails)
-                    }
-                )
+            state.openTrips?.let {
+                item {
+                    SectionOpenTrip(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        actionOnClick = {
+                            navigator.navigate(ScreenRoute.TripList)
+                        },
+                        tripOnClick = {
+                            navigator.navigate(TripDetailsScreenDestination(trip = it))
+                        },
+                        openTrips = it
+                    )
+                }
             }
             item {
                 Spacer(modifier = Modifier.height(24.dp))
@@ -97,7 +89,7 @@ fun TourismScreen(
                         categoryOnClick = {
                             navigator.navigate(
                                 TourismListScreenDestination(
-                                    id = it.id,
+                                    id = if(it.id == 0) null else it.id,
                                     name = it.name
                                 )
                             )
@@ -148,42 +140,11 @@ fun TourismScreen(
 fun SectionOpenTrip(
     modifier: Modifier = Modifier,
     actionOnClick: () -> Unit = {},
-    tripOnClick: (campaign: OpenTripEntity) -> Unit = {},
+    tripOnClick: (campaign: TripEntity) -> Unit = {},
+    openTrips: List<TripEntity>,
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp - 64.dp
-    val openTrips = listOf(
-        OpenTripEntity(
-            id = 1,
-            title = "Open Trip Bromo",
-            price = 1000000,
-            startDate = "12-12-2021",
-            endDate = "12-12-2021",
-            duration = 3,
-            imageUrl = "https://picsum.photos/200/300",
-            location = "Bromo"
-        ),
-        OpenTripEntity(
-            id = 2,
-            title = "Open Trip Bengkulu",
-            price = 4000000,
-            startDate = "12-12-2021",
-            endDate = "12-12-2021",
-            duration = 7,
-            imageUrl = "https://picsum.photos/200/300",
-            location = "Bengkulu"
-        ),
-        OpenTripEntity(
-            id = 3,
-            title = "Open Trip Makassar",
-            price = 1000000,
-            startDate = "12-12-2021",
-            endDate = "12-12-2021",
-            duration = 3,
-            imageUrl = "https://picsum.photos/200/300",
-            location = "Makassar"
-        ),
-    )
 
     Column(
         modifier = modifier,
@@ -204,13 +165,13 @@ fun SectionOpenTrip(
                 TripCard(
                     modifier = Modifier
                         .width(screenWidth),
-                    title = item.title,
-                    duration = item.duration,
-                    location = item.location,
-                    price = item.price,
-                    startDate = item.startDate,
-                    endDate = item.endDate,
-                    imageUrl = item.imageUrl,
+                    title = item.title ?: "-",
+                    duration = item.duration ?: "-",
+                    categories = item.categories.joinToString(separator = ", "),
+                    price = item.price ?: "-",
+                    startDate = item.tripStart ?: "-",
+                    endDate = item.tripEnd ?: "-",
+                    imageUrl = if(item.imagesUrl.isNotEmpty()) item.imagesUrl[0] else null,
                     onClick = {
                         tripOnClick(item)
                     }
