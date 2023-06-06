@@ -174,7 +174,7 @@ fun ForumDetailsScreen(
         items(comments, key = { post -> post.id }) { comment ->
             ForumCommentItem(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                authorImage = comment.authorProfileImage ?: "",
+                authorImage = comment.authorProfileImage,
                 isOfficial = false,
                 commentTime = comment.createdAt ?: "",
                 isUser = state.userId == comment.authorId,
