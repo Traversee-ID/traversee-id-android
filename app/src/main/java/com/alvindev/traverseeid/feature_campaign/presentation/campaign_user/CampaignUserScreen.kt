@@ -87,6 +87,8 @@ fun CampaignUserScreen(
                 if (campaigns.itemCount == 0) {
                     item {
                         TraverseeErrorState(
+                            modifier = Modifier
+                                .fillParentMaxSize(),
                             image = painterResource(id = R.drawable.empty_campaign_user),
                             title = stringResource(id = R.string.no_campaign_found),
                             description = stringResource(id = R.string.no_joined_campaign),
