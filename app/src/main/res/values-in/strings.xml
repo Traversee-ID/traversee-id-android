@@ -139,8 +139,20 @@
     <string name="deadline">Deadline</string>
     <string name="book_via_whatsapp">Book via WhatsApp</string>
     <string name="book_via_whatsapp_message">Halo %s, Saya ingin membooking \"%s\" trip</string>
-    <string name="show_more">Show more</string>
-    <string name="show_less">Show less</string>
+    <string name="show_more">Lihat lebih banyak</string>
+    <string name="show_less">Lihat lebih sedikit</string>
     <string name="edit">Edit</string>
-    <string name="already_registered">Already Registered</string>
+    <string name="already_registered">Sudah Terdaftar</string>
+    <string name="no_campaign_found">Kampanye tidak ditemukan!</string>
+    <string name="no_campaign_found_description">Tidak ada kampanye yang tersedia saat ini</string>
+    <string name="error_title">Ups, terjadi kesalahan!</string>
+    <string name="error_description">Maaf, sepertinya ada kesalahan saat memuat halaman ini.</string>
+    <string name="no_post_found">Post tidak ditemukan!</string>
+    <string name="no_post_found_description">Ups! Sepertinya postingan forum Anda masih kosong.</string>
+    <string name="no_favorite_tourism_found">Anda belum memiliki pariwisata favorit!</string>
+    <string name="no_favorite_tourism_description">Saat ini, tidak ada tempat wisata untuk ditampilkan. Jangan ragu untuk menelusuri koleksi destinasi kami dan tambahkan destinasi favorit Anda ke daftar ini.</string>
+    <string name="no_tourism_found">Pariwisata tidak ditemukan!</string>
+    <string name="no_tourism_description">Ups! Sepertinya daftar wisata Anda kosong.</string>
+    <string name="no_open_trip_found">Open Trip tidak ditemukan!</string>
+    <string name="no_open_trip_description">Ups! Sepertinya daftar open trip Anda kosong.</string>
 </resources>

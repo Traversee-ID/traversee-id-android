@@ -54,7 +54,7 @@ fun TripCard(
                     alignment = Alignment.Center
                 )
             } ?: Image(
-                painter = painterResource(id = R.drawable.ic_logo),
+                painter = painterResource(id = R.drawable.empty_image),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()

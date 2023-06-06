@@ -53,7 +53,7 @@ fun MyCampaignCard(
                         fallback =painterResource(id = R.drawable.dummy_komodo_island)
                     )
                 } ?: Image(
-                    painter = painterResource(id = R.drawable.dummy_borobudur),
+                    painter = painterResource(id = R.drawable.dummy_komodo_island),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,

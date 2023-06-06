@@ -142,4 +142,16 @@
     <string name="show_less">Show less</string>
     <string name="edit">Edit</string>
     <string name="already_registered">Already Registered</string>
+    <string name="no_campaign_found">No Campaigns Found!</string>
+    <string name="no_campaign_found_description">Looks like there are no campaigns available right now</string>
+    <string name="error_title">Ups, something went wrong!</string>
+    <string name="error_description">Apologies, it seems like an error occurred while loading the page</string>
+    <string name="no_post_found">No Post Found!</string>
+    <string name="no_post_found_description">Oops! Looks like your forum post is empty.</string>
+    <string name="no_favorite_tourism_found">Your Favorite Tourism is Empty!</string>
+    <string name="no_favorite_tourism_description">Currently, there are no tourism spots to show. Feel free to browse our collection of destinations and add your favorite ones to this list.</string>
+    <string name="no_tourism_found">No Tourism Found!</string>
+    <string name="no_tourism_description">Oops! It looks like your tourism list is empty.</string>
+    <string name="no_open_trip_found">No Open Trips Found!</string>
+    <string name="no_open_trip_description">Oops! It seems like open trips is currently empty.</string>
 </resources>

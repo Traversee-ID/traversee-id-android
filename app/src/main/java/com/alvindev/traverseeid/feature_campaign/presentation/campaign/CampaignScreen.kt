@@ -30,6 +30,7 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitl
 import com.alvindev.traverseeid.core.theme.*
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
 import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
+import com.alvindev.traverseeid.core.presentation.component.TraverseeErrorState
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -54,16 +55,11 @@ fun CampaignScreen(
             CircularProgressIndicator()
         }
     } else if (state.error != null) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = state.error,
-                style = Typography.body2,
-                color = Color.Red,
-            )
-        }
+        TraverseeErrorState(
+            image = painterResource(id = R.drawable.empty_error),
+            title = stringResource(id = R.string.error_title),
+            description = stringResource(id = R.string.error_description),
+        )
     } else {
         Column(
             modifier = Modifier

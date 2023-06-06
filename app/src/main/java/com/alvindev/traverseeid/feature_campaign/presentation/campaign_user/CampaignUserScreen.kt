@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.alvindev.destinations.CampaignDetailsScreenDestination
 import com.alvindev.traverseeid.R
+import com.alvindev.traverseeid.core.presentation.component.TraverseeErrorState
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
@@ -60,18 +62,13 @@ fun CampaignUserScreen(
         when (campaigns.loadState.refresh) { //FIRST LOAD
             is LoadState.Error -> {
                 item{
-                    Column(
+                    TraverseeErrorState(
                         modifier = Modifier
                             .fillParentMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.error_occurred),
-                            style = Typography.body2,
-                            color = Color.Red,
-                        )
-                    }
+                        image = painterResource(id = R.drawable.empty_error),
+                        title = stringResource(id = R.string.error_title),
+                        description = stringResource(id = R.string.error_description),
+                    )
                 }
             }
             is LoadState.Loading -> {
@@ -89,18 +86,11 @@ fun CampaignUserScreen(
             else -> {
                 if (campaigns.itemCount == 0) {
                     item {
-                        Column(
-                            modifier = Modifier
-                                .fillParentMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.no_data),
-                                style = Typography.body2,
-                                color = Color.Red,
-                            )
-                        }
+                        TraverseeErrorState(
+                            image = painterResource(id = R.drawable.empty_campaign_user),
+                            title = stringResource(id = R.string.no_campaign_found),
+                            description = stringResource(id = R.string.no_joined_campaign),
+                        )
                     }
                 }
             }

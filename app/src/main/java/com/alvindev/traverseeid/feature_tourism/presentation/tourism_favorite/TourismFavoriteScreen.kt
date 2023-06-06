@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alvindev.destinations.TourismDetailsScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TourismCard
+import com.alvindev.traverseeid.core.presentation.component.TraverseeErrorState
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismItem
 import com.alvindev.traverseeid.navigation.ScreenRoute
@@ -70,16 +72,12 @@ fun TourismFavoriteScreen(
                 item(
                     span = { GridItemSpan(2) }
                 ) {
-                    Box(
+                    TraverseeErrorState(
                         modifier = Modifier.height(screenHeight).fillMaxWidth().padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.error_occurred),
-                            style = Typography.body2,
-                            color = Color.Red,
-                        )
-                    }
+                        image = painterResource(id = R.drawable.empty_error),
+                        title = stringResource(id = R.string.error_title),
+                        description = stringResource(id = R.string.error_description),
+                    )
                 }
             }
             is LoadState.Loading -> {
@@ -100,16 +98,12 @@ fun TourismFavoriteScreen(
                     item(
                         span = { GridItemSpan(2) }
                     ) {
-                        Box(
+                        TraverseeErrorState(
                             modifier = Modifier.height(screenHeight).fillMaxWidth().padding(16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.no_data),
-                                style = Typography.body2,
-                                color = Color.Red,
-                            )
-                        }
+                            image = painterResource(id = R.drawable.empty_favorite),
+                            title = stringResource(id = R.string.no_favorite_tourism_found),
+                            description = stringResource(id = R.string.no_favorite_tourism_description)
+                        )
                     }
                 }
             }

@@ -20,14 +20,13 @@ import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismPlace
 import com.ramcosta.composedestinations.annotation.Destination
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Destination(
-    route = ScreenRoute.TourismPlace
+    route = ScreenRoute.TourismCategory
 )
 @Composable
 fun TourismCategoryScreen(
@@ -49,7 +48,7 @@ fun TourismCategoryScreen(
                 items(categories, key = { category -> category.id }) { category ->
                     TraverseeCategoryCard(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .width(screenWidth)
                             .padding(8.dp)
                             .clickable {
                                 navigator.navigate(

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,14 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alvindev.destinations.ForumPostScreenDestination
 import com.alvindev.traverseeid.R
-import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
-import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
+import com.alvindev.traverseeid.core.presentation.component.*
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
-import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.feature_tourism.presentation.component.HomeStayCard
 import com.alvindev.traverseeid.feature_tourism.presentation.component.ImageSlider
-import com.alvindev.traverseeid.core.presentation.component.TourismCard
 import com.alvindev.traverseeid.core.theme.TraverseeBlack
 import com.alvindev.traverseeid.core.theme.TraverseeRed
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCampaignEntity
@@ -80,18 +78,11 @@ fun TourismDetailsScreen(
             CircularProgressIndicator()
         }
     } else if (state.error != null) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = state.error,
-                style = Typography.caption,
-                color = TraverseeRed,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-        }
+        TraverseeErrorState(
+            image = painterResource(id = R.drawable.empty_error),
+            title = stringResource(id = R.string.error_title),
+            description = stringResource(id = R.string.error_description),
+        )
     } else if (state.tourismDetails != null && state.tourism != null) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(

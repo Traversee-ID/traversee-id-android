@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvindev.destinations.TourismCategoryScreenDestination
 import com.alvindev.destinations.TourismListScreenDestination
 import com.alvindev.destinations.TripDetailsScreenDestination
 import com.alvindev.traverseeid.R
@@ -27,6 +29,7 @@ import com.alvindev.traverseeid.core.domain.entity.CategoryEntity
 import com.alvindev.traverseeid.core.presentation.component.TraverseeCategoryCard
 import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitle
 import com.alvindev.traverseeid.core.presentation.component.TourismCard
+import com.alvindev.traverseeid.core.presentation.component.TraverseeErrorState
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TripEntity
@@ -53,6 +56,12 @@ fun TourismScreen(
         ) {
             CircularProgressIndicator()
         }
+    } else if(state.error != null){
+        TraverseeErrorState(
+            image = painterResource(id = R.drawable.empty_error),
+            title = stringResource(id = R.string.error_title),
+            description = stringResource(id = R.string.error_description),
+        )
     } else {
         LazyColumn(
             contentPadding = PaddingValues(vertical = 16.dp),
@@ -84,7 +93,7 @@ fun TourismScreen(
 
                     SectionDiscoverTourism(
                         actionOnClick = {
-                            navigator.navigate(ScreenRoute.TourismPlace)
+                            navigator.navigate(TourismCategoryScreenDestination(categories = categoryArrayList))
                         },
                         categoryOnClick = {
                             navigator.navigate(

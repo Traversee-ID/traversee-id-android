@@ -75,7 +75,7 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_logo),
+                painter = painterResource(id = R.drawable.empty_image),
                 contentDescription = "Traversee Logo",
                 modifier = Modifier.size(100.dp)
             )

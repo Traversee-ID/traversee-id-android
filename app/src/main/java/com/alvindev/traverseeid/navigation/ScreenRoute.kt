@@ -17,7 +17,7 @@ object ScreenRoute {
     //tourism feature
     const val Tourism = "tourism"
     const val TourismDetails = "tourism/details"
-    const val TourismPlace = "tourism/category"
+    const val TourismCategory = "tourism/category"
     const val TourismList = "tourism/list"
     const val TripList = "tourism/trip_list"
     const val TripDetails = "tourism/trip_details"

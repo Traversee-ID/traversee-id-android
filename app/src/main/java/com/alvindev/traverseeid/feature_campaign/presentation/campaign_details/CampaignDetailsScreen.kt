@@ -119,16 +119,11 @@ fun CampaignDetailsScreen(
             CircularProgressIndicator()
         }
     } else if (state.error != null) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = state.error,
-                style = Typography.body2,
-                color = Color.Red,
-            )
-        }
+        TraverseeErrorState(
+            image = painterResource(id = R.drawable.empty_error),
+            title = stringResource(id = R.string.error_title),
+            description = stringResource(id = R.string.error_description),
+        )
     } else {
         Box(
             modifier = Modifier

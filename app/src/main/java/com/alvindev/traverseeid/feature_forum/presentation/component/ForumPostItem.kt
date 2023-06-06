@@ -133,7 +133,7 @@ fun ForumPostItem(
                         it.imageUrl?.let{
                             AsyncImage(
                                 model = it,
-                                fallback = painterResource(id = R.drawable.ic_logo),
+                                fallback = painterResource(id = R.drawable.empty_image),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(100.dp)
@@ -142,7 +142,7 @@ fun ForumPostItem(
                                 alignment = Alignment.Center
                             )
                         } ?: Image(
-                            painter = painterResource(id = R.drawable.ic_logo),
+                            painter = painterResource(id = R.drawable.empty_image),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(100.dp)
