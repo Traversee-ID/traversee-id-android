@@ -46,6 +46,15 @@ fun SettingsScreen(
     navigator: DestinationsNavigator
 ) {
     val state = viewModel.state
+
+    if(state.isLogout){
+        navigator.navigate(ScreenRoute.Login) {
+            popUpTo(ScreenRoute.Login) {
+                inclusive = true
+            }
+        }
+    }
+
     val listItem = listOf(
         SettingsButtonInfo(
             title = stringResource(id = R.string.my_campaigns),
@@ -135,11 +144,6 @@ fun SettingsScreen(
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             onClick = {
                 viewModel.logout()
-                navigator.navigate(ScreenRoute.Login) {
-                    popUpTo(ScreenRoute.Login) {
-                        inclusive = true
-                    }
-                }
             },
             text = stringResource(R.string.logout),
             contentPadding = PaddingValues(12.dp),

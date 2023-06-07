@@ -14,13 +14,17 @@ import com.alvindev.traverseeid.core.util.ResourcesProvider
 import com.alvindev.traverseeid.feature_settings.domain.use_case.UseCasesSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val useCases: UseCasesSettings,
     private val resourcesProvider: ResourcesProvider,
-) : ViewModel(){
+) : ViewModel() {
     var state by mutableStateOf(EditProfileState())
         private set
 
@@ -39,6 +43,7 @@ class EditProfileViewModel @Inject constructor(
             isShowDialog = isShow,
         )
     }
+
     fun onSelectedImagePicker(uri: Uri?) {
         state = state.copy(
             selectedImagePicker = uri,
@@ -52,7 +57,7 @@ class EditProfileViewModel @Inject constructor(
         )
     }
 
-    fun onSubmit() = viewModelScope.launch {
+    fun onSubmit(file: File?) = viewModelScope.launch {
         state = state.copy(
             isSubmitting = true,
             isSuccess = false,
@@ -71,28 +76,62 @@ class EditProfileViewModel @Inject constructor(
             return@launch
         }
 
-        useCases.updateProfile(name = name, photoUrl = state.selectedImagePicker?.toString()).asFlow().collect{
-            state = when(it) {
-                is ResultState.Loading -> {
-                    state.copy(
-                        isSubmitting = true,
-                        isSuccess = false,
-                    )
-                }
-                is ResultState.Success -> {
-                    state.copy(
-                        isSubmitting = false,
-                        isSuccess = true,
-                    )
-                }
-                is ResultState.Error -> {
-                    state.copy(
-                        isSubmitting = false,
-                        isSuccess = false,
-                        error = it.error ?: "",
-                    )
+        if(file != null){
+            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                "photo",
+                file.name,
+                requestImageFile
+            )
+            useCases.updateProfilePicture(imageMultipart).asFlow().collect{
+                when (it) {
+                    is ResultState.Loading -> {
+                        state = state.copy(
+                            isSubmitting = true,
+                            isSuccess = false,
+                        )
+                    }
+                    is ResultState.Success -> {
+                        updateProfile(name)
+                    }
+                    is ResultState.Error -> {
+                        state = state.copy(
+                            isSubmitting = false,
+                            isSuccess = false,
+                            error = it.error ?: "",
+                        )
+                    }
                 }
             }
+        } else{
+            updateProfile(name)
         }
+    }
+
+    private fun updateProfile(name: String) = viewModelScope.launch {
+        useCases.updateProfile(name = name)
+            .asFlow().collect {
+                state = when (it) {
+                    is ResultState.Loading -> {
+                        state.copy(
+                            isSubmitting = true,
+                            isSuccess = false,
+                        )
+                    }
+                    is ResultState.Success -> {
+                        state.copy(
+                            isSubmitting = false,
+                            isSuccess = true,
+                        )
+                    }
+                    is ResultState.Error -> {
+                        state.copy(
+                            isSubmitting = false,
+                            isSuccess = false,
+                            error = it.error ?: "",
+                        )
+                    }
+                }
+            }
     }
 }

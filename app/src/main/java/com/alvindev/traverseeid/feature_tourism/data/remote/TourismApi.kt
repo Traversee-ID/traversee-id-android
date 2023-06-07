@@ -22,22 +22,22 @@ interface TourismApi {
 
     @GET("tourisms/{id}")
     suspend fun getTourismById(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): TourismByIdResponse
 
     @GET("tourisms/{id}/details")
     suspend fun getTourismDetails(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): TourismDetailsResponse
 
     @POST("tourisms/{id}/favorites")
     suspend fun postFavoriteTourism(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): Response<TourismFavoriteResponse>
 
     @DELETE("tourisms/{id}/favorites")
     suspend fun deleteFavoriteTourism(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): Response<TourismFavoriteResponse>
 
     @GET("open_trip")

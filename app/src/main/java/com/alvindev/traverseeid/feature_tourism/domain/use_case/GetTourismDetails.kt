@@ -5,5 +5,5 @@ import com.alvindev.traverseeid.feature_tourism.domain.repository.TourismReposit
 class GetTourismDetails(
     private val repository: TourismRepository
 ) {
-    suspend operator fun invoke(id: Int) = repository.getTourismDetails(id)
+    suspend operator fun invoke(id: String) = repository.getTourismDetails(id)
 }

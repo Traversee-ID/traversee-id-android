@@ -11,6 +11,7 @@ import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
 import com.alvindev.traverseeid.feature_auth.domain.entity.User
 import com.alvindev.traverseeid.feature_auth.domain.mapper.firebaseUserToUser
 import com.alvindev.traverseeid.feature_auth.domain.mapper.firebaseUserToUserPreference
+import com.alvindev.traverseeid.feature_auth.domain.mapper.userPreferenceToUser
 import com.alvindev.traverseeid.feature_auth.domain.repository.AuthRepository
 import java.util.*
 import javax.inject.Inject
@@ -28,7 +29,12 @@ class AuthRepositoryImpl @Inject constructor(
             emit(ResultState.Loading)
             val firebaseUser = authenticator.loginWithEmailPassword(email, password)
             val user = firebaseUser?.let { firebaseUserToUser(it) }
-            ApiConfig.TOKEN = authenticator.getUserToken() ?: ""
+            val token = authenticator.getUserToken() ?: ""
+
+            // Save user to datastore
+            val userPreference = firebaseUser?.let { firebaseUserToUserPreference(it, token) }
+            userPreference?.let { dataStore.saveUserLogin(it) }
+            ApiConfig.TOKEN = token
             emit(ResultState.Success(user))
         } catch (e: Exception) {
             Log.e(TAG, "login: ${e.message.toString()}")
@@ -42,7 +48,13 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(ResultState.Loading)
                 val firebaseUser = authenticator.loginWithGoogle(idToken)
                 val user = firebaseUser?.let { firebaseUserToUser(it) }
-                ApiConfig.TOKEN = authenticator.getUserToken() ?: ""
+                val token = authenticator.getUserToken() ?: ""
+
+                // Save user to datastore
+                val userPreference = firebaseUser?.let { firebaseUserToUserPreference(it, token) }
+                userPreference?.let { dataStore.saveUserLogin(it) }
+                ApiConfig.TOKEN = token
+
                 emit(ResultState.Success(user))
             } catch (e: Exception) {
                 Log.e(TAG, "login: ${e.message.toString()}")
@@ -60,10 +72,15 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(ResultState.Loading)
                 val firebaseUser = authenticator.registerWithEmailPassword(email, password)
                 firebaseUser?.let {
-                    authenticator.updateProfile(name, null)
+                    authenticator.updateProfile(name)
                 }
                 val user = firebaseUser?.let { firebaseUserToUser(it) }
-                ApiConfig.TOKEN = authenticator.getUserToken() ?: ""
+                val token = authenticator.getUserToken() ?: ""
+
+                // Save user to datastore
+                val userPreference = firebaseUser?.let { firebaseUserToUserPreference(it, token) }
+                userPreference?.let { dataStore.saveUserLogin(it) }
+                ApiConfig.TOKEN = token
                 emit(ResultState.Success(user))
             } catch (e: Exception) {
                 Log.e(TAG, "register: ${e.message.toString()}")
@@ -74,25 +91,12 @@ class AuthRepositoryImpl @Inject constructor(
     override fun getCurrentUser(): LiveData<ResultState<User?>> = liveData {
         try {
             emit(ResultState.Loading)
-
-            //get user data
-            val firebaseUser = authenticator.getCurrentUser()
-            val user = firebaseUser?.let { firebaseUserToUser(it) }
-            var userPreference = firebaseUser?.let { firebaseUserToUserPreference(it) }
-
-            //get token
-            val token = authenticator.getUserToken()
-            userPreference = userPreference?.copy(token = token)
-            userPreference?.let { dataStore.saveUserLogin(it) }
-            token?.let { ApiConfig.TOKEN = it }
-            Log.d(TAG, "getCurrentUser: $token")
-
-            //get user language preference
             val userDataStore = dataStore.getUser()
             userDataStore.let {
                 TraverseeApplication.LANGUAGE = it.language ?: Locale.getDefault().language
             }
-
+            val user = userPreferenceToUser(userDataStore)
+            ApiConfig.TOKEN = userDataStore.token ?: ""
             emit(ResultState.Success(user))
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUser: ${e.message.toString()}")

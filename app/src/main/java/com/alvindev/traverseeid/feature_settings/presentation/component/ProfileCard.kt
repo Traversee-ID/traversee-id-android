@@ -47,7 +47,6 @@ fun ProfileCard(
                 .clip(RoundedCornerShape(50)),
             model = user.avatarUrl,
             fallback = painterResource(id = R.drawable.ic_profile),
-            colorFilter = ColorFilter.tint(Color.White),
             contentDescription = "Avatar",
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center

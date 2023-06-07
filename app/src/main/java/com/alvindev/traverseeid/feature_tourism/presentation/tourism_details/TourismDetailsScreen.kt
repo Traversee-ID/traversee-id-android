@@ -49,7 +49,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 @Composable
 fun TourismDetailsScreen(
     navigator: DestinationsNavigator,
-    id: Int? = null,
+    id: String? = null,
     tourismItem: TourismItem? = null,
     viewModel: TourismDetailsViewModel = hiltViewModel()
 ) {

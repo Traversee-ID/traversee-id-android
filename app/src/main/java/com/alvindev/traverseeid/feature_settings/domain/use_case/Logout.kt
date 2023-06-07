@@ -5,7 +5,7 @@ import com.alvindev.traverseeid.feature_settings.domain.repository.SettingsRepos
 class Logout(
     private val settingsRepository: SettingsRepository
 ) {
-    operator fun invoke() {
+    suspend operator fun invoke() {
         settingsRepository.logout()
     }
 }

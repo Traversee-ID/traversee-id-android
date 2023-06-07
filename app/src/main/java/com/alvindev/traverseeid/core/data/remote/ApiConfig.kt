@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConfig {
     companion object {
         var TOKEN = ""
-        var BASE_URL = "https://traversee-id-wibm46rgia-et.a.run.app"
+        var BASE_URL = "https://traversee-id-wibm46rgia-et.a.run.app/api/v1/"
 
         inline fun <T> getApiService(apiService: Class<T>): T{
             val loggingInterceptor = if (BuildConfig.DEBUG) {

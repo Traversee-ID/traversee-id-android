@@ -28,6 +28,7 @@ class TourismRepositoryImpl @Inject constructor(
     override suspend fun getTourismCategories(): LiveData<ResultState<List<CategoryEntity>>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = tourismApi.getTourismCategories()
                 response.data?.let {
                     emit(ResultState.Success(it))
@@ -40,6 +41,7 @@ class TourismRepositoryImpl @Inject constructor(
     override suspend fun getTourismLocations(): LiveData<ResultState<List<LocationEntity>>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = tourismApi.getTourismLocations()
                 response.data?.let {
                     emit(ResultState.Success(it))
@@ -63,9 +65,10 @@ class TourismRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override suspend fun getTourismById(id: Int): LiveData<ResultState<TourismItem>> =
+    override suspend fun getTourismById(id: String): LiveData<ResultState<TourismItem>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = tourismApi.getTourismById(id)
                 response.data?.let {
                     emit(ResultState.Success(it))
@@ -75,9 +78,10 @@ class TourismRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun getTourismDetails(id: Int): LiveData<ResultState<TourismDetailsEntity>> =
+    override suspend fun getTourismDetails(id: String): LiveData<ResultState<TourismDetailsEntity>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = tourismApi.getTourismDetails(id)
                 response.data?.let {
                     emit(ResultState.Success(it))
@@ -87,9 +91,10 @@ class TourismRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun postFavoriteTourism(id: Int): LiveData<ResultState<TourismItem>>  =
+    override suspend fun postFavoriteTourism(id: String): LiveData<ResultState<TourismItem>>  =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = tourismApi.postFavoriteTourism(id)
                 if (response.isSuccessful) {
                     val responseData = response.body()?.data
@@ -111,9 +116,10 @@ class TourismRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun deleteFavoriteTourism(id: Int): LiveData<ResultState<TourismItem>> =
+    override suspend fun deleteFavoriteTourism(id: String): LiveData<ResultState<TourismItem>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = tourismApi.deleteFavoriteTourism(id)
                 if (response.isSuccessful) {
                     val responseData = response.body()?.data

@@ -29,11 +29,11 @@ class TourismDetailsViewModel @Inject constructor(
         getTourismDetails(tourismItem.tourism.id)
     }
 
-    fun setInitialStateWithId(id: Int) {
+    fun setInitialStateWithId(id: String) {
         getTourismById(id)
     }
 
-    private fun getTourismDetails(id: Int) = viewModelScope.launch {
+    private fun getTourismDetails(id: String) = viewModelScope.launch {
         useCases.getTourismDetails(id).asFlow().collect {
             state = when (it) {
                 is ResultState.Loading -> state.copy(
@@ -55,7 +55,7 @@ class TourismDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getTourismById(id: Int) = viewModelScope.launch {
+    private fun getTourismById(id: String) = viewModelScope.launch {
         useCases.getTourismById(id).asFlow().collect {
             when (it) {
                 is ResultState.Loading -> state = state.copy(
@@ -75,7 +75,7 @@ class TourismDetailsViewModel @Inject constructor(
         }
     }
 
-    fun addFavoriteTourism(id: Int) = viewModelScope.launch {
+    fun addFavoriteTourism(id: String) = viewModelScope.launch {
         state = state.copy(errorFavorite = null, isLoadingFavorite = true)
 
         useCases.postFavoriteTourism(id).asFlow().collect {
@@ -103,7 +103,7 @@ class TourismDetailsViewModel @Inject constructor(
         }
     }
 
-    fun removeFavoriteTourism(id: Int) = viewModelScope.launch {
+    fun removeFavoriteTourism(id: String) = viewModelScope.launch {
         state = state.copy(errorFavorite = null, isLoadingFavorite = true)
 
         useCases.deleteFavoriteTourism(id).asFlow().collect {

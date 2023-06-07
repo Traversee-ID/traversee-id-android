@@ -4,4 +4,5 @@ data class UseCasesSettings(
     val logout: Logout,
     val changeLanguage: ChangeLanguage,
     val updateProfile: UpdateProfile,
+    val updateProfilePicture: UpdateProfilePicture,
 )

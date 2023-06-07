@@ -80,6 +80,8 @@ class CampaignRepositoryImpl(
     override suspend fun getFirstPageRegisteredCampaigns(): LiveData<ResultState<List<CampaignItem>>> =
         liveData {
             try {
+                emit(ResultState.Loading)
+
                 val response = campaignApi.getAllCampaigns(
                     page = 1,
                     isRegistered = true,
@@ -95,6 +97,7 @@ class CampaignRepositoryImpl(
     override suspend fun getCampaignDetails(campaignId: Int): LiveData<ResultState<CampaignDetailsData>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = campaignApi.getCampaignDetails(campaignId)
                 response.data?.let {
                     emit(ResultState.Success(it))
@@ -107,6 +110,7 @@ class CampaignRepositoryImpl(
     override suspend fun getCampaignParticipants(campaignId: Int): LiveData<ResultState<List<CampaignParticipantsItem>>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = campaignApi.getCampaignParticipants(campaignId)
                 response.data?.let {
                     emit(ResultState.Success(it))
@@ -119,6 +123,7 @@ class CampaignRepositoryImpl(
     override suspend fun registerCampaign(campaignId: Int): LiveData<ResultState<CampaignRegisterData>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = campaignApi.registerCampaign(campaignId)
                 if (response.isSuccessful) {
                     val responseData = response.body()?.data
@@ -145,6 +150,7 @@ class CampaignRepositoryImpl(
         submissionUrl: String
     ): LiveData<ResultState<CampaignSubmissionData>> = liveData {
         try {
+            emit(ResultState.Loading)
             val body = CampaignSubmissionBody(submissionUrl)
             val response = campaignApi.submitCampaign(campaignId, body)
             if (response.isSuccessful) {
@@ -170,6 +176,7 @@ class CampaignRepositoryImpl(
     override suspend fun getCampaignLocations(): LiveData<ResultState<List<LocationEntity>>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = campaignApi.getCampaignLocations()
                 response.data?.let {
                     emit(ResultState.Success(it))

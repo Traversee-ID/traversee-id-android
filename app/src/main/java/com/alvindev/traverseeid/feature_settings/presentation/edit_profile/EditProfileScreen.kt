@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,10 +33,10 @@ import com.alvindev.destinations.DetailImageScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.presentation.component.TraverseeTextField
+import com.alvindev.traverseeid.core.util.ComposeFileProvider
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Destination(
     route = ScreenRoute.EditProfile
@@ -99,7 +98,7 @@ fun EditProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         UserImage(
-            image = state.avatarUrl,
+            image = state.selectedImagePicker ?: state.avatarUrl,
             onClick = {
                 viewModel.setShowDialog(true)
             }
@@ -114,10 +113,10 @@ fun EditProfileScreen(
             value = state.name,
             onValueChange = viewModel::onNameChange,
             label = {
-                Text("Name")
+                Text(stringResource(id = R.string.name))
             },
             placeholder = {
-                Text("Name")
+                Text(stringResource(id = R.string.name))
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
@@ -143,7 +142,10 @@ fun EditProfileScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            onClick = viewModel::onSubmit,
+            onClick = {
+                val file = state.selectedImagePicker?.let { ComposeFileProvider.uriToFile(state.selectedImagePicker, context) }
+                viewModel.onSubmit(file)
+            },
             enabled = state.isSubmitting.not(),
             text = state.isSubmitting.not().let {
                 if (it) "Save" else "Saving..."
@@ -172,6 +174,7 @@ fun UserImage(
             pressedElevation = 0.5.dp,
             disabledElevation = 0.dp
         ),
+        shape = RoundedCornerShape(10.dp)
     ) {
         BoxWithConstraints(
             modifier = Modifier
@@ -192,8 +195,7 @@ fun UserImage(
                     contentDescription = stringResource(id = R.string.user_avatar),
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(50))
-                        .background(Color.LightGray)
+                        .clip(RoundedCornerShape(50)),
                 )
             }
             Box(
@@ -240,9 +242,8 @@ fun ImageDialog(
             ){
                 Text(
                     text = stringResource(R.string.change_picture),
-                    style = MaterialTheme.typography.body1,
-                    color = Color.Black,
-                    fontWeight = FontWeight.SemiBold
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.primaryVariant
                 )
             }
 
@@ -254,9 +255,8 @@ fun ImageDialog(
                 ){
                     Text(
                         text = stringResource(R.string.look_picture),
-                        style = MaterialTheme.typography.body1,
-                        color = Color.Black,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.primaryVariant
                     )
                 }
             }
@@ -267,10 +267,7 @@ fun ImageDialog(
 @Preview(showBackground = true)
 @Composable
 fun PreviewEditProfileScreen() {
-    EditProfileScreen(
-        navigator = EmptyDestinationsNavigator,
-        name = "John Doe",
-        email = "johndoe@gmail.com",
-        avatarUrl = null
+    UserImage(
+        image = null,
     )
 }

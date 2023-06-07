@@ -8,7 +8,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.alvindev.moneysaver.feature_auth.data.FirebaseAuthRepository
+import com.alvindev.traverseeid.core.data.remote.FirebaseAuthRepository
 import com.alvindev.traverseeid.core.data.local.UserDataStoreRepositoryImpl
 import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
 import com.alvindev.traverseeid.core.domain.repository.UserDataStoreRepository

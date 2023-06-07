@@ -19,13 +19,13 @@ interface TourismRepository {
 
     fun getTourisms(params: TourismParams): Flow<PagingData<TourismItem>>
 
-    suspend fun getTourismById(id: Int): LiveData<ResultState<TourismItem>>
+    suspend fun getTourismById(id: String): LiveData<ResultState<TourismItem>>
 
-    suspend fun getTourismDetails(id: Int): LiveData<ResultState<TourismDetailsEntity>>
+    suspend fun getTourismDetails(id: String): LiveData<ResultState<TourismDetailsEntity>>
 
-    suspend fun postFavoriteTourism(id: Int): LiveData<ResultState<TourismItem>>
+    suspend fun postFavoriteTourism(id: String): LiveData<ResultState<TourismItem>>
 
-    suspend fun deleteFavoriteTourism(id: Int): LiveData<ResultState<TourismItem>>
+    suspend fun deleteFavoriteTourism(id: String): LiveData<ResultState<TourismItem>>
     fun getOpenTrip(): Flow<PagingData<TripEntity>>
 
     suspend fun getFirstPageOpenTrip(): LiveData<ResultState<List<TripEntity>>>

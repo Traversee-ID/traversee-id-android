@@ -8,17 +8,26 @@ fun firebaseUserToUser(firebaseUser: FirebaseUser): User {
     return User(
         email = firebaseUser.email,
         name = firebaseUser.displayName,
-        phone = firebaseUser.phoneNumber,
         photo = firebaseUser.photoUrl.toString(),
         uid = firebaseUser.uid
     )
 }
 
-fun firebaseUserToUserPreference(firebaseUser: FirebaseUser): UserPreference {
+fun firebaseUserToUserPreference(firebaseUser: FirebaseUser, token: String): UserPreference {
     return UserPreference(
         email = firebaseUser.email,
         name = firebaseUser.displayName,
         avatarUrl = firebaseUser.photoUrl,
-        uid = firebaseUser.uid
+        uid = firebaseUser.uid,
+        token = token
+    )
+}
+
+fun userPreferenceToUser(userPreference: UserPreference): User {
+    return User(
+        email = userPreference.email,
+        name = userPreference.name,
+        photo = userPreference.avatarUrl.toString(),
+        uid = userPreference.uid
     )
 }

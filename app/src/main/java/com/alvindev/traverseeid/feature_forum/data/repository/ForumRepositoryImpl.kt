@@ -28,6 +28,7 @@ class ForumRepositoryImpl @Inject constructor(
     ): LiveData<ResultState<ForumPostItem>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = forumApi.createPost(body)
                 response.data?.let {
                     emit(ResultState.Success(it))
@@ -51,6 +52,7 @@ class ForumRepositoryImpl @Inject constructor(
     override suspend fun likePost(postId: Int): LiveData<ResultState<ForumPostItem>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = forumApi.likePost(postId)
                 if (response.isSuccessful) {
                     val responseData = response.body()?.data
@@ -75,6 +77,7 @@ class ForumRepositoryImpl @Inject constructor(
     override suspend fun unlikePost(postId: Int): LiveData<ResultState<ForumPostItem>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = forumApi.unlikePost(postId)
                 if (response.isSuccessful) {
                     val responseData = response.body()?.data
@@ -98,6 +101,7 @@ class ForumRepositoryImpl @Inject constructor(
 
     override  fun getForumComments(postId: Int, page: Int): Flow<ResultState<List<ForumCommentEntity>>> = flow{
         try {
+            emit(ResultState.Loading)
             val response = forumApi.getForumComments(postId, page)
             response.data?.let {
                 emit(ResultState.Success(it))
@@ -113,6 +117,7 @@ class ForumRepositoryImpl @Inject constructor(
     ): LiveData<ResultState<ForumCommentEntity>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val body = ForumCommentBody(text)
                 val response = forumApi.createComment(postId, body)
                 if (response.isSuccessful) {
@@ -138,6 +143,7 @@ class ForumRepositoryImpl @Inject constructor(
     override suspend fun deleteComment(postId: Int, commentId: Int): LiveData<ResultState<String>> =
         liveData {
             try {
+                emit(ResultState.Loading)
                 val response = forumApi.deleteComment(postId, commentId)
                 if (response.isSuccessful) {
                     val responseData = response.body()?.message

@@ -5,5 +5,5 @@ import com.alvindev.traverseeid.feature_tourism.domain.repository.TourismReposit
 class PostFavoriteTourism(
     private val repository: TourismRepository
 ) {
-    suspend operator fun invoke(id: Int) = repository.postFavoriteTourism(id)
+    suspend operator fun invoke(id: String) = repository.postFavoriteTourism(id)
 }

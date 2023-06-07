@@ -7,7 +7,7 @@ import com.alvindev.traverseeid.feature_settings.domain.repository.SettingsRepos
 class UpdateProfile(
     private val settingsRepository: SettingsRepository
 ) {
-    suspend operator fun invoke(name: String, photoUrl: String?): LiveData<ResultState<String>> {
-        return settingsRepository.updateProfile(name, photoUrl)
+    suspend operator fun invoke(name: String): LiveData<ResultState<String>> {
+        return settingsRepository.updateProfile(name)
     }
 }

@@ -1,4 +1,4 @@
-package com.alvindev.moneysaver.feature_auth.data
+package com.alvindev.traverseeid.core.data.remote
 
 import com.alvindev.traverseeid.core.domain.repository.BaseAuthRepository
 import com.google.firebase.auth.FirebaseUser
@@ -49,7 +49,7 @@ class FirebaseAuthRepository : BaseAuthRepository {
         }
     }
 
-    override suspend fun sendPasswordReset(email: String) : Boolean {
+    override suspend fun sendPasswordReset(email: String): Boolean {
         try {
             Firebase.auth.sendPasswordResetEmail(email).await()
             return true
@@ -58,21 +58,13 @@ class FirebaseAuthRepository : BaseAuthRepository {
         }
     }
 
-    override suspend fun updateProfile(name: String, photoUrl: String?): FirebaseUser? {
+    override suspend fun updateProfile(name: String): FirebaseUser? {
         try {
             val user = Firebase.auth.currentUser
-            photoUrl?.let {
-                val profileUpdate = UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .setPhotoUri(android.net.Uri.parse(photoUrl))
-                    .build()
-                user?.updateProfile(profileUpdate)?.await()
-            } ?: run {
-                val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build()
-                user?.updateProfile(profileUpdates)?.await()
-            }
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                .setDisplayName(name)
+                .build()
+            user?.updateProfile(profileUpdates)?.await()
             return user
         } catch (e: Exception) {
             throw Exception(e.message.toString())
