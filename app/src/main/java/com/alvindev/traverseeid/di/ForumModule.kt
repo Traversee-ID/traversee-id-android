@@ -37,6 +37,8 @@ class ForumModule {
             getForumComments = GetForumComments(repository),
             createComment = CreateComment(repository),
             deleteComment = DeleteComment(repository),
+            getUserForumPosts = GetUserForumPosts(repository),
+            deletePost = DeletePost(repository)
         )
     }
 }

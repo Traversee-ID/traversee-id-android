@@ -14,6 +14,11 @@ import com.alvindev.traverseeid.feature_forum.data.model.ForumPostBody
 import com.alvindev.traverseeid.feature_forum.domain.use_case.UseCasesForum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,31 +53,41 @@ class ForumPostViewModel @Inject constructor(
         )
     }
 
-    fun onPostClick(campaignId: Int? = null) = viewModelScope.launch {
+    fun onPostClick(campaignId: Int? = null, image: File? = null) = viewModelScope.launch {
         state = state.copy(
             isSubmitting = true,
             error = null,
         )
 
-        val title = "-"
+        val title = state.title.trim()
         val text = state.text.trim()
 
         if (title.isEmpty() || text.isEmpty()) {
             state = state.copy(
                 isSubmitting = false,
-                error = resourcesProvider.getString(R.string.error_empty_field),
+                error = resourcesProvider.getString(R.string.title_text_empty),
             )
             return@launch
         }
 
+        var imageMultipart: MultipartBody.Part? = null
+        if (image != null) {
+            val requestImageFile = image.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            imageMultipart = MultipartBody.Part.createFormData("image", image.name, requestImageFile)
+        }
+
+        val titleBody = title.toRequestBody("text/plain".toMediaTypeOrNull())
+        val textBody = text.toRequestBody("text/plain".toMediaTypeOrNull())
+        val campaignIdBody = campaignId?.toString()?.toRequestBody("text/plain".toMediaTypeOrNull())
         val body = ForumPostBody(
-            title = title,
-            text = text,
-            campaignId = campaignId,
+            title = titleBody,
+            text = textBody,
+            campaignId = campaignIdBody,
+            image = imageMultipart,
         )
 
         useCasesForum.createPost(body).asFlow().collect {
-            state = when(it){
+            state = when (it) {
                 ResultState.Loading -> state.copy(
                     isSubmitting = true,
                 )

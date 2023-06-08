@@ -40,6 +40,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 fun TourismListScreen(
     id: Int? = null,
     name: String? = null,
+    searchQuery: String? = null,
     navigator: DestinationsNavigator,
     viewModel: TourismListViewModel = hiltViewModel()
 ) {
@@ -49,9 +50,9 @@ fun TourismListScreen(
     }
 
     val tourisms: LazyPagingItems<TourismItem> =
-        viewModel.getAllTourisms(id).collectAsLazyPagingItems()
+        viewModel.getAllTourisms(id, searchQuery).collectAsLazyPagingItems()
     val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp - 100.dp
+    val screenHeight = configuration.screenHeightDp.dp - 200.dp
 
     Column {
         TraverseeDropdown(
@@ -121,7 +122,7 @@ fun TourismListScreen(
                         ) {
                             TraverseeErrorState(
                                 modifier = Modifier.height(screenHeight).fillMaxWidth().padding(16.dp),
-                                image = painterResource(id = R.drawable.empty_list),
+                                image = painterResource(id = if(searchQuery != null) R.drawable.empty_search else R.drawable.empty_list),
                                 title = stringResource(id = R.string.no_tourism_found),
                                 description = stringResource(id = R.string.no_tourism_description)
                             )

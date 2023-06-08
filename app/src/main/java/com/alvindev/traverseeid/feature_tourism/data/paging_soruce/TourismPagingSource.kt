@@ -23,7 +23,9 @@ class TourismPagingSource(
             val response = tourismApi.getTourism(
                 page = page,
                 categoryId = tourismParams.categoryId,
-                isFavorite = tourismParams.isFavorite
+                isFavorite = tourismParams.isFavorite,
+                locationId = tourismParams.locationId,
+                search = tourismParams.search,
             )
 
             val data = response.data ?: emptyList()

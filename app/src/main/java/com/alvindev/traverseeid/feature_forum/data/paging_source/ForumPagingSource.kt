@@ -7,6 +7,7 @@ import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostItem
 
 class ForumPagingSource(
     private val forumApi: ForumApi,
+    private val userId: String? = null
 ) : PagingSource<Int, ForumPostItem>() {
     override fun getRefreshKey(state: PagingState<Int, ForumPostItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -18,7 +19,11 @@ class ForumPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ForumPostItem> {
         return try {
             val page = params.key ?: 1
-            val response = forumApi.getAllForumPosts(page)
+            val response = if(userId == null) {
+                forumApi.getAllForumPosts(page)
+            } else {
+                forumApi.getUserForumPosts(userId, page)
+            }
 
             val data = response.data ?: emptyList()
 

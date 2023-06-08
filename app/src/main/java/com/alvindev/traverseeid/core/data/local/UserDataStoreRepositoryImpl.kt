@@ -55,6 +55,12 @@ class UserDataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveUserToken(token: String) {
+        dataStore.edit { preferences ->
+            preferences[TOKEN_KEY] = token
+        }
+    }
+
     companion object {
         val TOKEN_KEY = stringPreferencesKey("token")
         private val NAME_KEY = stringPreferencesKey("name")

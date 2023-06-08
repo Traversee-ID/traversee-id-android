@@ -13,6 +13,7 @@ object ScreenRoute {
     const val Forum = "forum"
     const val ForumDetails = "forum/details"
     const val ForumPost= "forum/post"
+    const val ForumUser = "forum/user"
 
     //tourism feature
     const val Tourism = "tourism"

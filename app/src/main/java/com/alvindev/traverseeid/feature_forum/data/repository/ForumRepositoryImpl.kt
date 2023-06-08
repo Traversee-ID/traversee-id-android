@@ -13,8 +13,11 @@ import com.alvindev.traverseeid.feature_forum.data.remote.ForumApi
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCommentEntity
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostItem
 import com.alvindev.traverseeid.feature_forum.domain.repository.ForumRepository
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.RequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import javax.inject.Inject
@@ -29,12 +32,34 @@ class ForumRepositoryImpl @Inject constructor(
         liveData {
             try {
                 emit(ResultState.Loading)
-                val response = forumApi.createPost(body)
-                response.data?.let {
-                    emit(ResultState.Success(it))
-                } ?: emit(ResultState.Error(response.message.toString()))
+                val map = mutableMapOf<String, RequestBody>()
+                map["title"] = body.title
+                map["text"] = body.text
+                if(body.campaignId != null) {
+                    map["campaign_id"] = body.campaignId
+                }
+
+                val response = forumApi.createPost(
+                    file = body.image,
+                    map = map
+                )
+                if (response.isSuccessful) {
+                    val responseData = response.body()?.data
+                    responseData?.let {
+                        emit(ResultState.Success(it))
+                    } ?: emit(ResultState.Error("Unexpected Error!"))
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = try {
+                        val errorJson = JSONObject(errorBody)
+                        errorJson.getString("message")
+                    } catch (e: JSONException) {
+                        "Error: ${response.code()} ${response.message()}"
+                    }
+                    emit(ResultState.Error(errorMessage))
+                }
             } catch (e: Exception) {
-                emit(ResultState.Error(e.message.toString()))
+                emit(ResultState.Error(e.localizedMessage ?: e.message.toString()))
             }
         }
 
@@ -99,7 +124,7 @@ class ForumRepositoryImpl @Inject constructor(
             }
         }
 
-    override  fun getForumComments(postId: Int, page: Int): Flow<ResultState<List<ForumCommentEntity>>> = flow{
+    override suspend fun getForumComments(postId: Int, page: Int): Flow<ResultState<List<ForumCommentEntity>>> = flow{
         try {
             emit(ResultState.Loading)
             val response = forumApi.getForumComments(postId, page)
@@ -145,6 +170,43 @@ class ForumRepositoryImpl @Inject constructor(
             try {
                 emit(ResultState.Loading)
                 val response = forumApi.deleteComment(postId, commentId)
+                if (response.isSuccessful) {
+                    val responseData = response.body()?.message
+                    responseData?.let {
+                        emit(ResultState.Success(it))
+                    } ?: emit(ResultState.Error("Unexpected Error!"))
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = try {
+                        val errorJson = JSONObject(errorBody)
+                        errorJson.getString("message")
+                    } catch (e: JSONException) {
+                        "Error: ${response.code()} ${response.message()}"
+                    }
+                    emit(ResultState.Error(errorMessage))
+                }
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.message.toString()))
+            }
+        }
+
+    override fun getUserForumPosts(): Flow<PagingData<ForumPostItem>>{
+        val userId = Firebase.auth.currentUser?.uid ?: ""
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+            ),
+            pagingSourceFactory = {
+                ForumPagingSource(forumApi, userId)
+            }
+        ).flow
+    }
+
+    override suspend fun deletePost(postId: Int): LiveData<ResultState<String>> =
+        liveData {
+            try {
+                emit(ResultState.Loading)
+                val response = forumApi.deletePost(postId)
                 if (response.isSuccessful) {
                     val responseData = response.body()?.message
                     responseData?.let {

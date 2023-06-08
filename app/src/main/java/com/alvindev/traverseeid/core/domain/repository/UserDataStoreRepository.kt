@@ -11,4 +11,6 @@ interface UserDataStoreRepository {
     suspend fun clearUserLogin()
 
     suspend fun setDefaultLanguage(langId: String)
+
+    suspend fun saveUserToken(token: String)
 }

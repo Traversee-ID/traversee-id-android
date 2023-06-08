@@ -34,10 +34,11 @@ class TourismListViewModel @Inject constructor(
         state = state.copy(locationId = location?.id, locationName = location?.name)
     }
 
-    fun getAllTourisms(categoryId: Int?) = useCases.getTourisms(
+    fun getAllTourisms(categoryId: Int?, searchQuery: String?) = useCases.getTourisms(
         TourismParams(
             locationId = state.locationId,
             categoryId = categoryId,
+            search = searchQuery
         )
     ).cachedIn(viewModelScope)
 

@@ -96,7 +96,11 @@ class AuthRepositoryImpl @Inject constructor(
                 TraverseeApplication.LANGUAGE = it.language ?: Locale.getDefault().language
             }
             val user = userPreferenceToUser(userDataStore)
-            ApiConfig.TOKEN = userDataStore.token ?: ""
+
+            val token = authenticator.getUserToken() ?: ""
+            dataStore.saveUserToken(token)
+            ApiConfig.TOKEN = token
+            Log.d(TAG, "getCurrentUser: $token")
             emit(ResultState.Success(user))
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUser: ${e.message.toString()}")

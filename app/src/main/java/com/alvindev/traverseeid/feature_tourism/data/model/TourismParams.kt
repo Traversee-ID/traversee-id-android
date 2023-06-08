@@ -4,4 +4,5 @@ data class TourismParams(
     val categoryId: Int? = null,
     val isFavorite: Boolean? = null,
     val locationId: Int? = null,
+    val search: String? = null
 )

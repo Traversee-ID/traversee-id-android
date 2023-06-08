@@ -142,12 +142,7 @@ fun TourismDetailsScreen(
                     text = state.tourism.name ?: "-",
                     style = Typography.h1.copy(color = MaterialTheme.colors.primaryVariant)
                 )
-                TraverseeDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    thickness = 4.dp
-                )
+                Spacer(modifier = Modifier.height(24.dp))
                 AboutTourism(
                     description = state.tourismDetails.description ?: ""
                 )

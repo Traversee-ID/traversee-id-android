@@ -1,17 +1,18 @@
 package com.alvindev.traverseeid.feature_forum.data.remote
 
 import com.alvindev.traverseeid.feature_forum.data.model.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ForumApi {
     @POST("forums")
-    suspend fun createPost(@Body body: ForumPostBody) : ForumPostResponse
+    @Multipart
+    suspend fun createPost(
+        @Part file: MultipartBody.Part? = null,
+        @PartMap map: Map<String, @JvmSuppressWildcards RequestBody>,
+    ): Response<ForumPostResponse>
 
     @GET("forums")
     suspend fun getAllForumPosts(
@@ -45,4 +46,15 @@ interface ForumApi {
         @Path("id") postId: Int,
         @Path("commentId") commentId: Int
     ): Response<ForumDeleteCommentResponse>
+
+    @GET("users/{uid}/forums")
+    suspend fun getUserForumPosts(
+        @Path("uid") uid: String,
+        @Query("page") page: Int,
+    ): ForumResponse
+
+    @DELETE("forums/{id}")
+    suspend fun deletePost(
+        @Path("id") postId: Int
+    ): Response<ForumDeletePostResponse>
 }

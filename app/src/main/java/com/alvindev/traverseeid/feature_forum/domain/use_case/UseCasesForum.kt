@@ -8,4 +8,6 @@ data class UseCasesForum(
     val getForumComments: GetForumComments,
     val createComment: CreateComment,
     val deleteComment: DeleteComment,
+    val getUserForumPosts: GetUserForumPosts,
+    val deletePost: DeletePost
 )

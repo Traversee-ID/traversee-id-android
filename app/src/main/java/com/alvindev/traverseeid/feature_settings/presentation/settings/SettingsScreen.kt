@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Campaign
+import androidx.compose.material.icons.outlined.Forum
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.RoomPreferences
 import androidx.compose.runtime.Composable
@@ -71,10 +72,10 @@ fun SettingsScreen(
             }
         ),
         SettingsButtonInfo(
-            title = stringResource(id = R.string.my_preferences),
-            icon = Icons.Outlined.RoomPreferences,
+            title = stringResource(id = R.string.my_posts),
+            icon = Icons.Outlined.Forum,
             onClick = {
-
+                navigator.navigate(ScreenRoute.ForumUser)
             }
         ),
         SettingsButtonInfo(
@@ -122,13 +123,6 @@ fun SettingsScreen(
                 onClick = item.onClick,
             )
         }
-
-        TraverseeDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            thickness = 4.dp
-        )
 
         SettingsButton(
             modifier = Modifier

@@ -1,6 +1,7 @@
 package com.alvindev.traverseeid.feature_forum.presentation.forum_details
 
 import com.alvindev.traverseeid.core.common.ListState
+import com.alvindev.traverseeid.feature_forum.domain.constant.DialogType
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCommentEntity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,7 +12,7 @@ data class ForumDetailsState(
     val isSubmitting: Boolean = false,
     val text: String = "",
     val userId: String = Firebase.auth.currentUser?.uid ?: "",
-    val isShowDialog: Boolean = false,
+    val isShowDialog: DialogType? = null,
     val commentId: Int = 0,
     val comment: ForumCommentEntity? = null,
     val comments: List<ForumCommentEntity> = emptyList(),
@@ -21,4 +22,5 @@ data class ForumDetailsState(
     val isLiked: Boolean = false,
     val totalLikes: Int = 0,
     val totalComments: Int = 0,
+    val isDeleted: Boolean = false,
 )

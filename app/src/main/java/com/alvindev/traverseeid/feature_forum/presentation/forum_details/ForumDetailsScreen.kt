@@ -27,6 +27,7 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
+import com.alvindev.traverseeid.feature_forum.domain.constant.DialogType
 import com.alvindev.traverseeid.feature_forum.domain.entity.ForumPostItem
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumTextField
 import com.alvindev.traverseeid.feature_forum.presentation.component.ForumCommentItem
@@ -68,6 +69,16 @@ fun ForumDetailsScreen(
         }
     }
 
+    if(state.error != null){
+        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+    }
+
+    if (state.isDeleted) {
+        Toast.makeText(context, stringResource(id = R.string.post_deleted), Toast.LENGTH_SHORT)
+            .show()
+        navigator.popBackStack()
+    }
+
     if (state.isSuccess) {
         viewModel.setIsSuccess(false)
         if (state.commentId != 0) {
@@ -83,15 +94,19 @@ fun ForumDetailsScreen(
         }
     }
 
-    if (state.isShowDialog) {
+    if (state.isShowDialog != null) {
         TraverseeAlertDialog(
-            title = stringResource(id = R.string.delete_comment),
+            title = stringResource(id = if (state.isShowDialog == DialogType.DELETE_COMMENT) R.string.delete_comment else R.string.delete_post),
             text = stringResource(id = R.string.are_you_sure),
             onConfirm = {
-                viewModel.deleteComment(post?.forum?.id ?: 0, state.commentId)
+                if (state.isShowDialog == DialogType.DELETE_COMMENT) {
+                    viewModel.deleteComment(post?.forum?.id ?: 0, state.commentId)
+                } else {
+                    viewModel.deletePost(post?.forum?.id ?: 0)
+                }
             },
             onCancel = {
-                viewModel.setShowDialog(false)
+                viewModel.setShowDialog(null)
             },
             enabled = state.isSubmitting.not(),
         )
@@ -105,10 +120,11 @@ fun ForumDetailsScreen(
                 ForumPostItem(
                     modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                     authorName = post.forum.authorName ?: "-",
+                    authorCaption = post.forum.text ?: "",
+                    authorTitle = post.forum.title ?: "-",
                     postTime = post.forum.createdAt ?: "-",
                     totalLike = state.totalLikes,
                     totalComment = state.totalComments,
-                    authorCaption = post.forum.text ?: "",
                     onLiked = {
                         if (state.isLiked) {
                             viewModel.unlikePost(post.forum.id)
@@ -120,11 +136,16 @@ fun ForumDetailsScreen(
                     authorImage = post.forum.authorProfileImage,
                     isLiked = state.isLiked,
                     campaign = post.campaign,
+                    postImageUrl = post.forum.imageUrl,
                     cardOnClick = {
                         post.campaign?.id?.let { campaignId ->
                             navigator.navigate(CampaignDetailsScreenDestination(id = campaignId))
                         }
-                    }
+                    },
+                    isUser = post.forum.authorId == state.userId,
+                    postOnDelete = {
+                        viewModel.setShowDialog(DialogType.DELETE_POST)
+                    },
                 )
             }
         }
@@ -182,7 +203,7 @@ fun ForumDetailsScreen(
                 comment = comment.text ?: "",
                 onDelete = {
                     viewModel.setCommentId(comment.id ?: 0)
-                    viewModel.setShowDialog(true)
+                    viewModel.setShowDialog(DialogType.DELETE_COMMENT)
                 },
             )
             TraverseeDivider(

@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -66,8 +68,7 @@ fun ForumCommentItem(
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 4.dp),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ){
                 Row(
@@ -94,20 +95,16 @@ fun ForumCommentItem(
                 }
 
                 if(isUser){
-                    Icon(
-                        modifier = Modifier
-                            .size(16.dp)
-                            .background(
-                                color = TraverseeRed.copy(alpha = 0.2f),
-                                shape = RoundedCornerShape(50)
-                            ).selectable(
-                                selected = true,
-                                onClick = onDelete
-                            ),
-                        imageVector = Icons.Default.Remove,
-                        contentDescription = "Delete",
-                        tint = TraverseeRed,
-                    )
+                    IconButton(
+                        modifier = Modifier.size(20.dp),
+                        onClick = onDelete
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete Comment",
+                            tint = TraverseeRed
+                        )
+                    }
                 }
             }
 

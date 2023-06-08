@@ -13,6 +13,7 @@ object NavigationMapper {
             ScreenRoute.Forum -> R.string.menu_forum
             ScreenRoute.ForumDetails -> R.string.forum_details
             ScreenRoute.ForumPost -> R.string.forum_post
+            ScreenRoute.ForumUser -> R.string.my_posts
 
             ScreenRoute.Tourism -> R.string.menu_tourism
             ScreenRoute.TourismCategory -> R.string.tourism_place

@@ -17,8 +17,10 @@ interface ForumRepository {
 
     suspend fun unlikePost(postId: Int): LiveData<ResultState<ForumPostItem>>
 
-    fun getForumComments(postId: Int, page:Int): Flow<ResultState<List<ForumCommentEntity>>>
+    suspend fun getForumComments(postId: Int, page:Int): Flow<ResultState<List<ForumCommentEntity>>>
 
     suspend fun createComment(postId: Int, text: String): LiveData<ResultState<ForumCommentEntity>>
     suspend fun deleteComment(postId: Int, commentId: Int): LiveData<ResultState<String>>
+    fun getUserForumPosts(): Flow<PagingData<ForumPostItem>>
+    suspend fun deletePost(postId: Int): LiveData<ResultState<String>>
 }

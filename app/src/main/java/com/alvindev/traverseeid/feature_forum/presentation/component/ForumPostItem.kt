@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.Comment
 import androidx.compose.material.icons.outlined.ThumbUp
@@ -25,6 +26,7 @@ import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
 import com.alvindev.traverseeid.core.theme.Shapes
+import com.alvindev.traverseeid.core.theme.TraverseeRed
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.core.util.digitSeparator
@@ -37,14 +39,18 @@ fun ForumPostItem(
     isOfficial: Boolean = false,
     authorImage: String? = null,
     authorName: String,
+    authorTitle: String,
     authorCaption: String,
     postTime: String,
+    postImageUrl: String? = null,
     totalLike: Int = 0,
     totalComment: Int = 0,
     onLiked: () -> Unit = {},
     isLiked: Boolean = false,
     campaign: ForumCampaignEntity? = null,
     cardOnClick: (id: Int) -> Unit = {},
+    isUser: Boolean = false,
+    postOnDelete: () -> Unit = {}
 ) {
     Row(
         modifier = modifier,
@@ -76,8 +82,7 @@ fun ForumPostItem(
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 4.dp),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -98,6 +103,19 @@ fun ForumPostItem(
                         tint = Color.Green,
                     )
                 }
+                if (isUser) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(
+                        modifier = Modifier.size(20.dp),
+                        onClick = postOnDelete
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete Post",
+                            tint = TraverseeRed
+                        )
+                    }
+                }
             }
 
             Text(
@@ -105,6 +123,26 @@ fun ForumPostItem(
                 text = postTime,
                 style = Typography.caption
             )
+
+            Text(
+                modifier = Modifier.padding(bottom = 4.dp),
+                text = authorTitle,
+                style = Typography.subtitle1,
+            )
+
+            postImageUrl?.let {
+                AsyncImage(
+                    model = it,
+                    contentDescription = authorName,
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .clip(Shapes.large)
+                        .padding(top = 4.dp, bottom = 8.dp),
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center,
+                    fallback = painterResource(id = R.drawable.empty_image),
+                )
+            }
 
             Text(
                 modifier = Modifier.padding(bottom = 16.dp),
@@ -130,7 +168,7 @@ fun ForumPostItem(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp),
                     ) {
-                        it.imageUrl?.let{
+                        it.imageUrl?.let {
                             AsyncImage(
                                 model = it,
                                 fallback = painterResource(id = R.drawable.empty_image),
@@ -197,6 +235,7 @@ fun ForumPostItemPreview() {
         ForumPostItem(
             isOfficial = true,
             authorName = "Alvin Dev",
+            authorTitle = "Software Engineer",
             authorCaption = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi quis nisl aliquet aliquam. Sed vitae nisi quis nisl aliquet aliquam.",
             postTime = "1 hour ago",
             totalLike = 100,

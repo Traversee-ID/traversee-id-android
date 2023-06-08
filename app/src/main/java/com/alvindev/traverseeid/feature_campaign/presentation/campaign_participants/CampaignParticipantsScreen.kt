@@ -37,12 +37,7 @@ fun CampaignParticipantsScreen(
             )
         }
         item{
-            TraverseeDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                thickness = 4.dp
-            )
+            Spacer(modifier = Modifier.height(16.dp))
         }
         item{
             if(campaignOtherParticipants.isNotEmpty()){

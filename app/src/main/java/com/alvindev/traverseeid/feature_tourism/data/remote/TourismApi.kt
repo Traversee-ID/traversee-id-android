@@ -18,6 +18,8 @@ interface TourismApi {
         @Query("page") page: Int,
         @Query("category_id") categoryId: Int? = null,
         @Query("is_favorite") isFavorite: Boolean? = null,
+        @Query("location_id") locationId: Int? = null,
+        @Query("search") search: String? = null,
     ): TourismResponse
 
     @GET("tourisms/{id}")

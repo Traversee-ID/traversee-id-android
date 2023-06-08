@@ -19,8 +19,10 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.TraverseeApplication
 import com.alvindev.traverseeid.core.presentation.component.TraverseeButton
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
+import com.alvindev.traverseeid.core.presentation.component.TraverseeErrorState
 import com.alvindev.traverseeid.core.theme.TraverseeTheme
 import com.alvindev.traverseeid.core.util.LocaleUtil
+import com.alvindev.traverseeid.core.util.isInternetAvailable
 import com.alvindev.traverseeid.feature_auth.presentation.component.AuthFormField
 import com.alvindev.traverseeid.feature_auth.presentation.component.ErrorMessage
 import com.alvindev.traverseeid.feature_auth.presentation.component.GoogleSignInButton
@@ -42,28 +44,35 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
     navigator: DestinationsNavigator
 ) {
+    val context = LocalContext.current
     val state = viewModel.state
     val signInRequestCode = 1
     val authResultLauncher = rememberLauncherForActivityResult(
         contract = AuthResultContract()
-    ){task ->
+    ) { task ->
         try {
             val account = task?.getResult(ApiException::class.java)
             Log.d("LoginScreen", "firebaseAuthWithGoogle: ${account?.id}")
-            if (account != null){
+            if (account != null) {
                 viewModel.loginWithGoogle(account.idToken!!)
-            }else{
+            } else {
                 viewModel.setErrorMessage("Login failed! please try again")
             }
-        } catch (e: ApiException){
+        } catch (e: ApiException) {
             Log.e("LoginScreen", "signInResult:failed code=${e.statusCode}")
             viewModel.setErrorMessage("Login failed! please try again")
         }
     }
 
     if (state.firebaseUser != null) {
-        LocaleUtil.setLocale(LocalContext.current, TraverseeApplication.LANGUAGE)
+        LocaleUtil.setLocale(context, TraverseeApplication.LANGUAGE)
         navigator.navigate(ScreenRoute.Campaign)
+    } else if (isInternetAvailable(context).not()) {
+        TraverseeErrorState(
+            image = painterResource(id = R.drawable.empty_error),
+            title = stringResource(id = R.string.error_title),
+            description = stringResource(id = R.string.error_description),
+        )
     } else if (state.isLoading.not()) {
         Column(
             modifier = Modifier

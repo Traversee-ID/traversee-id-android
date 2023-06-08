@@ -1,4 +1,4 @@
-package com.alvindev.traverseeid.feature_forum.presentation.forum
+package com.alvindev.traverseeid.feature_forum.presentation.forum_user
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.alvindev.traverseeid.core.common.ListState
 import com.alvindev.traverseeid.core.common.ResultState
 import com.alvindev.traverseeid.feature_forum.domain.use_case.UseCasesForum
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,13 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ForumViewModel @Inject constructor(
+class ForumUserViewModel @Inject constructor(
     private val useCases: UseCasesForum
 ):ViewModel() {
-    var state by mutableStateOf(ForumState())
+    var state by mutableStateOf(ForumUserState())
         private set
 
-    fun getAllForumPosts() = useCases.getAllForumPosts().cachedIn(viewModelScope)
+    fun getAllUserForumPosts() = useCases.getUserForumPosts().cachedIn(viewModelScope)
 
     fun likePost(postId: Int) = viewModelScope.launch {
         useCases.likePost(postId).asFlow().collect{

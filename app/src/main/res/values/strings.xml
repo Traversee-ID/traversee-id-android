@@ -154,4 +154,14 @@
     <string name="no_tourism_description">Oops! It looks like your tourism list is empty.</string>
     <string name="no_open_trip_found">No Open Trips Found!</string>
     <string name="no_open_trip_description">Oops! It seems like open trips is currently empty.</string>
+    <string name="no_posts_yet">No Posts Yet</string>
+    <string name="no_posts_yet_description">Hey there! It looks like you haven\'t made any posts yet. Start sharing your thoughts, experiences, and questions with the community.</string>
+    <string name="my_posts">My Posts</string>
+    <string name="post_deleted">Post Deleted</string>
+    <string name="delete_post">Delete Post</string>
+    <string name="delete_picture">Delete Picture</string>
+    <string name="title">Title</string>
+    <string name="title_message">Title of Post</string>
+    <string name="title_text_empty">Title and Text must be filed!</string>
+    <string name="optional">Optional</string>
 </resources>

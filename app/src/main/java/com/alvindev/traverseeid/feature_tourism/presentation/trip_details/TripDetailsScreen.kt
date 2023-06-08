@@ -166,12 +166,7 @@ fun TripDetailsScreen(
                     state.trip.description ?: "-"
                 )
                 if(state.destinations.isNotEmpty()){
-                    TraverseeDivider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        thickness = 4.dp
-                    )
+                    Spacer(modifier = Modifier.height(16.dp))
                     SectionTripDestination(
                         destinations = state.destinations,
                         destinationOnClick = {

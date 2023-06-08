@@ -32,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alvindev.NavGraphs
 import com.alvindev.appCurrentDestinationAsState
 import com.alvindev.destinations.CampaignListScreenDestination
+import com.alvindev.destinations.TourismListScreenDestination
 import com.alvindev.startAppDestination
 import com.alvindev.traverseeid.core.presentation.component.TopSearchBar
 import com.alvindev.traverseeid.core.theme.TraverseeBlack
@@ -138,15 +139,23 @@ class MainActivity : ComponentActivity() {
                                                 contentColor = if (currentRoute == ScreenRoute.Campaign) Color.White else TraverseeBlack,
                                                 onSubmit = {
                                                     expandable = false
+                                                    routeName = searchText.trim()
                                                     if (currentRoute == ScreenRoute.Campaign) {
-                                                        routeName = searchText.trim()
                                                         navController.navigate(
                                                             CampaignListScreenDestination(
                                                                 searchQuery = searchText.trim(),
                                                                 name = searchText.trim()
                                                             )
                                                         )
+                                                    }else{
+                                                        navController.navigate(
+                                                            TourismListScreenDestination(
+                                                                searchQuery = searchText.trim(),
+                                                                name = searchText.trim()
+                                                            )
+                                                        )
                                                     }
+                                                    searchText = ""
                                                 }
                                             )
                                         } else {

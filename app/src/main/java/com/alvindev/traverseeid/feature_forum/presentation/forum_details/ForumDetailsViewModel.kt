@@ -8,6 +8,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.alvindev.traverseeid.core.common.ListState
 import com.alvindev.traverseeid.core.common.ResultState
+import com.alvindev.traverseeid.feature_forum.domain.constant.DialogType
 import com.alvindev.traverseeid.feature_forum.domain.use_case.UseCasesForum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -68,6 +69,42 @@ class ForumDetailsViewModel @Inject constructor(
         )
     }
 
+    fun setIsSuccess(isSuccess: Boolean) {
+        state = state.copy(
+            isSuccess = isSuccess,
+        )
+    }
+
+    fun setShowDialog(dialog: DialogType?) {
+        state = state.copy(
+            isShowDialog = dialog
+        )
+    }
+
+    fun setCommentId(commentId: Int) {
+        state = state.copy(
+            commentId = commentId
+        )
+    }
+
+    fun setTotalLikes(totalLikes: Int) {
+        state = state.copy(
+            totalLikes = totalLikes,
+        )
+    }
+
+    fun setTotalComments(totalComments: Int) {
+        state = state.copy(
+            totalComments = totalComments,
+        )
+    }
+
+    fun setIsLiked(isLiked: Boolean) {
+        state = state.copy(
+            isLiked = isLiked,
+        )
+    }
+
     fun createComment(forumId: Int) = viewModelScope.launch {
         state = state.copy(
             isSubmitting = true,
@@ -104,23 +141,6 @@ class ForumDetailsViewModel @Inject constructor(
         }
     }
 
-    fun setIsSuccess(isSuccess: Boolean) {
-        state = state.copy(
-            isSuccess = isSuccess,
-        )
-    }
-
-    fun setShowDialog(isShow: Boolean) {
-        state = state.copy(
-            isShowDialog = isShow
-        )
-    }
-
-    fun setCommentId(commentId: Int) {
-        state = state.copy(
-            commentId = commentId
-        )
-    }
 
     fun deleteComment(postId: Int, commentId: Int) = viewModelScope.launch {
         useCases.deleteComment(postId, commentId).asFlow().collect {
@@ -128,7 +148,7 @@ class ForumDetailsViewModel @Inject constructor(
                 is ResultState.Success -> {
                     state = state.copy(
                         isSuccess = true,
-                        isShowDialog = false,
+                        isShowDialog = null,
                         comments = state.comments.filter { comment -> comment.id != commentId },
                         isSubmitting = false,
                         totalComments = state.totalComments - 1,
@@ -138,7 +158,7 @@ class ForumDetailsViewModel @Inject constructor(
                     state = state.copy(
                         error = it.error,
                         isSubmitting = false,
-                        isShowDialog = false,
+                        isShowDialog = null,
                     )
                 }
                 is ResultState.Loading -> {
@@ -148,24 +168,6 @@ class ForumDetailsViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun setIsLiked(isLiked: Boolean) {
-        state = state.copy(
-            isLiked = isLiked,
-        )
-    }
-
-    fun setTotalLikes(totalLikes: Int) {
-        state = state.copy(
-            totalLikes = totalLikes,
-        )
-    }
-
-    fun setTotalComments(totalComments: Int) {
-        state = state.copy(
-            totalComments = totalComments,
-        )
     }
 
     fun likePost(postId: Int) = viewModelScope.launch {
@@ -212,4 +214,28 @@ class ForumDetailsViewModel @Inject constructor(
         }
     }
 
+    fun deletePost(postId: Int) = viewModelScope.launch {
+        useCases.deletePost(postId).asFlow().collect {
+            when (it) {
+                is ResultState.Success -> {
+                    state = state.copy(
+                        isDeleted = true,
+                        isShowDialog = null,
+                    )
+                }
+                is ResultState.Error -> {
+                    state = state.copy(
+                        error = it.error,
+                        isSubmitting = false,
+                        isShowDialog = null,
+                    )
+                }
+                is ResultState.Loading -> {
+                    state = state.copy(
+                        isSubmitting = true,
+                    )
+                }
+            }
+        }
+    }
 }
