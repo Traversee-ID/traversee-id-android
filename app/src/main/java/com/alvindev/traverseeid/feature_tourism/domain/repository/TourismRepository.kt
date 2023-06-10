@@ -19,6 +19,8 @@ interface TourismRepository {
 
     fun getTourisms(params: TourismParams): Flow<PagingData<TourismItem>>
 
+    suspend fun getTourismRecommendations(): LiveData<ResultState<List<TourismItem>>>
+
     suspend fun getTourismById(id: String): LiveData<ResultState<TourismItem>>
 
     suspend fun getTourismDetails(id: String): LiveData<ResultState<TourismDetailsEntity>>

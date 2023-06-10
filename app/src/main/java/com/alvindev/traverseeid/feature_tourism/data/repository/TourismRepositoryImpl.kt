@@ -65,6 +65,19 @@ class TourismRepositoryImpl @Inject constructor(
         ).flow
     }
 
+    override suspend fun getTourismRecommendations(): LiveData<ResultState<List<TourismItem>>> =
+        liveData {
+            try {
+                emit(ResultState.Loading)
+                val response = tourismApi.getTourismRecommendations()
+                response.data?.let {
+                    emit(ResultState.Success(it))
+                } ?: emit(ResultState.Error(response.message.toString()))
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.message.toString()))
+            }
+        }
+
     override suspend fun getTourismById(id: String): LiveData<ResultState<TourismItem>> =
         liveData {
             try {

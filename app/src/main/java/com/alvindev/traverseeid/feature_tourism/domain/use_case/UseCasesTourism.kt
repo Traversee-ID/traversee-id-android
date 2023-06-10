@@ -4,6 +4,7 @@ data class UseCasesTourism(
     val getTourismCategories: GetTourismCategories,
     val getTourismLocations: GetTourismLocations,
     val getTourisms: GetTourisms,
+    val getTourismRecommendations: GetTourismRecommendations,
     val getTourismById: GetTourismById,
     val getTourismDetails: GetTourismDetails,
     val postFavoriteTourism: PostFavoriteTourism,

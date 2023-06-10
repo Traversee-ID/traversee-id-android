@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alvindev.destinations.TourismCategoryScreenDestination
+import com.alvindev.destinations.TourismDetailsScreenDestination
 import com.alvindev.destinations.TourismListScreenDestination
 import com.alvindev.destinations.TripDetailsScreenDestination
 import com.alvindev.traverseeid.R
@@ -113,31 +114,44 @@ fun TourismScreen(
             item {
                 Spacer(modifier = Modifier.height(24.dp))
             }
-            item {
-                TraverseeSectionTitle(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                    title = stringResource(id = R.string.for_you),
-                    subtitle = stringResource(id = R.string.tourism_recommendation),
-                )
-            }
-            items(listOf(0, 1, 2, 3).chunked(2)) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    for (i in 0..1) {
-                        TourismCard(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(bottom = 16.dp)
-                                .clickable {
-                                    navigator.navigate(ScreenRoute.TourismDetails)
-                                },
-                        )
+            if(state.tourismRecommendations != null && state.tourismRecommendations.isNotEmpty()){
+                item {
+                    TraverseeSectionTitle(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                        title = stringResource(id = R.string.for_you),
+                        subtitle = stringResource(id = R.string.tourism_recommendation),
+                    )
+                }
+                items(state.tourismRecommendations.chunked(2)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        for (i in 0..1) {
+                            val item = it.getOrNull(i)
+                            item?.let{
+                                TourismCard(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(bottom = 16.dp),
+                                    title = it.tourism.name ?: "-",
+                                    category = it.tourism.categoryName ?: "-",
+                                    city = it.tourism.locationName ?: "-",
+                                    imageUrl = it.tourism.imageUrl,
+                                    onClick = {
+                                        navigator.navigate(
+                                            TourismDetailsScreenDestination(
+                                                tourismItem = it
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }

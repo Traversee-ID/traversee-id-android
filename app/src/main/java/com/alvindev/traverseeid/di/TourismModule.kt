@@ -34,6 +34,7 @@ class TourismModule {
             getTourismCategories = GetTourismCategories(repository),
             getTourismLocations = GetTourismLocations(repository),
             getTourisms = GetTourisms(repository),
+            getTourismRecommendations = GetTourismRecommendations(repository),
             getTourismById = GetTourismById(repository),
             getTourismDetails = GetTourismDetails(repository),
             postFavoriteTourism = PostFavoriteTourism(repository),

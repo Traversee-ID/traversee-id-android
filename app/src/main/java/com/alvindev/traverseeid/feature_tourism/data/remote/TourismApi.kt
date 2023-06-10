@@ -22,6 +22,9 @@ interface TourismApi {
         @Query("search") search: String? = null,
     ): TourismResponse
 
+    @GET("tourism-recommendations")
+    suspend fun getTourismRecommendations(): TourismResponse
+
     @GET("tourisms/{id}")
     suspend fun getTourismById(
         @Path("id") id: String

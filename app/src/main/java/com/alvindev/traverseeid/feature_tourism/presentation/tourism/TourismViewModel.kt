@@ -24,14 +24,19 @@ class TourismViewModel @Inject constructor(
         private set
 
     init {
-        getTourismCategories()
+        viewModelScope.launch {
+            state=state.copy(isLoading = true)
+            getTourismCategories()
+            getOpenTrips()
+            getTourismRecommendations()
+            state=state.copy(isLoading = false)
+        }
     }
     private fun getTourismCategories() = viewModelScope.launch {
         useCases.getTourismCategories().asFlow().collect{
             when(it){
                 is ResultState.Loading -> {
                     state = state.copy(
-                        isLoading = true,
                         error = null
                     )
                 }
@@ -49,7 +54,6 @@ class TourismViewModel @Inject constructor(
                         error = null,
                         tourismCategories = categories,
                     )
-                    getOpenTrips()
                 }
                 is ResultState.Error -> {
                     state = state.copy(
@@ -66,15 +70,37 @@ class TourismViewModel @Inject constructor(
             when(it){
                 is ResultState.Loading -> {
                     state = state.copy(
-                        isLoading = true,
                         error = null
                     )
                 }
                 is ResultState.Success -> {
                     state = state.copy(
-                        isLoading = false,
                         error = null,
                         openTrips = it.data
+                    )
+                }
+                is ResultState.Error -> {
+                    state = state.copy(
+                        isLoading = false,
+                        error = it.error,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getTourismRecommendations() = viewModelScope.launch {
+        useCases.getTourismRecommendations().asFlow().collect{
+            when(it){
+                is ResultState.Loading -> {
+                    state = state.copy(
+                        error = null
+                    )
+                }
+                is ResultState.Success -> {
+                    state = state.copy(
+                        error = null,
+                        tourismRecommendations = it.data
                     )
                 }
                 is ResultState.Error -> {
