@@ -36,8 +36,8 @@ class TourismListViewModel @Inject constructor(
 
     fun getAllTourisms(categoryId: Int?, searchQuery: String?) = useCases.getTourisms(
         TourismParams(
-            locationId = state.locationId,
-            categoryId = categoryId,
+            locationId = if(state.locationId == -1) null else state.locationId,
+            categoryId = if(categoryId == -1) null else categoryId,
             search = searchQuery
         )
     ).cachedIn(viewModelScope)
@@ -47,7 +47,7 @@ class TourismListViewModel @Inject constructor(
             state = when (it) {
                 is ResultState.Success -> {
                     val allLocation = LocationEntity(
-                        0,
+                        -1,
                         resourcesProvider.getString(R.string.Indonesia)
                     )
                     val list = mutableListOf(allLocation)

@@ -19,22 +19,17 @@ import javax.inject.Inject
 class TourismViewModel @Inject constructor(
     private val useCases: UseCasesTourism,
     private val resourcesProvider: ResourcesProvider
-) :ViewModel() {
+) : ViewModel() {
     var state by mutableStateOf(TourismState())
         private set
 
     init {
-        viewModelScope.launch {
-            state=state.copy(isLoading = true)
-            getTourismCategories()
-            getOpenTrips()
-            getTourismRecommendations()
-            state=state.copy(isLoading = false)
-        }
+        getTourismCategories()
     }
+
     private fun getTourismCategories() = viewModelScope.launch {
-        useCases.getTourismCategories().asFlow().collect{
-            when(it){
+        useCases.getTourismCategories().asFlow().collect {
+            when (it) {
                 is ResultState.Loading -> {
                     state = state.copy(
                         error = null
@@ -42,7 +37,7 @@ class TourismViewModel @Inject constructor(
                 }
                 is ResultState.Success -> {
                     val allTourism = CategoryEntity(
-                        id = 0,
+                        id = -1,
                         name = resourcesProvider.getString(R.string.all_tourism),
                         imageUrl = null,
                     )
@@ -54,11 +49,12 @@ class TourismViewModel @Inject constructor(
                         error = null,
                         tourismCategories = categories,
                     )
+
+                    getOpenTrips()
                 }
                 is ResultState.Error -> {
                     state = state.copy(
                         isLoading = false,
-                        error = it.error,
                     )
                 }
             }
@@ -66,8 +62,8 @@ class TourismViewModel @Inject constructor(
     }
 
     private fun getOpenTrips() = viewModelScope.launch {
-        useCases.getFirstPageOpenTrip().asFlow().collect{
-            when(it){
+        useCases.getFirstPageOpenTrip().asFlow().collect {
+            when (it) {
                 is ResultState.Loading -> {
                     state = state.copy(
                         error = null
@@ -78,6 +74,8 @@ class TourismViewModel @Inject constructor(
                         error = null,
                         openTrips = it.data
                     )
+
+                    getTourismRecommendations()
                 }
                 is ResultState.Error -> {
                     state = state.copy(
@@ -90,8 +88,8 @@ class TourismViewModel @Inject constructor(
     }
 
     private fun getTourismRecommendations() = viewModelScope.launch {
-        useCases.getTourismRecommendations().asFlow().collect{
-            when(it){
+        useCases.getTourismRecommendations().asFlow().collect {
+            when (it) {
                 is ResultState.Loading -> {
                     state = state.copy(
                         error = null
@@ -100,13 +98,13 @@ class TourismViewModel @Inject constructor(
                 is ResultState.Success -> {
                     state = state.copy(
                         error = null,
-                        tourismRecommendations = it.data
+                        tourismRecommendations = it.data,
+                        isLoading = false,
                     )
                 }
                 is ResultState.Error -> {
                     state = state.copy(
                         isLoading = false,
-                        error = it.error,
                     )
                 }
             }

@@ -2,6 +2,7 @@ package com.alvindev.traverseeid.core.presentation.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
@@ -46,6 +47,7 @@ fun TraverseeTextField(
     maxLines: Int = 1,
     isError: Boolean = false,
     enabled: Boolean = true,
+    keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
     TextField(
         modifier = modifier,
@@ -71,6 +73,7 @@ fun TraverseeTextField(
         maxLines = maxLines,
         isError = isError,
         enabled = enabled,
+        keyboardActions = keyboardActions,
     )
 }
 

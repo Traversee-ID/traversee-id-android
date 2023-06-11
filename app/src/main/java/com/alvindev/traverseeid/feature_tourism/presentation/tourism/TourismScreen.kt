@@ -86,7 +86,7 @@ fun TourismScreen(
                 Spacer(modifier = Modifier.height(24.dp))
             }
             item {
-                if (state.tourismCategories.isNotEmpty()) {
+                if (state.tourismCategories != null && state.tourismCategories.isNotEmpty()) {
                     val categoryArrayList = arrayListOf<CategoryEntity>()
                     state.tourismCategories.forEach { category ->
                         categoryArrayList.add(category)

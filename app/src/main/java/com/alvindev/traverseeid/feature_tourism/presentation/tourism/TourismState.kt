@@ -7,7 +7,7 @@ import com.alvindev.traverseeid.feature_tourism.domain.entity.TripEntity
 data class TourismState(
     val isLoading: Boolean = true,
     val error: String? = null,
-    val tourismCategories: List<CategoryEntity> = emptyList(),
+    val tourismCategories: List<CategoryEntity>? = null,
     val openTrips: List<TripEntity>? = null,
     val tourismRecommendations: List<TourismItem>? = null,
 )

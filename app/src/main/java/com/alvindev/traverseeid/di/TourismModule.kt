@@ -1,6 +1,5 @@
 package com.alvindev.traverseeid.di
 
-import com.alvindev.traverseeid.feature_campaign.domain.use_case.GetCampaignCategories
 import com.alvindev.traverseeid.feature_campaign.domain.use_case.*
 import com.alvindev.traverseeid.feature_tourism.data.remote.TourismApi
 import com.alvindev.traverseeid.feature_tourism.data.repository.TourismRepositoryImpl
