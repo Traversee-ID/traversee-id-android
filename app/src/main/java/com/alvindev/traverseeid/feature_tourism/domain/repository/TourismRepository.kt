@@ -17,7 +17,7 @@ interface TourismRepository {
 
     suspend fun getTourismLocations(): LiveData<ResultState<List<LocationEntity>>>
 
-    fun getTourisms(params: TourismParams): Flow<PagingData<TourismItem>>
+    fun getTourisms(page: Int, params: TourismParams): Flow<ResultState<List<TourismItem>>>
 
     suspend fun getTourismRecommendations(): LiveData<ResultState<List<TourismItem>>>
 

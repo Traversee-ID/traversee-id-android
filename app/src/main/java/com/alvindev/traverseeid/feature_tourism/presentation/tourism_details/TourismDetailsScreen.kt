@@ -40,16 +40,18 @@ import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.ramcosta.composedestinations.result.EmptyResultBackNavigator
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 
 @Destination(
     route = ScreenRoute.TourismDetails
 )
 @Composable
 fun TourismDetailsScreen(
-    navigator: DestinationsNavigator,
     id: String? = null,
     tourismItem: TourismItem? = null,
-    viewModel: TourismDetailsViewModel = hiltViewModel()
+    viewModel: TourismDetailsViewModel = hiltViewModel(),
+    resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val state = viewModel.state
     val context = LocalContext.current
@@ -104,9 +106,7 @@ fun TourismDetailsScreen(
                     ImageSlider(
                         modifier = Modifier
                             .fillMaxSize(),
-                        images = listOf(
-                            state.tourism.imageUrl ?: ""
-                        ),
+                        images = state.tourism.imageUrl?.let { listOf(it) } ?: listOf(),
                     )
 
                     //background color
@@ -183,7 +183,7 @@ fun TourismDetailsScreen(
                 IconButton(
                     modifier = Modifier.size(24.dp),
                     onClick = {
-                        navigator.popBackStack()
+                        resultNavigator.navigateBack(result = state.isFavorite != tourismItem?.isFavorite)
                     }
                 ) {
                     Icon(
@@ -306,7 +306,7 @@ fun SectionRelevantTourism() {
 fun PreviewTourismDetailsScreen() {
     TraverseeTheme {
         TourismDetailsScreen(
-            navigator = EmptyDestinationsNavigator
+            resultNavigator = EmptyResultBackNavigator()
         )
     }
 }

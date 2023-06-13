@@ -391,10 +391,11 @@ fun AboutCampaign(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             title = stringResource(id = R.string.about_campaign)
         )
-        TraverseeExpandableText(
+        Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-            text = description,
-            minimizedMaxLines = 5,
+            text = description.seperateNewLine(),
+            style = Typography.body2,
+            textAlign = TextAlign.Justify,
         )
     }
 }
@@ -440,7 +441,7 @@ fun CampaignMissions(
             title = stringResource(id = R.string.missions)
         )
         Text(
-            text = missions,
+            text = missions.seperateNewLine(),
             style = Typography.body2,
             textAlign = TextAlign.Justify,
         )

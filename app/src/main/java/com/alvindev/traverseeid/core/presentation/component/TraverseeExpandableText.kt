@@ -67,7 +67,7 @@ fun TraverseeExpandableText(
         if (!expanded) {
             val density = LocalDensity.current
             Text(
-                text = if (cutText == null) stringResource(R.string.show_more) else stringResource(R.string.show_less),
+                text = if (cutText == null)  stringResource(R.string.show_less) else stringResource(R.string.show_more),
                 color = TraverseePrimaryVariant,
                 onTextLayout = { seeMoreSizeState.value = it.size },
                 modifier = Modifier

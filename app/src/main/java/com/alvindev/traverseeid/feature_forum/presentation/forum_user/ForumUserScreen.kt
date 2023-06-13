@@ -3,6 +3,7 @@ package com.alvindev.traverseeid.feature_forum.presentation.forum_user
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -42,6 +43,7 @@ fun ForumUserScreen(
 
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
+        state = rememberLazyListState(),
     ) {
         items(posts, key = { post -> post.forum.id }) { post ->
             var isLiked by remember { mutableStateOf(post?.isLiked ?: false) }

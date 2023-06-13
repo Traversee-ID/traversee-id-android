@@ -41,21 +41,21 @@ class ForumDetailsViewModel @Inject constructor(
                     is ResultState.Error -> {
                         state = state.copy(
                             error = it.error,
-                            listState = ListState.IDLE,
+                            listState = if (state.page == 1) ListState.ERROR else ListState.PAGINATION_EXHAUST,
                         )
                     }
                     is ResultState.Success -> {
                         state = state.copy(
                             comments = if (state.page == 1) it.data else state.comments + it.data,
                             page = state.page + 1,
-                            canPaginate = it.data.size < 5,
+                            canPaginate = it.data.size >= 5,
                             listState = ListState.IDLE,
                         )
                     }
                     else -> {
                         state = state.copy(
                             error = null,
-                            listState = if (state.page == 1) ListState.ERROR else ListState.PAGINATION_EXHAUST,
+                            listState = ListState.LOADING,
                         )
                     }
                 }

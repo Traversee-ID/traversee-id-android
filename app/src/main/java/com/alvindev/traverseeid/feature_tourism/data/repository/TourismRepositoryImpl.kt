@@ -18,6 +18,7 @@ import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismItem
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TripEntity
 import com.alvindev.traverseeid.feature_tourism.domain.repository.TourismRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import org.json.JSONException
 import org.json.JSONObject
 import javax.inject.Inject
@@ -51,18 +52,22 @@ class TourismRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getTourisms(params: TourismParams): Flow<PagingData<TourismItem>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-            ),
-            pagingSourceFactory = {
-                TourismPagingSource(
-                    tourismApi,
-                    tourismParams = params,
-                )
-            }
-        ).flow
+    override fun getTourisms(page: Int, params: TourismParams): Flow<ResultState<List<TourismItem>>> = flow{
+        try {
+            emit(ResultState.Loading)
+            val response = tourismApi.getTourism(
+                page,
+                categoryId = params.categoryId,
+                isFavorite = params.isFavorite,
+                locationId = params.locationId,
+                search = params.search,
+            )
+            response.data?.let {
+                emit(ResultState.Success(it))
+            } ?: emit(ResultState.Error(response.message.toString()))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.message.toString()))
+        }
     }
 
     override suspend fun getTourismRecommendations(): LiveData<ResultState<List<TourismItem>>> =

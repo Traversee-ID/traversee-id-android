@@ -2,6 +2,7 @@ package com.alvindev.traverseeid.feature_campaign.presentation.campaign_user
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +41,8 @@ fun CampaignUserScreen(
     val campaigns: LazyPagingItems<CampaignItem> = viewModel.getRegisteredCampaigns().collectAsLazyPagingItems()
 
     LazyColumn(
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(16.dp),
+        state = rememberLazyListState(),
     ) {
         items(campaigns, key = { item -> item.campaign.id }) { item ->
             MyCampaignCard(

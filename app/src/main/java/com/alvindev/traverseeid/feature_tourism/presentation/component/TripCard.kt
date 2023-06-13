@@ -45,11 +45,13 @@ fun TripCard(
     ) {
         Column {
             imageUrl?.let {
+                val finalImageUrl = if(it.startsWith("http://")) it.replace("http://", "https://") else it
+
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(170.dp),
-                    model = it,
+                    model = finalImageUrl,
                     contentDescription = title,
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center
@@ -78,6 +80,8 @@ fun TripCard(
                             .padding(end = 4.dp),
                         text = title,
                         style = Typography.subtitle2,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     TraverseeRowIcon(
                         text = duration,

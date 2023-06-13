@@ -44,9 +44,10 @@ fun ImageSlider(
                 key = { images[it] },
                 pageSize = PageSize.Fill
             ) { index ->
+                val finalImageUrl = if(images[index].startsWith("http://")) images[index].replace("http://", "https://") else images[index]
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    model = images[index],
+                    model = finalImageUrl,
                     fallback = painterResource(id = R.drawable.app_logo),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,

@@ -3,6 +3,7 @@ package com.alvindev.traverseeid.feature_campaign.presentation.campaign_list
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -122,7 +123,8 @@ fun CampaignListScreen(
                 contentPadding = PaddingValues(
                     top = 8.dp,
                     bottom = 16.dp,
-                )
+                ),
+                state = rememberLazyListState(),
             ) {
                 items(campaigns, key = { item -> item.campaign.id }) { item ->
                     CampaignCard(

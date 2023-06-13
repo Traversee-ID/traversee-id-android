@@ -6,5 +6,5 @@ import com.alvindev.traverseeid.feature_tourism.domain.repository.TourismReposit
 class GetTourisms(
     private val repository: TourismRepository
 ) {
-    operator fun invoke(params: TourismParams) = repository.getTourisms(params)
+    operator fun invoke(page:Int, params: TourismParams) = repository.getTourisms(page, params)
 }

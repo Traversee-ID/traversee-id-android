@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -44,6 +45,7 @@ fun ForumScreen(
 
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
+        state = rememberLazyListState(),
     ) {
 //        item {
 //            Column {

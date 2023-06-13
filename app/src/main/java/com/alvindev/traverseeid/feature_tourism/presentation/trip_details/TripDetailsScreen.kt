@@ -29,12 +29,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.alvindev.destinations.TourismDetailsScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.*
 import com.alvindev.traverseeid.core.theme.*
 import com.alvindev.traverseeid.core.util.currencyFormat
 import com.alvindev.traverseeid.core.util.digitSeparator
+import com.alvindev.traverseeid.core.util.seperateNewLine
 import com.alvindev.traverseeid.core.util.toDate
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismEntity
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TripEntity
@@ -122,15 +122,19 @@ fun TripDetailsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
+                            modifier = Modifier
+                                .padding(end = 8.dp),
                             text = state.trip.price?.currencyFormat() ?: "-",
                             style = MaterialTheme.typography.subtitle2
                         )
 
                         Text(
+                            modifier = Modifier.weight(1f),
                             text = state.trip.categories.joinToString(separator = ", "),
                             style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.W500),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.End,
                         )
                     }
                 }
@@ -170,9 +174,6 @@ fun TripDetailsScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     SectionTripDestination(
                         destinations = state.destinations,
-                        destinationOnClick = {
-                            navigator.navigate(TourismDetailsScreenDestination(id = it.id))
-                        }
                     )
                 }
             }
@@ -257,7 +258,6 @@ fun TripDetailsScreen(
 
 @Composable
 fun SectionTripDestination(
-    destinationOnClick: (tourism: TourismEntity) -> Unit = {},
     destinations: List<TourismEntity> = emptyList(),
 ) {
     val configuration = LocalConfiguration.current
@@ -277,14 +277,13 @@ fun SectionTripDestination(
             items(destinations) { item ->
                 TourismCard(
                     modifier = Modifier
-                        .width(screenWidth / 2),
+                        .width(screenWidth / 2)
+                        .height(330.dp),
                     title = item.name ?: "-",
-                    category = item.categoryName ?: "-",
-                    city = item.locationName ?: "-",
+                    category = item.categoryName ?: "",
+                    city = item.locationName ?: "",
                     imageUrl = item.imageUrl,
-                    onClick = {
-                        destinationOnClick(item)
-                    },
+                    onClick = {},
                 )
             }
         }
@@ -351,7 +350,7 @@ fun AboutTrip(
     ) {
         TraverseeSectionTitle(title = stringResource(id = R.string.about_trip))
         Text(
-            text = description,
+            text = description.seperateNewLine(),
             style = Typography.body2,
             textAlign = TextAlign.Justify,
         )

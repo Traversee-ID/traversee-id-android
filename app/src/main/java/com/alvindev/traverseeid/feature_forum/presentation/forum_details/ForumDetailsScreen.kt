@@ -53,20 +53,20 @@ fun ForumDetailsScreen(
     val shouldStartPaginate = remember {
         derivedStateOf {
             state.canPaginate && (lazyColumnListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-                ?: -5) >= (lazyColumnListState.layoutInfo.totalItemsCount - 3)
+                ?: 0) >= (state.comments.size - 1)
         }
     }
 
     val comments = state.comments
 
-    LaunchedEffect(key1 = shouldStartPaginate.value) {
+    if (shouldStartPaginate.value && state.listState == ListState.IDLE) {
+        viewModel.getForumComments(post?.forum?.id ?: 0)
+    }
+
+    LaunchedEffect(Unit) {
         viewModel.setIsLiked(post?.isLiked ?: false)
         viewModel.setTotalLikes(post?.forum?.totalLikes ?: 0)
         viewModel.setTotalComments(post?.forum?.totalComments ?: 0)
-
-        if (shouldStartPaginate.value && state.listState == ListState.IDLE) {
-            viewModel.getForumComments(post?.forum?.id ?: 0)
-        }
     }
 
     if(state.error != null){
