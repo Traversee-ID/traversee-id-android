@@ -15,8 +15,6 @@ interface CampaignRepository {
 
     suspend fun getCampaignById(campaignId: Int): LiveData<ResultState<CampaignItem>>
 
-    fun getCampaignsByCategory(categoryId: Int, params: CampaignParams): Flow<PagingData<CampaignItem>>
-
     suspend fun getFirstPageRegisteredCampaigns(): LiveData<ResultState<List<CampaignItem>>>
 
     suspend fun getCampaignDetails(campaignId: Int): LiveData<ResultState<CampaignDetailsData>>

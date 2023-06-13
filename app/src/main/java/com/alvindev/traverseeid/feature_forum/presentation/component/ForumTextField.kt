@@ -45,6 +45,8 @@ fun ForumTextField(
         singleLine = false,
         value = value,
         onValueChange = onValueChange,
+        minLines = 5,
+        maxLines = 5,
     )
 }
 

@@ -42,7 +42,7 @@ fun TraverseeCategoryCard(
                     .fillMaxWidth()
                     .aspectRatio(1f)
                     .clip(Shapes.large),
-                painter = painterResource(id = R.drawable.dummy_komodo_island),
+                painter = painterResource(id = R.drawable.all_categories),
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center,

@@ -20,6 +20,7 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
 import com.alvindev.traverseeid.core.theme.Shapes
 import com.alvindev.traverseeid.core.theme.Typography
+import com.alvindev.traverseeid.core.util.currencyFormat
 import com.alvindev.traverseeid.core.util.toDate
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -103,7 +104,7 @@ fun TripCard(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 4.dp),
-                        text = price,
+                        text = price.currencyFormat(),
                         style = Typography.subtitle2,
                     )
                     Text(

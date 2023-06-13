@@ -125,6 +125,10 @@ fun ForumScreen(
                         image = painterResource(id = R.drawable.empty_error),
                         title = stringResource(id = R.string.error_title),
                         description = stringResource(id = R.string.error_description),
+                        isCanRetry = true,
+                        onRetry = {
+                            posts.refresh()
+                        }
                     )
                 }
             }
@@ -144,6 +148,8 @@ fun ForumScreen(
                 if (posts.itemCount == 0) {
                     item {
                         TraverseeErrorState(
+                            modifier = Modifier
+                                .fillParentMaxSize(),
                             image = painterResource(id = R.drawable.empty_list),
                             title = stringResource(id = R.string.no_post_found),
                             description = stringResource(id = R.string.no_post_found_description),

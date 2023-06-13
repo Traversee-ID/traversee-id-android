@@ -69,9 +69,13 @@ fun LoginScreen(
         navigator.navigate(ScreenRoute.Campaign)
     } else if (isInternetAvailable(context).not()) {
         TraverseeErrorState(
+            modifier = Modifier
+                .fillMaxSize(),
             image = painterResource(id = R.drawable.empty_error),
             title = stringResource(id = R.string.error_title),
             description = stringResource(id = R.string.error_description),
+            isCanRetry = true,
+            onRetry = viewModel::checkUser
         )
     } else if (state.isLoading.not()) {
         Column(

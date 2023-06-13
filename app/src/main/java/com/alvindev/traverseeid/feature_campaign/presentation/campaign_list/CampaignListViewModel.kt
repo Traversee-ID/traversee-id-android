@@ -29,29 +29,13 @@ class CampaignListViewModel @Inject constructor(
         getCampaignLocations()
     }
 
-    fun setStatus(status: String?) {
-        state = state.copy(status = status)
+    fun setFilter(status: String?, locationId: Int?, isRegistered: Boolean?) {
+        state = state.copy(status = status, locationId = locationId, isRegistered = isRegistered)
     }
 
-    fun setLocationId(locationId: Int?) {
-        state = state.copy(locationId = locationId)
-    }
-    fun setIsRegistered(isRegistered: Boolean?) {
-        state = state.copy(isRegistered = isRegistered)
-    }
-
-    fun getAllCampaigns(searchQuery: String?) = useCases.getAllCampaigns(
+    fun getAllCampaigns(categoryId:Int?, searchQuery: String?) = useCases.getAllCampaigns(
         CampaignParams(
-            status = state.status,
-            locationId = state.locationId,
-            isRegistered = state.isRegistered,
-            search = searchQuery
-        )
-    ).cachedIn(viewModelScope)
-
-    fun getCampaignsByCategory(categoryId: Int, searchQuery: String?) = useCases.getCampaignsByCategory(
-        categoryId,
-        CampaignParams(
+            categoryId=categoryId,
             status = state.status,
             locationId = state.locationId,
             isRegistered = state.isRegistered,

@@ -58,25 +58,6 @@ class CampaignRepositoryImpl(
             }
         }
 
-    override fun getCampaignsByCategory(
-        categoryId: Int,
-        params: CampaignParams
-    ): Flow<PagingData<CampaignItem>> {
-
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-            ),
-            pagingSourceFactory = {
-                CampaignsPagingSource(
-                    campaignApi,
-                    categoryId,
-                    campaignParams = params,
-                )
-            }
-        ).flow
-    }
-
     override suspend fun getFirstPageRegisteredCampaigns(): LiveData<ResultState<List<CampaignItem>>> =
         liveData {
             try {

@@ -1,10 +1,7 @@
 package com.alvindev.traverseeid.core.presentation.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
@@ -48,12 +45,13 @@ fun TourismCard(
     ) {
         Column{
             imageUrl?.let {
+                val finalImageUrl = if(it.startsWith("http://")) it.replace("http://", "https://") else it
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
                         .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
-                    model = it,
+                    model = finalImageUrl,
                     fallback = painterResource(id = R.drawable.dummy_komodo_island),
                     contentDescription = title,
                     alignment = Alignment.Center,
@@ -81,7 +79,10 @@ fun TourismCard(
                 modifier = Modifier.padding(bottom = 4.dp,start= 8.dp, end = 8.dp),
                 text = title,
                 style = Typography.subtitle2,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
+            Spacer(modifier = Modifier.weight(1f))
             TraverseeRowIcon(
                 modifier = Modifier.padding(bottom = 8.dp,start= 8.dp, end = 8.dp),
                 icon = Icons.Outlined.Place,
@@ -96,7 +97,10 @@ fun TourismCard(
 @Composable
 fun PreviewTourismCard() {
     TraverseeTheme {
-        TourismCard()
+        TourismCard(
+            modifier = Modifier.height(320.dp),
+            title = "DASDsadoaisjkdhasdjkhasjkdash kjd saldjasdlkasd asldkjs"
+        )
     }
 }
 

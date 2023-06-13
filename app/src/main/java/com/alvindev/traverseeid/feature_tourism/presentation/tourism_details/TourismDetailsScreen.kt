@@ -35,8 +35,6 @@ import com.alvindev.traverseeid.core.theme.Typography
 import com.alvindev.traverseeid.feature_tourism.presentation.component.HomeStayCard
 import com.alvindev.traverseeid.feature_tourism.presentation.component.ImageSlider
 import com.alvindev.traverseeid.core.theme.TraverseeBlack
-import com.alvindev.traverseeid.core.theme.TraverseeRed
-import com.alvindev.traverseeid.feature_forum.domain.entity.ForumCampaignEntity
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismItem
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
@@ -79,9 +77,18 @@ fun TourismDetailsScreen(
         }
     } else if (state.error != null) {
         TraverseeErrorState(
+            modifier = Modifier.fillMaxSize(),
             image = painterResource(id = R.drawable.empty_error),
             title = stringResource(id = R.string.error_title),
             description = stringResource(id = R.string.error_description),
+            isCanRetry = true,
+            onRetry = {
+                tourismItem?.let {
+                    viewModel.setInitialState(it)
+                } ?: id?.let {
+                    viewModel.setInitialStateWithId(it)
+                }
+            }
         )
     } else if (state.tourismDetails != null && state.tourism != null) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -214,18 +221,21 @@ fun TourismDetailsScreen(
             }
         }
     } else {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(id = R.string.error_occurred),
-                style = Typography.caption,
-                color = TraverseeRed,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-        }
+        TraverseeErrorState(
+            modifier = Modifier
+                .fillMaxSize(),
+            image = painterResource(id = R.drawable.empty_error),
+            title = stringResource(id = R.string.error_title),
+            description = stringResource(id = R.string.error_description),
+            isCanRetry = true,
+            onRetry = {
+                tourismItem?.let {
+                    viewModel.setInitialState(it)
+                } ?: id?.let {
+                    viewModel.setInitialStateWithId(it)
+                }
+            }
+        )
     }
 }
 
@@ -234,7 +244,7 @@ fun AboutTourism(
     description: String
 ) {
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         TraverseeSectionTitle(title = stringResource(id = R.string.about_tourism))

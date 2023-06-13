@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.feature_auth.presentation.login
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -22,7 +23,7 @@ class LoginViewModel @Inject constructor(
         checkUser()
     }
 
-    private fun checkUser() = viewModelScope.launch {
+    fun checkUser() = viewModelScope.launch {
         useCases.getCurrentUser().asFlow().collect { result ->
             state = when (result) {
                 is ResultState.Loading -> {

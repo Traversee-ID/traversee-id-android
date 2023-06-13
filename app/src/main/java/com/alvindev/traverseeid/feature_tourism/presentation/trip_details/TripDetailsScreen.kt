@@ -33,6 +33,7 @@ import com.alvindev.destinations.TourismDetailsScreenDestination
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.*
 import com.alvindev.traverseeid.core.theme.*
+import com.alvindev.traverseeid.core.util.currencyFormat
 import com.alvindev.traverseeid.core.util.digitSeparator
 import com.alvindev.traverseeid.core.util.toDate
 import com.alvindev.traverseeid.feature_tourism.domain.entity.TourismEntity
@@ -121,7 +122,7 @@ fun TripDetailsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = state.trip.price ?: "-",
+                            text = state.trip.price?.currencyFormat() ?: "-",
                             style = MaterialTheme.typography.subtitle2
                         )
 
@@ -246,6 +247,10 @@ fun TripDetailsScreen(
             image = painterResource(id = R.drawable.empty_error),
             title = stringResource(id = R.string.error_title),
             description = stringResource(id = R.string.error_description),
+            isCanRetry = true,
+            onRetry = {
+                trip?.let { viewModel.setInitialData(it)}
+            }
         )
     }
 }

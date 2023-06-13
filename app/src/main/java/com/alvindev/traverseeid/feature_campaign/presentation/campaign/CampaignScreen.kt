@@ -56,9 +56,12 @@ fun CampaignScreen(
         }
     } else if (state.error != null) {
         TraverseeErrorState(
+            modifier = Modifier.fillMaxSize(),
             image = painterResource(id = R.drawable.empty_error),
             title = stringResource(id = R.string.error_title),
             description = stringResource(id = R.string.error_description),
+            isCanRetry = true,
+            onRetry = viewModel::getMyCampaigns
         )
     } else {
         Column(

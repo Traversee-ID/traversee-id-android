@@ -40,6 +40,7 @@ import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.*
 import com.alvindev.traverseeid.core.theme.*
 import com.alvindev.traverseeid.core.util.digitSeparator
+import com.alvindev.traverseeid.core.util.seperateNewLine
 import com.alvindev.traverseeid.feature_campaign.domain.constant.CampaignParticipantConstant
 import com.alvindev.traverseeid.feature_campaign.presentation.component.CampaignParticipantItem
 import com.alvindev.traverseeid.feature_campaign.data.model.CampaignItem
@@ -120,9 +121,18 @@ fun CampaignDetailsScreen(
         }
     } else if (state.error != null) {
         TraverseeErrorState(
+            modifier = Modifier.fillMaxSize(),
             image = painterResource(id = R.drawable.empty_error),
             title = stringResource(id = R.string.error_title),
             description = stringResource(id = R.string.error_description),
+            isCanRetry = true,
+            onRetry = {
+                campaignItem?.let {
+                    viewModel.setCampaignItem(it)
+                } ?: id?.let {
+                    viewModel.setCampaignById(it)
+                }
+            }
         )
     } else {
         Box(
@@ -406,7 +416,7 @@ fun CampaignTermsAndConditions(
             title = stringResource(id = R.string.terms_and_conditions)
         )
         Text(
-            text = terms,
+            text = terms.seperateNewLine(),
             style = Typography.body2,
             textAlign = TextAlign.Justify,
         )

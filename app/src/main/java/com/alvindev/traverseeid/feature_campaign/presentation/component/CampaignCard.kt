@@ -14,7 +14,6 @@ import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -47,7 +46,7 @@ fun CampaignCard(
     status: String,
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.height(150.dp),
         elevation = 4.dp,
         onClick = onClick,
         shape = Shapes.large,
@@ -135,7 +134,10 @@ fun CampaignCard(
                     style = Typography.subtitle1.copy(
                         fontWeight = FontWeight.W700
                     ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
+                Spacer(modifier = Modifier.weight(1f))
                 TraverseeRowIcon(
                     icon = Icons.Outlined.Place,
                     text = place,

@@ -165,4 +165,5 @@
     <string name="title_message">Judul dari postingan</string>
     <string name="title_text_empty">Judul dan Caption tidak boleh kosong</string>
     <string name="optional">Opsional</string>
+    <string name="retry">Retry</string>
 </resources>

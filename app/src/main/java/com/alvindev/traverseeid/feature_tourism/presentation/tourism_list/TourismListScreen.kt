@@ -74,6 +74,9 @@ fun TourismListScreen(
             items(tourisms.itemCount, key = { index -> index }) { index ->
                 tourisms[index]?.let { item ->
                     TourismCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(310.dp),
                         title = item.tourism.name ?: "-",
                         category = item.tourism.categoryName ?: "-",
                         city = item.tourism.locationName ?: "-",
@@ -99,6 +102,10 @@ fun TourismListScreen(
                             image = painterResource(id = R.drawable.empty_error),
                             title = stringResource(id = R.string.error_title),
                             description = stringResource(id = R.string.error_description),
+                            isCanRetry = true,
+                            onRetry = {
+                                tourisms.refresh()
+                            }
                         )
                     }
                 }

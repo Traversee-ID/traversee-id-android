@@ -92,15 +92,20 @@ class AuthRepositoryImpl @Inject constructor(
         try {
             emit(ResultState.Loading)
             val userDataStore = dataStore.getUser()
+
+            if(userDataStore.email == null || userDataStore.email == "") {
+                emit(ResultState.Success(null))
+                return@liveData
+            }
+
             userDataStore.let {
                 TraverseeApplication.LANGUAGE = it.language ?: Locale.getDefault().language
             }
             val user = userPreferenceToUser(userDataStore)
-
             val token = authenticator.getUserToken() ?: ""
             dataStore.saveUserToken(token)
             ApiConfig.TOKEN = token
-            Log.d(TAG, "getCurrentUser: $token")
+            Log.d(TAG, "getCurrentUser: $token , ${user.uid}")
             emit(ResultState.Success(user))
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUser: ${e.message.toString()}")

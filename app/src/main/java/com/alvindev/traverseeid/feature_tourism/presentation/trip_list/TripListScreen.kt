@@ -106,6 +106,10 @@ fun TripListScreen(
                         image = painterResource(id = R.drawable.empty_error),
                         title = stringResource(id = R.string.error_title),
                         description = stringResource(id = R.string.error_description),
+                        isCanRetry = true,
+                        onRetry = {
+                            openTrips.refresh()
+                        }
                     )
                 }
             }

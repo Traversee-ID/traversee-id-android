@@ -4,7 +4,6 @@ data class UseCasesCampaign(
     val getCampaignCategories: GetCampaignCategories,
     val getAllCampaigns: GetAllCampaigns,
     val getCampaignById: GetCampaignById,
-    val getCampaignsByCategory: GetCampaignsByCategory,
     val getFirstPageRegisteredCampaigns: GetFirstPageRegisteredCampaigns,
     val getCampaignDetails: GetCampaignDetails,
     val getCampaignParticipants: GetCampaignParticipants,

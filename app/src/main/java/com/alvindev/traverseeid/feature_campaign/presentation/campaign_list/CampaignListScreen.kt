@@ -55,11 +55,11 @@ fun CampaignListScreen(
     val isHideButton = name == stringResource(id = R.string.campaign_around)
     val state = viewModel.state
 
-    val campaigns: LazyPagingItems<CampaignItem> = if (id != -1) {
-        viewModel.getCampaignsByCategory(id, searchQuery).collectAsLazyPagingItems()
-    } else {
-        viewModel.getAllCampaigns(searchQuery).collectAsLazyPagingItems()
-    }
+    val campaigns: LazyPagingItems<CampaignItem> = viewModel
+        .getAllCampaigns(
+            if(id == -1) null else id,
+            searchQuery
+        ).collectAsLazyPagingItems()
 
     val coroutineScope = rememberCoroutineScope()
     val modalSheetState = rememberModalBottomSheetState(
@@ -79,14 +79,11 @@ fun CampaignListScreen(
                         modalSheetState.hide()
                     }
                 },
-                onApply = { isRegistered, status, location ->
+                onApply = { isRegistered, status, locationId ->
                     coroutineScope.launch {
                         modalSheetState.hide()
                     }
-                    viewModel.setStatus(status)
-                    viewModel.setLocationId(location)
-                    viewModel.setIsRegistered(isRegistered)
-                    campaigns.refresh()
+                    viewModel.setFilter(status= status, isRegistered = isRegistered, locationId = locationId)
                 },
                 campaignLocations = state.campaignLocations,
                 locationSelected = state.locationId,
@@ -155,6 +152,10 @@ fun CampaignListScreen(
                                 image = painterResource(id = R.drawable.empty_error),
                                 title = stringResource(id = R.string.error_title),
                                 description = stringResource(id = R.string.error_description),
+                                isCanRetry = true,
+                                onRetry = {
+                                    campaigns.refresh()
+                                }
                             )
                         }
                     }

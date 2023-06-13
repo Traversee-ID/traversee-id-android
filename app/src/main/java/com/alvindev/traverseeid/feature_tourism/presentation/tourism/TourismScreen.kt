@@ -57,17 +57,20 @@ fun TourismScreen(
         ) {
             CircularProgressIndicator()
         }
-    } else if(state.error != null){
+    } else if (state.error != null) {
         TraverseeErrorState(
+            modifier = Modifier.fillMaxSize(),
             image = painterResource(id = R.drawable.empty_error),
             title = stringResource(id = R.string.error_title),
             description = stringResource(id = R.string.error_description),
+            isCanRetry = true,
+            onRetry = viewModel::getTourismCategories
         )
     } else {
         LazyColumn(
             contentPadding = PaddingValues(vertical = 16.dp),
         ) {
-            state.openTrips?.let {
+            if (state.openTrips != null && state.openTrips.isNotEmpty()) {
                 item {
                     SectionOpenTrip(
                         modifier = Modifier
@@ -78,15 +81,15 @@ fun TourismScreen(
                         tripOnClick = {
                             navigator.navigate(TripDetailsScreenDestination(trip = it))
                         },
-                        openTrips = it
+                        openTrips = state.openTrips,
                     )
                 }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
             }
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-            item {
-                if (state.tourismCategories != null && state.tourismCategories.isNotEmpty()) {
+            if (state.tourismCategories != null && state.tourismCategories.isNotEmpty()) {
+                item {
                     val categoryArrayList = arrayListOf<CategoryEntity>()
                     state.tourismCategories.forEach { category ->
                         categoryArrayList.add(category)
@@ -99,7 +102,7 @@ fun TourismScreen(
                         categoryOnClick = {
                             navigator.navigate(
                                 TourismListScreenDestination(
-                                    id = if(it.id == 0) null else it.id,
+                                    id = if (it.id == 0) null else it.id,
                                     name = it.name
                                 )
                             )
@@ -110,11 +113,11 @@ fun TourismScreen(
                         ) else categoryArrayList,
                     )
                 }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
             }
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-            if(state.tourismRecommendations != null && state.tourismRecommendations.isNotEmpty()){
+            if (state.tourismRecommendations != null && state.tourismRecommendations.isNotEmpty()) {
                 item {
                     TraverseeSectionTitle(
                         modifier = Modifier
@@ -133,10 +136,11 @@ fun TourismScreen(
                     ) {
                         for (i in 0..1) {
                             val item = it.getOrNull(i)
-                            item?.let{
+                            item?.let {
                                 TourismCard(
                                     modifier = Modifier
                                         .weight(1f)
+                                        .height(330.dp)
                                         .padding(bottom = 16.dp),
                                     title = it.tourism.name ?: "-",
                                     category = it.tourism.categoryName ?: "-",
@@ -194,7 +198,7 @@ fun SectionOpenTrip(
                     price = item.price ?: "-",
                     startDate = item.tripStart ?: "-",
                     endDate = item.tripEnd ?: "-",
-                    imageUrl = if(item.imagesUrl.isNotEmpty()) item.imagesUrl[0] else null,
+                    imageUrl = if (item.imagesUrl.isNotEmpty()) item.imagesUrl[0] else null,
                     onClick = {
                         tripOnClick(item)
                     }

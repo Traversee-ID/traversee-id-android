@@ -17,9 +17,15 @@ class SettingsRepositoryImpl @Inject constructor(
     private val dataStore: UserDataStoreRepositoryImpl,
     private val settingsApi: SettingsApi
 ) : SettingsRepository {
-    override suspend fun logout() {
-        dataStore.clearUserLogin()
-        authenticator.logout()
+    override suspend fun logout(): LiveData<ResultState<Boolean>> = liveData {
+        try {
+            emit(ResultState.Loading)
+            dataStore.clearUserLogin()
+            authenticator.logout()
+            emit(ResultState.Success(true))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.message.toString()))
+        }
     }
 
     override suspend fun changeLanguage(idLanguage: String): LiveData<ResultState<String>> = liveData{

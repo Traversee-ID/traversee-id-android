@@ -24,3 +24,15 @@ fun Int?.currencyFormat(): String {
         numberFormat.format(price).toString()
     }
 }
+
+fun String?.currencyFormat(): String {
+    return if (this == null) {
+        "Rp0"
+    } else {
+        val price = this.toLong()
+        val localeID =  Locale("in", "ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+        numberFormat.maximumFractionDigits = 0
+        numberFormat.format(price).toString()
+    }
+}

@@ -45,12 +45,12 @@ interface TourismApi {
         @Path("id") id: String
     ): Response<TourismFavoriteResponse>
 
-    @GET("open_trip")
+    @GET("open-trips")
     suspend fun getOpenTrip(
         @Query("page") page: Int,
     ): TripResponse
 
-    @GET("open_trip/{id}/destinations")
+    @GET("open-trips/{id}/destinations")
     suspend fun getTripDestinations(
         @Path("id") id: Int
     ): TripDestinationResponse

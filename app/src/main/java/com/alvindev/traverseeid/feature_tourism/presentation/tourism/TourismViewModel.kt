@@ -27,7 +27,7 @@ class TourismViewModel @Inject constructor(
         getTourismCategories()
     }
 
-    private fun getTourismCategories() = viewModelScope.launch {
+    fun getTourismCategories() = viewModelScope.launch {
         useCases.getTourismCategories().asFlow().collect {
             when (it) {
                 is ResultState.Loading -> {
@@ -55,6 +55,7 @@ class TourismViewModel @Inject constructor(
                 is ResultState.Error -> {
                     state = state.copy(
                         isLoading = false,
+                        error = it.error,
                     )
                 }
             }

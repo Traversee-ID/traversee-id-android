@@ -30,7 +30,7 @@ class CampaignViewModel @Inject constructor(
         getMyCampaigns()
     }
 
-    private fun getMyCampaigns() = viewModelScope.launch{
+    fun getMyCampaigns() = viewModelScope.launch{
         useCases.getFirstPageRegisteredCampaigns().asFlow().collect{
             when(it){
                 is ResultState.Loading -> {

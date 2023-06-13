@@ -34,7 +34,7 @@ fun SentimentTweet(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(50)),
-            painter = painterResource(id = R.drawable.dummy_komodo_island),
+            painter = painterResource(id = R.drawable.ic_profile),
             contentDescription = "Alvin Avatar",
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center

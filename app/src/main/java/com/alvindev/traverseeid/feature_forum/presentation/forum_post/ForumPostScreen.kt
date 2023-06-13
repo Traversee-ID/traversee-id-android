@@ -101,7 +101,7 @@ fun ForumPostScreen(
                     ) {
                         AsyncImage(
                             model = it.imageUrl,
-                            fallback = painterResource(id = R.drawable.dummy_borobudur),
+                            fallback = painterResource(id = R.drawable.dummy_komodo_island),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(100.dp)
