@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -89,7 +90,7 @@ fun SentimentItem(
                         )
                     ),
                     contentDescription = "Sentiment Icon",
-                    tint = SentimentMapper.mapSentimentToColor(SentimentConstant.POSITIVE),
+                    tint = SentimentMapper.mapSentimentToColor(SentimentMapper.mapIntToSentiment(sentiment)),
                 )
             }
 
@@ -106,13 +107,15 @@ fun SentimentItem(
                 TraverseeRowIcon(
                     icon = Icons.Outlined.ThumbUp,
                     text = likes,
-                    iconSize = 16.dp,
+                    iconSize = 24.dp,
+                    textStyle = MaterialTheme.typography.subtitle2
                 )
                 TraverseeRowIcon(
                     icon= Icons.Filled.Star,
                     text = rating.toString(),
-                    iconSize = 16.dp,
-                    iconTintColor = TraverseeYellow
+                    iconSize = 24.dp,
+                    iconTintColor = TraverseeYellow,
+                    textStyle = MaterialTheme.typography.subtitle2
                 )
             }
         }

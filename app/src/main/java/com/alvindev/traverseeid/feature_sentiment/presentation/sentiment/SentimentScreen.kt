@@ -101,11 +101,13 @@ fun SentimentScreen(
             item {
                 TraverseeErrorState(
                     modifier = Modifier.fillParentMaxHeight(0.7f).fillParentMaxWidth(),
-                    image = painterResource(id = R.drawable.empty_error),
-                    title = stringResource(id = R.string.error_title),
-                    description = stringResource(id = R.string.error_description),
-                    isCanRetry = true,
-                    onRetry = viewModel::onSubmitQuery
+                    image = painterResource(id = if(state.error.contains("not available")) R.drawable.empty_list else R.drawable.empty_error),
+                    title = if(state.error.contains("not available")) state.error else stringResource(id = R.string.error_title),
+                    description = if(state.error.contains("not available")) null else stringResource(id = R.string.error_description),
+                    isCanRetry = !state.error.contains("not available"),
+                    onRetry = {
+                        viewModel.onSubmitQuery(retry=true)
+                    }
                 )
             }
         } else {
@@ -189,7 +191,6 @@ fun SentimentItemCard(data: List<SentimentEntity>) {
             .fillMaxWidth()
             .background(color = Color.White, shape = Shapes.large)
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
             text = stringResource(id = R.string.relevant_tweets),

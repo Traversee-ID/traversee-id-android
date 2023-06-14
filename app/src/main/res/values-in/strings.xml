@@ -48,7 +48,7 @@
     <string name="for_you">Rekomendasi Untukmu</string>
     <string name="tourism_recommendation">Rekomendasi pariwisata berdasarkan preferensi kamu</string>
     <string name="all_places">Semua Tempat</string>
-    <string name="discover_tourism_place">Temukan Tempat Pariwisata</string>
+    <string name="discover_tourism_place">Temukan Pariwisata</string>
     <string name="browse_tourism_category">Jelajahi kategori pariwisata</string>
     <string name="welcome">Selamat Datang</string>
     <string name="create_account">Buat Akun</string>
@@ -85,7 +85,7 @@
     <string name="no_data">Tidak ada data</string>
     <string name="see_submission">Lihat Kampanye</string>
     <string name="winners_announcement">Pengumuman Pemenang</string>
-    <string name="winners_announcement_description">Selamat kepada pemenang kampanye ini, kami telah mengirimkan email kepada Anda dan harap konfirmasikan hadiah Anda sebelum 20 Juni 2023!</string>
+    <string name="winners_announcement_description">Selamat kepada pemenang kampanye ini, kami telah mengirimkan email kepada Anda dan harap konfirmasikan hadiah Anda sebelum %s!</string>
     <string name="no_joined_campaign">Anda belum bergabung dalam kampanye aktif apapun!</string>
     <string name="join_campaign">Ikut Kampanye</string>
     <string name="campaign_participants">Peserta Kampanye</string>
@@ -166,4 +166,5 @@
     <string name="title_text_empty">Judul dan Caption tidak boleh kosong</string>
     <string name="optional">Opsional</string>
     <string name="retry">Coba Lagi</string>
+    <string name="attach_proof_link">Lampirkan bukti link</string>
 </resources>

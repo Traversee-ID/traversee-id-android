@@ -260,7 +260,8 @@ fun CampaignDetailsScreen(
                                             campaignOtherParticipants = campaignOtherParticipants
                                         )
                                     )
-                                }
+                                },
+                                endDateCampaign = state.campaign?.endDate ?: ""
                             )
                         }
                     }
@@ -466,7 +467,7 @@ fun CampaignSubmission(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             label = {
-                Text("Attach Proof Link")
+                Text(stringResource(id = R.string.attach_proof_link))
             },
             placeholder = {
                 Text("https://instagram.com/...")
@@ -485,6 +486,7 @@ fun CampaignSubmission(
 fun CampaignWinners(
     campaignWinners: List<CampaignParticipantEntity>,
     onClickAllParticipants: () -> Unit,
+    endDateCampaign: String,
 ) {
     Column {
         Text(
@@ -497,7 +499,7 @@ fun CampaignWinners(
         )
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.winners_announcement_description),
+            text = stringResource(id = R.string.winners_announcement_description, CampaignUtil.calculateRewardClaimDeadline(endDateCampaign)),
             style = Typography.body2,
             textAlign = TextAlign.Justify,
         )

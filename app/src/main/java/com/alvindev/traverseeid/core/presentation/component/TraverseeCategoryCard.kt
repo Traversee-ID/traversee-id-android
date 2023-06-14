@@ -57,7 +57,7 @@ fun TraverseeCategoryCard(
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center,
-                fallback = painterResource(id = R.drawable.dummy_komodo_island)
+                fallback = painterResource(id = R.drawable.all_categories)
             )
         }
         Text(

@@ -84,7 +84,7 @@
     <string name="no_data">No Data found</string>
     <string name="see_submission">See Submission</string>
     <string name="winners_announcement">Winners Announcement</string>
-    <string name="winners_announcement_description">Congratulations for the winner of this campaign, we’ve emailed you and please confirm your reward before 20 June 2023!</string>
+    <string name="winners_announcement_description">Congratulations for the winner of this campaign, we’ve emailed you and please confirm your reward before %s!</string>
     <string name="no_joined_campaign">You haven’t joined any active campaign yet!</string>
     <string name="join_campaign">Join a Campaign</string>
     <string name="campaign_participants">Campaign Participants</string>
@@ -165,4 +165,5 @@
     <string name="title_text_empty">Title and Text must be filed!</string>
     <string name="optional">Optional</string>
     <string name="retry">Retry</string>
+    <string name="attach_proof_link">Attach proof link</string>
 </resources>

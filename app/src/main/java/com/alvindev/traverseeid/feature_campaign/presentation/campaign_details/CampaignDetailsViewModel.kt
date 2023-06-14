@@ -68,6 +68,7 @@ class CampaignDetailsViewModel @Inject constructor(
                                 textButton = resourcesProvider.getString(R.string.campaign_ended),
                                 enabledButton = false,
                                 campaignUserCondition = CampaignParticipantConstant.ENDED,
+                                submissionUrl = it.data.submissionUrl ?: ""
                             )
                         }
                         CampaignStatusConstant.COMING_SOON_VALUE -> {
@@ -111,7 +112,7 @@ class CampaignDetailsViewModel @Inject constructor(
                                             textButton = resourcesProvider.getString(R.string.already_submitted),
                                             enabledButton = false,
                                             campaignUserCondition = CampaignParticipantConstant.REGISTERED_AND_SUBMITTED,
-                                            submissionUrl = it.data.submissionUrl
+                                            submissionUrl = it.data.submissionUrl,
                                         )
                                     }
                                 }

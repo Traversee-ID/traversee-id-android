@@ -48,7 +48,7 @@ import com.ramcosta.composedestinations.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity() : ComponentActivity() {
     private val bottomBarRoutes = listOf(
         ScreenRoute.Campaign,
         ScreenRoute.Forum,

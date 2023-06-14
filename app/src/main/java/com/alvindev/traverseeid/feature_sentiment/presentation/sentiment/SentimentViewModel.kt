@@ -16,39 +16,42 @@ import javax.inject.Inject
 @HiltViewModel
 class SentimentViewModel @Inject constructor(
     private val useCases: UseCasesSentiment
-): ViewModel(){
+) : ViewModel() {
     var state by mutableStateOf(SentimentState())
         private set
 
-    fun onQueryChanged(query: String){
+    fun onQueryChanged(query: String) {
         state = state.copy(query = query)
     }
 
-    fun onSubmitQuery() = viewModelScope.launch {
-        useCases.getSentimentAnalysis(state.query).asFlow().collect{
-            state = when(it){
-                is ResultState.Loading -> {
-                    state.copy(
-                        isLoading = true,
-                        error = null,
-                        sentimentData = null,
-                    )
-                }
-                is ResultState.Success -> {
-                    state.copy(
-                        isLoading = false,
-                        error = null,
-                        sentimentData = it.data,
-                        queryResult = state.query,
-                    )
-                }
-                is ResultState.Error -> {
-                    state.copy(
-                        isLoading = false,
-                        error = it.error,
-                        sentimentData = null,
-                        queryResult = state.query,
-                    )
+    fun onSubmitQuery(retry: Boolean = false) = viewModelScope.launch {
+        if (state.query != state.queryResult || retry) {
+            val query = state.query.trim()
+            useCases.getSentimentAnalysis(query).asFlow().collect {
+                state = when (it) {
+                    is ResultState.Loading -> {
+                        state.copy(
+                            isLoading = true,
+                            error = null,
+                            sentimentData = null,
+                        )
+                    }
+                    is ResultState.Success -> {
+                        state.copy(
+                            isLoading = false,
+                            error = null,
+                            sentimentData = it.data,
+                            queryResult = state.query,
+                        )
+                    }
+                    is ResultState.Error -> {
+                        state.copy(
+                            isLoading = false,
+                            error = it.error,
+                            sentimentData = null,
+                            queryResult = state.query,
+                        )
+                    }
                 }
             }
         }
