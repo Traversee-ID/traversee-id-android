@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,28 +15,50 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeRowIcon
+import com.alvindev.traverseeid.core.theme.TraverseeYellow
 import com.alvindev.traverseeid.core.theme.Typography
+import com.alvindev.traverseeid.core.util.digitSeparator
 import com.alvindev.traverseeid.feature_sentiment.domain.constant.SentimentConstant
 import com.alvindev.traverseeid.feature_sentiment.domain.mapper.SentimentMapper
 
 @Composable
-fun SentimentTweet(
+fun SentimentItem(
     modifier: Modifier = Modifier,
+    name: String,
+    imageUrl: String? = null,
+    sentiment: Int,
+    content: String,
+    rating: Int,
+    likes: String,
 ) {
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Image(
+        imageUrl?.let {
+            AsyncImage(
+                model = it,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(50)),
+                fallback = painterResource(id = R.drawable.ic_profile),
+                contentDescription = "Avatar",
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            )
+        } ?: Image(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(50)),
             painter = painterResource(id = R.drawable.ic_profile),
-            contentDescription = "Alvin Avatar",
+            contentDescription = "Avatar",
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center
         )
@@ -49,23 +72,22 @@ fun SentimentTweet(
                     .padding(bottom = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
-            ){
-                Column(
+            ) {
+                Text(
                     modifier = Modifier.weight(1f),
-                ){
-                    Text(
-                        text = "Alvin",
-                        style = Typography.subtitle2
-                    )
-                    Text(
-                        text = "@alexanderhipp",
-                        style = Typography.caption
-                    )
-                }
+                    text = name,
+                    style = Typography.subtitle2,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
 
                 Icon(
                     modifier = Modifier.size(24.dp),
-                    painter = painterResource(id = SentimentMapper.mapSentimentToIcon(SentimentConstant.POSITIVE)),
+                    painter = painterResource(
+                        id = SentimentMapper.mapSentimentToIcon(
+                            SentimentMapper.mapIntToSentiment(sentiment)
+                        )
+                    ),
                     contentDescription = "Sentiment Icon",
                     tint = SentimentMapper.mapSentimentToColor(SentimentConstant.POSITIVE),
                 )
@@ -73,7 +95,7 @@ fun SentimentTweet(
 
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = "Ini pertanyaan sangat valid, mengingat tradisi Buddhisme Thai saat ini adalah Theravada, sedangkan tradisi Borobudur itu Mahayana tantrik. Memang secara sejarah, tradisi Mahayana Khmer yang mirip Borobudur (CMIIW) pernah berkembang pesat di Thailand, tapi ya sudah tidak relevan.",
+                text = content,
                 style = Typography.body2,
                 textAlign = TextAlign.Justify,
             )
@@ -81,20 +103,16 @@ fun SentimentTweet(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = "19 Juni 2023",
-                    style = Typography.caption
-                )
                 TraverseeRowIcon(
                     icon = Icons.Outlined.ThumbUp,
-                    text = "100",
+                    text = likes,
                     iconSize = 16.dp,
                 )
                 TraverseeRowIcon(
-                    drawable = R.drawable.ic_retweet,
-                    text = "2",
+                    icon= Icons.Filled.Star,
+                    text = rating.toString(),
                     iconSize = 16.dp,
+                    iconTintColor = TraverseeYellow
                 )
             }
         }
@@ -104,5 +122,11 @@ fun SentimentTweet(
 @Preview(showBackground = true)
 @Composable
 fun SentimentTweetPreview() {
-    SentimentTweet()
+    SentimentItem(
+        name = "Alvin Dev",
+        sentiment = 1,
+        content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nisl vitae nisl. Donec euismod, nisl eget ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nisl vitae nisl.",
+        rating = 5,
+        likes = "100",
+    )
 }

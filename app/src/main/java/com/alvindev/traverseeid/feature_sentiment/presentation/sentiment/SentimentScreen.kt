@@ -34,9 +34,10 @@ import com.alvindev.traverseeid.core.presentation.component.TraverseeSectionTitl
 import com.alvindev.traverseeid.feature_sentiment.domain.constant.SentimentConstant
 import com.alvindev.traverseeid.feature_sentiment.domain.mapper.SentimentMapper
 import com.alvindev.traverseeid.feature_sentiment.presentation.component.SentimentTag
-import com.alvindev.traverseeid.feature_sentiment.presentation.component.SentimentTweet
+import com.alvindev.traverseeid.feature_sentiment.presentation.component.SentimentItem
 import com.alvindev.traverseeid.R
 import com.alvindev.traverseeid.core.presentation.component.TraverseeErrorState
+import com.alvindev.traverseeid.feature_sentiment.domain.entity.SentimentEntity
 import com.alvindev.traverseeid.navigation.ScreenRoute
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -109,23 +110,27 @@ fun SentimentScreen(
             }
         } else {
             item {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
-                    text = stringResource(id = R.string.sentiment_result, "\"${state.queryResult}\""),
-                    style = Typography.h2,
-                    textAlign = TextAlign.Center
-                )
+               if(state.queryResult.isNotBlank()){
+                   Text(
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
+                       text = stringResource(id = R.string.sentiment_result, "\"${state.queryResult}\""),
+                       style = Typography.h2,
+                       textAlign = TextAlign.Center
+                   )
+               }
             }
+//            item {
+//                SentimentResultCard()
+//            }
+//            item {
+//                Spacer(modifier = Modifier.height(24.dp))
+//            }
             item {
-                SentimentResultCard()
-            }
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-            item {
-                SentimentTweetCard()
+                state.sentimentData?.let {
+                    SentimentItemCard(it)
+                }
             }
             item {
                 Spacer(modifier = Modifier.height(24.dp))
@@ -156,9 +161,9 @@ fun SentimentResultCard() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
-            text = SentimentMapper.mapSentimentToString(SentimentConstant.OVERWHELMINGLY_POSITIVE),
+            text = SentimentMapper.mapSentimentToString(SentimentConstant.POSITIVE),
             style = Typography.subtitle1,
-            color = SentimentMapper.mapSentimentToColor(SentimentConstant.OVERWHELMINGLY_POSITIVE)
+            color = SentimentMapper.mapSentimentToColor(SentimentConstant.POSITIVE)
         )
 
         FlowRow(
@@ -167,7 +172,7 @@ fun SentimentResultCard() {
             commonWords.forEachIndexed { index, word ->
                 SentimentTag(
                     modifier = Modifier.padding(bottom = 8.dp),
-                    sentiment = if (index == commonWords.size - 1) SentimentConstant.OVERWHELMINGLY_NEGATIVE else SentimentConstant.OVERWHELMINGLY_POSITIVE,
+                    sentiment = if (index == commonWords.size - 1) SentimentConstant.NEGATIVE else SentimentConstant.POSITIVE,
                     text = word
                 )
             }
@@ -176,7 +181,7 @@ fun SentimentResultCard() {
 }
 
 @Composable
-fun SentimentTweetCard() {
+fun SentimentItemCard(data: List<SentimentEntity>) {
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -191,10 +196,18 @@ fun SentimentTweetCard() {
             style = Typography.subtitle1,
         )
 
-        for (i in 0..5) {
+        data.forEachIndexed { index, it ->
             Column {
-                SentimentTweet()
-                if (i != 5) {
+                SentimentItem(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    sentiment = it.sentimen ?: 1,
+                    name = it.name ?: "-",
+                    imageUrl = it.gambar,
+                    content = it.isi ?: "-",
+                    rating = it.rating ?: 0,
+                    likes = it.like ?: "0",
+                )
+                if (index != data.size - 1) {
                     TraverseeDivider(
                         modifier = Modifier.padding(vertical = 16.dp),
                     )

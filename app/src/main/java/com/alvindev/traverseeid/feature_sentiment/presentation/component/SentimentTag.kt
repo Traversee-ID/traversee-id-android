@@ -39,7 +39,7 @@ fun SentimentTag(
 @Composable
 fun SentimentTagPreview() {
     SentimentTag(
-        sentiment = SentimentConstant.OVERWHELMINGLY_POSITIVE,
+        sentiment = SentimentConstant.POSITIVE,
         text = "Bersih"
     )
 }
