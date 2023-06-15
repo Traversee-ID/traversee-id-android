@@ -37,7 +37,7 @@ class CampaignListViewModel @Inject constructor(
         CampaignParams(
             categoryId=categoryId,
             status = state.status,
-            locationId = state.locationId,
+            locationId = if(state.locationId == -1 ) null else state.locationId,
             isRegistered = state.isRegistered,
             search = searchQuery
         )
@@ -48,7 +48,7 @@ class CampaignListViewModel @Inject constructor(
             state = when (it) {
                 is ResultState.Success -> {
                     val allLocation = LocationEntity(
-                        0,
+                        -1,
                         resourcesProvider.getString(R.string.Indonesia)
                     )
                     val list = mutableListOf(allLocation)

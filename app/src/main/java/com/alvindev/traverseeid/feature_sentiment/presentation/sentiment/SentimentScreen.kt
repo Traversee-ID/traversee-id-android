@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.*
 import com.alvindev.traverseeid.core.presentation.component.TraverseeDivider
 import com.alvindev.traverseeid.core.presentation.component.TraverseeTextField
 import com.alvindev.traverseeid.core.theme.Shapes
@@ -53,6 +54,7 @@ fun SentimentScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_analysis))
 
     LazyColumn {
         item {
@@ -91,10 +93,13 @@ fun SentimentScreen(
         if (state.isLoading) {
             item {
                 Box(
-                    modifier = Modifier.fillParentMaxHeight(0.7f).fillParentMaxWidth(),
+                    modifier = Modifier.fillParentMaxHeight(0.7f).fillParentMaxWidth().padding(horizontal=32.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    LottieAnimation(
+                        composition,
+                        iterations = LottieConstants.IterateForever
+                    )
                 }
             }
         } else if (state.error != null) {
@@ -193,7 +198,7 @@ fun SentimentItemCard(data: List<SentimentEntity>) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Text(
-            text = stringResource(id = R.string.relevant_tweets),
+            text = stringResource(id = R.string.user_reviews),
             style = Typography.subtitle1,
         )
 

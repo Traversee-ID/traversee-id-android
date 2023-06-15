@@ -41,14 +41,17 @@ class TourismListViewModel @Inject constructor(
 
     fun setLocation(locationName: String) {
         val location = state.tourismLocations.find { it.name == locationName }
-        state = state.copy(locationId = location?.id, locationName = location?.name)
-        getAllTourisms(state.categoryId, state.search)
+        location?.let{
+            state = state.copy(locationId = if(it.id == -1) null else it.id, locationName = it.name, page = 1, canPaginate = false)
+            getAllTourisms(state.categoryId, state.search)
+        }
     }
 
     fun getAllTourisms(categoryId: Int?, searchQuery: String?) = viewModelScope.launch {
         if (state.page == 1 || (state.page != 1 && state.canPaginate) && state.listState == ListState.IDLE) {
             state = state.copy(
-                listState = if (state.page == 1) ListState.LOADING else ListState.PAGINATING
+                listState = if (state.page == 1) ListState.LOADING else ListState.PAGINATING,
+                tourisms = if (state.page == 1) listOf() else state.tourisms,
             )
             val params = TourismParams(
                 categoryId = if(categoryId == -1) null else categoryId,

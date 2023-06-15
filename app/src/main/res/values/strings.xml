@@ -43,7 +43,7 @@
     <string name="discouver_favorite_tourism">Discover your favorite tourism sentiment</string>
     <string name="search_tourism">Search a tourism place</string>
     <string name="sentiment_result">Result for %s</string>
-    <string name="relevant_tweets">Relevant Tweets</string>
+    <string name="user_reviews">User Reviews</string>
     <string name="for_you">For You</string>
     <string name="tourism_recommendation">Tour recommendation based on your preferences</string>
     <string name="all_places">All Places</string>

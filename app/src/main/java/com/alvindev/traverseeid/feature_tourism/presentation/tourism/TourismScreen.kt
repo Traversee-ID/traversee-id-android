@@ -244,7 +244,7 @@ fun SectionDiscoverTourism(
                         .width(screenWidth / 2.8f)
                         .background(Color.White, shape = Shapes.large)
                         .clickable { categoryOnClick(category) },
-                    image = category.imageUrl ?: "",
+                    image = category.imageUrl,
                     contentDescription = category.name ?: "",
                     text = category.name ?: "",
                 )

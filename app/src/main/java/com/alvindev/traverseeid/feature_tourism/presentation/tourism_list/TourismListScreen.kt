@@ -47,21 +47,29 @@ fun TourismListScreen(
     val lazyGridListState = rememberLazyGridState()
     val shouldStartPaginate = remember {
         derivedStateOf {
-            state.canPaginate && (lazyGridListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-                ?: -5) >= (state.tourisms.size - 5)
+            state.canPaginate && ((lazyGridListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                ?: -5) >= (state.tourisms.size - 3))
         }
+    }
+
+//    Log.d(
+//        "TourismListScreen", "shouldStartPaginate.value: ${state.canPaginate} && ${
+//            (lazyGridListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+//                ?: -5)
+//        } >= ${(state.tourisms.size - 3)} = ${shouldStartPaginate.value} == ${state.canPaginate && ((lazyGridListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+//            ?: -5) >= (state.tourisms.size - 3))}"
+//    )
+    if (state.canPaginate && ((lazyGridListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+            ?: -5) >= (state.tourisms.size - 3)) && state.listState == ListState.IDLE) {
+        viewModel.getAllTourisms(categoryId = id, searchQuery = searchQuery)
     }
 
     val tourisms = state.tourisms
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp - 200.dp
 
-    if (shouldStartPaginate.value && state.listState == ListState.IDLE) {
-        viewModel.getAllTourisms(categoryId = id, searchQuery = searchQuery)
-    }
-
     LaunchedEffect(lazyGridListState) {
-        if(state.lastSeenIndex != 0) {
+        if (state.lastSeenIndex != 0) {
             lazyGridListState.scrollToItem(state.lastSeenIndex)
         }
     }

@@ -187,6 +187,7 @@ The app is built using the MVVM Clean Architecture pattern. The following diagra
 - [Jetpack Libraries](https://developer.android.com/jetpack)
 - [Coil](https://coil-kt.github.io/coil)
 - [Dagger Hilt](https://dagger.dev/hilt)
+- [Lottie](https://lottiefiles.com)
 
 ## Screenshots
 

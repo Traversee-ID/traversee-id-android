@@ -44,7 +44,7 @@
     <string name="discouver_favorite_tourism">Temukan sentimen dari tempat pariwisata favoritmu</string>
     <string name="search_tourism">Cari Pariwisata</string>
     <string name="sentiment_result">Hasil Sentimen Untuk %s</string>
-    <string name="relevant_tweets">Tweet Relevan</string>
+    <string name="user_reviews">Ulasan Pengguna</string>
     <string name="for_you">Rekomendasi Untukmu</string>
     <string name="tourism_recommendation">Rekomendasi pariwisata berdasarkan preferensi kamu</string>
     <string name="all_places">Semua Tempat</string>

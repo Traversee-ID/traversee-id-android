@@ -11,6 +11,7 @@ class ResourcesProvider @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     fun getString(@StringRes stringResId: Int): String {
+        //get string from string resource based on app language
         return context.getString(stringResId)
     }
 }

@@ -6,7 +6,7 @@ data class CampaignListState(
     val status: String? = null,
     val campaignLocations: List<LocationEntity> = listOf(
         LocationEntity(
-            id = 0,
+            id = -1,
             name = "Indonesia",
         )
     ),

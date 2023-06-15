@@ -103,17 +103,18 @@ fun SentimentItem(
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 TraverseeRowIcon(
                     icon = Icons.Outlined.ThumbUp,
                     text = likes,
-                    iconSize = 24.dp,
+                    iconSize = 20.dp,
                     textStyle = MaterialTheme.typography.subtitle2
                 )
                 TraverseeRowIcon(
                     icon= Icons.Filled.Star,
                     text = rating.toString(),
-                    iconSize = 24.dp,
+                    iconSize = 20.dp,
                     iconTintColor = TraverseeYellow,
                     textStyle = MaterialTheme.typography.subtitle2
                 )

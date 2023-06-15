@@ -54,7 +54,7 @@ class AppModule {
     @Singleton
     @Provides
     fun provideAppContext(@ApplicationContext appContext: Context): Context {
-        return appContext
+        return appContext.applicationContext
     }
 
 

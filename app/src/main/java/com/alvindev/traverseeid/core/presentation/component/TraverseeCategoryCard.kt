@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.core.presentation.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -29,6 +30,7 @@ fun TraverseeCategoryCard(
 ) {
     val allCampaigns = stringResource(id = R.string.all_campaigns)
     val allPlaces = stringResource(id = R.string.all_tourism)
+    Log.d("TraverseeCategoryCard", "text: $text == $allCampaigns || $text == $allPlaces")
     val isAllCategory = text == allCampaigns || text == allPlaces
 
     Column(
@@ -36,7 +38,7 @@ fun TraverseeCategoryCard(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (isAllCategory) {
+        if (isAllCategory || image == null) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()

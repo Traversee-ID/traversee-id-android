@@ -104,7 +104,8 @@ fun CampaignDetailsScreen(
             },
             onCancel = {
                 viewModel.setShowDialog(false)
-            }
+            },
+            enabled = !state.isLoadingButton
         )
     }
 

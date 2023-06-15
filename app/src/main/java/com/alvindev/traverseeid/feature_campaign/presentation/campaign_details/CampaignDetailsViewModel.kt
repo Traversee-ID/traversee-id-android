@@ -232,7 +232,6 @@ class CampaignDetailsViewModel @Inject constructor(
                     state = state.copy(
                         isLoadingButton = true,
                         errorButton = null,
-                        isShowDialog = false
                     )
                 }
                 is ResultState.Success -> {
@@ -271,7 +270,6 @@ class CampaignDetailsViewModel @Inject constructor(
                     state = state.copy(
                         isLoadingButton = true,
                         errorButton = null,
-                        isShowDialog = false
                     )
                 }
                 is ResultState.Success -> {
