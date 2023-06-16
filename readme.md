@@ -67,8 +67,9 @@ The app can also provide a personalized tourism recommendation system, allowing 
 ```bash
 git clone https://github.com/Traversee-ID/traversee-id-android.git
 ```
-2. Open the project with Android Studio and wait for the Gradle build to finish
-3. Run the app on your device or emulator
+2. [Contact](#contact) me to get the `google-services.json` file
+3. Open the project with Android Studio and wait for the Gradle build to finish
+4. Run the app on your device or emulator
 
 <!-- App Architecture -->
 ## App Architecture
