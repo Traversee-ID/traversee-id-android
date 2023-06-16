@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.feature_tourism.presentation.tourism_favorite
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan

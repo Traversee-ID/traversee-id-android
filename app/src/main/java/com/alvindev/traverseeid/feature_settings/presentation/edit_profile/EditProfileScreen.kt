@@ -76,6 +76,7 @@ fun EditProfileScreen(
                 )
             },
             onLookImage = {
+                viewModel.setShowDialog(false)
                 navigator.navigate(
                     DetailImageScreenDestination(
                         imageUri = state.avatarUrl,

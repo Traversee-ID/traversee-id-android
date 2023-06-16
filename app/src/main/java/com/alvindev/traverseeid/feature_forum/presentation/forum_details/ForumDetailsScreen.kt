@@ -1,5 +1,6 @@
 package com.alvindev.traverseeid.feature_forum.presentation.forum_details
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
