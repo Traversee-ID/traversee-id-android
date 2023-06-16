@@ -206,7 +206,7 @@ The app is built using the MVVM Clean Architecture pattern. The following diagra
 <img src="assets/15.sentiment.png" width="150" height="300">
 
 ### Profile
-<img src="assets/16.settings.png" width="150" height="300">
+<img src="assets/16.settings.png" width="150" height="300"> <img src="assets/17.edit_profile.png" width="150" height="300"> <img src="assets/18.my_campaigns.png" width="150" height="300"> <img src="assets/19.favorite_tourism.png" width="150" height="300"> <img src="assets/20.language.png" width="150" height="300">
 
 <!-- Contact -->
 ## Contact
