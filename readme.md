@@ -1,7 +1,7 @@
 <h1 align="center">
   <br>
   <img src="assets/traversee-logo.png" alt="Traversee" width="100">
-5<br>25   Traversee ID30 <br>
+<br>Traversee ID<br>
     <small style="font-size: 16px;"><em>Discover The Unforgettables</em></small>
 </h1>
 
@@ -194,24 +194,13 @@ The app is built using the MVVM Clean Architecture pattern. The following diagra
 
 ## Screenshots
 ### Campaigns
-<img src="assets/1.campaign.png" width="150" height="300">
-<img src="assets/2.campaign_category.png" width="150" height="300">
-<img src="assets/3.campaign_list.png" width="150" height="300">
-<img src="assets/4.campaign_filter.png" width="150" height="300">
-<img src="assets/5.campaign_details.png" width="150" height="300">
-<img src="assets/6.campaign_winners.png" width="150" height="300">
+<img src="assets/1.campaign.png" width="150" height="300"> <img src="assets/2.campaign_category.png" width="150" height="300"> <img src="assets/3.campaign_list.png" width="150" height="300"> <img src="assets/4.campaign_filter.png" width="150" height="300"> <img src="assets/5.campaign_details.png" width="150" height="300"> <img src="assets/6.campaign_winners.png" width="150" height="300">
 
 ### Forum
-<img src="assets/7.forum.png" width="150" height="300">
-<img src="assets/8.post.png" width="150" height="300">
-<img src="assets/9.create_post.png" width="150" height="300">
+<img src="assets/7.forum.png" width="150" height="300"> <img src="assets/8.post.png" width="150" height="300"> <img src="assets/9.create_post.png" width="150" height="300">
 
 ### Tourism
-<img src="assets/10.tourism.png" width="150" height="300">
-<img src="assets/11.tourism_recommendation.png" width="150" height="300">
-<img src="assets/12.tourism_list.png" width="150" height="300">
-<img src="assets/13.tourism_details.png" width="150" height="300">
-<img src="assets/14.trip_details.png" width="150" height="300">
+<img src="assets/10.tourism.png" width="150" height="300"> <img src="assets/11.tourism_recommendation.png" width="150" height="300"> <img src="assets/12.tourism_list.png" width="150" height="300"> <img src="assets/13.tourism_details.png" width="150" height="300"> <img src="assets/14.trip_details.png" width="150" height="300">
 
 ### Sentiment Analysis
 <img src="assets/15.sentiment.png" width="150" height="300">
